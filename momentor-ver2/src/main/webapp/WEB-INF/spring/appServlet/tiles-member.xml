@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<tiles-definitions>
+	<definition name="member_*" extends="home">
+		<put-attribute name="main" value="/WEB-INF/views/member/{1}.jsp" />
+	</definition>
+		<definition name="admin_*_*" extends="home">
+		<put-attribute name="main" value="/WEB-INF/views/member/admin/{1}/{2}.jsp" />
+	</definition>
+	<definition name="login_home" extends="home">
+		<put-attribute name="main" value="/WEB-INF/views/member/login/home_view.jsp" />
+	</definition>
+	<definition name="login_*" extends="home">
+		<put-attribute name="main" value="/WEB-INF/views/member/login/{1}_view.jsp" />
+	</definition>
+	<definition name="login_planner" extends="home">
+		<put-attribute name="main" value="/WEB-INF/views/member/planner.jsp" />
+	</definition>
+	<definition name = "my_*" extends="home">
+	<put-attribute name="main" value="/WEB-INF/views/member/my/{1}.jsp" />
+	</definition>
+</tiles-definitions>
+

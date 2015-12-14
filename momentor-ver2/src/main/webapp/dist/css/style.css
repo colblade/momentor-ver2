@@ -1,0 +1,48 @@
+@CHARSET "UTF-8";
+
+.loginForm{
+	width:100%;
+	padding:5%;
+}
+.headerForm{
+	padding: 5px;
+    height: 100px;
+    width: 100%;
+}
+.idFindCheck{
+	padding: 100px;
+	width: 500px;
+}
+[data-title]:after{
+	content:attr(data-title);
+	color:white;
+	background:black;
+	padding:5px;
+	opacity:0;
+	bottom:100%;
+	white-space:nowrap;
+}
+[data-title]:hover:after{
+	left:5px;
+	opacity:1;
+}
+
+p.paging{
+		margin-left: 20%;
+	    width:50%;
+		text-align: center;	
+		font-weight: bold;		
+	}
+	/* 이미지 마우스 오버시 커서 포인터 변경 */
+	.action{
+	  cursor: pointer;
+	}
+	페이징  
+		p.paging{
+		width:50%;
+		text-align: center;
+	} 
+	
+.plannerTable, .plannerTable th{
+	text-align: center;
+}
