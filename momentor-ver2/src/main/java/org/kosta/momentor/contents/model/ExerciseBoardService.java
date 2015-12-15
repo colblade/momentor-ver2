@@ -1,5 +1,6 @@
 package org.kosta.momentor.contents.model;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,4 +37,11 @@ public interface ExerciseBoardService {
 
 	//운동명으로 해당 운동게시물 불러오기
 	public Map<String, Object> getExerciseInfoByExName(String exerciseName);
+	
+	//URL 등록
+	public void insertUploadVideo(String exerciseName,String url);
+	//url 통해 영상 보기
+	public HashMap<String,String> getURLByExerciseName(String exerciseName);
+	//url 업데이트
+	public void updateExerciseURL(String exerciseName,String url);
 }

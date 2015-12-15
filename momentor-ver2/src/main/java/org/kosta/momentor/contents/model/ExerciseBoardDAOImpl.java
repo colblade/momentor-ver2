@@ -114,15 +114,28 @@ public class ExerciseBoardDAOImpl implements ExerciseBoardDAO {
 		sqlSessionTemplate.delete("content.deleteAllExerciseImg", exerciseName)
 		;
 	}
-
+	public void registerURL(HashMap<String,String> paramMap){
+		sqlSessionTemplate.insert("content.registerExerciseURL",paramMap);
+	}
 	@Override
 	public void deleteExerciseImgByImgName(Map<String, String> map) {
 sqlSessionTemplate.delete("content.deleteExerciseImgByImgName",map);		
 	}
-	
+	public void deleteExerciseURL(String exerciseName){
+		sqlSessionTemplate.delete("content.deleteExerciseURL",exerciseName);
+	}
+	public HashMap<String,String> getURLByExerciseName(String exerciseName){
+		System.out.println("DAO"+exerciseName);
+		return sqlSessionTemplate.selectOne("content.getExerciseURL",exerciseName);
+	}
 	@Override
 	public ExerciseBoardVO getExerciseInfoByExName(String exerciseName){
 		return sqlSessionTemplate.selectOne("content.getExerciseInfoByExName", exerciseName);
+	}
+	@Override
+	public void updateExerciseURL(HashMap<String,String> paramMap) {
+		// TODO Auto-generated method stub
+		sqlSessionTemplate.update("content.updateExerciseURL",paramMap);
 	}
 
 }

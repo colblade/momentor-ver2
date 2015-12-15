@@ -475,6 +475,21 @@ M.MEMBERID = B.MEMBERID AND PAGE=#{pageNo}
   	FROM EXERCISE_BOARD EB, EXERCISE EX
   	WHERE EB.EXERCISENAME = EX.EXERCISENAME AND EX.EXERCISENAME = #{value}
   </select>
-
-	
+ <!-- exercise URL 삭제 -->
+ <delete id="deleteExerciseURL">
+ DELETE FROM EXERCISE_URL WHERE EXERCISENAME=#{exerciseName}
+</delete>
+<!-- exercise URL 업데이트 -->
+<update id="updateExerciseURL"  parameterType="map">
+UPDATE EXERCISE_URL SET URLPATH =#{urlPath} WHERE EXERCISENAME =#{exerciseName}	
+</update>
+	<!-- 해당 운동 영상 가지고오기 -->
+<select id="getExerciseURL" resultType="map">
+	SELECT EXERCISENAME,URLPATH FROM EXERCISE_URL WHERE EXERCISENAME=#{value}
+</select>
+	<!--  exerciseURL 등록 -->
+	<insert id="registerExerciseURL" parameterType="map">
+	INSERT INTO EXERCISE_URL (EXERCISENAME,URLPATH)
+	VALUES (#{exerciseName},#{urlPath})
+	</insert>
  </mapper>

@@ -27,6 +27,7 @@ public class ExerciseBoardServiceImpl implements ExerciseBoardService {
 				//먼저 게시물을 지우고 그 다음
 				//운동을 지운다.
 		exerciseBoardDAO.deleteAllExerciseImg(exerciseName);
+		exerciseBoardDAO.deleteExerciseURL(exerciseName);
 		exerciseBoardDAO.deleteExerciseBoardByNo(eboardNo);
 		exerciseBoardDAO.deleteExerciseByExerciseName(exerciseName);
 		
@@ -119,8 +120,7 @@ public class ExerciseBoardServiceImpl implements ExerciseBoardService {
 			ExerciseBoardVO ebvo = exerciseBoardDAO.getExerciseByNo(boardNo);
 			result.put("exerciseInfo", exerciseBoardDAO.getExerciseByNo(boardNo));
 			result.put("nameList",exerciseBoardDAO.getExerciseImgListByExerciseName(ebvo.getExerciseVO().getExerciseName()));
-			
-			
+			result.put("URLVideo",exerciseBoardDAO.getURLByExerciseName(ebvo.getExerciseVO().getExerciseName()));
 			return result;
 		}
 		
@@ -149,4 +149,30 @@ public class ExerciseBoardServiceImpl implements ExerciseBoardService {
 			result.put("nameList",exerciseBoardDAO.getExerciseImgListByExerciseName(exerciseName));
 			return result;
 		}
+
+		@Override
+		public void insertUploadVideo(String exerciseName, String url) {
+			HashMap<String,String>paramMap=new HashMap<String,String>();
+			paramMap.put("exerciseName",exerciseName);
+			paramMap.put("urlPath", url);
+			exerciseBoardDAO.registerURL(paramMap);
+		}
+		@Override
+		public void updateExerciseURL(String exerciseName,String url) {
+			HashMap<String,String> paramMap = new HashMap<String,String>();
+			if(url==null||url.equals("")||url.trim().equals("null")){
+				paramMap.put("exerciseName", exerciseName);
+				paramMap.put("urlPath", "empty");
+				exerciseBoardDAO.updateExerciseURL(paramMap);
+			}else{
+				paramMap.put("exerciseName", exerciseName);
+				paramMap.put("urlPath", url);
+				exerciseBoardDAO.updateExerciseURL(paramMap);
+		}
+		}
+
+		public HashMap<String,String> getURLByExerciseName(String exerciseName){
+			return exerciseBoardDAO.getURLByExerciseName(exerciseName);
+		}
+
 }

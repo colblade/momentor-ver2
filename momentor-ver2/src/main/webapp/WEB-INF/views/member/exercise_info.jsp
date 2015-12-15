@@ -96,6 +96,24 @@ $(function(){
 									
 								</c:forEach>
 								</c:if>	
+									<div id="player">
+    <dl id="player_text">
+    </dl>
+</div><!-- player -->
+<div id="list">
+    <dl class="movs">
+    <c:set var="urlPath" value="${requestScope.URLVideo}"></c:set>
+  <c:choose>
+  <c:when test="${urlPath.URLPATH=='empty'}">
+     </c:when>
+    <c:when test="${urlPath.URLPATH!=null }">
+    	<dd class="url"><iframe src="${urlPath.URLPATH}"  type="application/x-shockwave-flash" width="800" height="450"></iframe></dd>
+    </c:when>
+    <c:otherwise>
+    </c:otherwise>
+     </c:choose>
+    </dl>
+</div>
                         <pre>${info.boardContent }</pre>
             <br><br><br>
             <hr>

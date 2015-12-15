@@ -96,7 +96,29 @@ $("#getExerciseByNo").click(function(){
 			: </label>
 		<div class="col-sm-10">${info.exerciseVO.exerciseName }</div>
 	</div>
-
+<c:set var="urlPath" value="${requestScope.URLVideo}"></c:set>
+<c:choose>
+<c:when test="${urlPath.URLPATH!='empty'}">
+		<div class="form-group">
+				  <label for="urlPath" class="col-sm-2 control-label"> URL : </label>
+								<div class="col-sm-10">
+										<input
+										type="text" id="urlPath" name="urlPath"
+										placeholder="운동 영상 주소를 넣어주세요(있을시만)"  size="40" class="form-control" value="${urlPath.URLPATH }">
+							</div>
+					</div>
+					</c:when>
+					<c:otherwise>
+						<div class="form-group">
+				  <label for="urlPath" class="col-sm-2 control-label"> URL : </label>
+								<div class="col-sm-10">
+										<input
+										type="text" id="urlPath" name="urlPath"
+										placeholder="운동 영상 주소를 넣어주세요(있을시만)"  size="40" class="form-control" >
+							</div>
+					</div>
+					</c:otherwise>
+					</c:choose>
 	<div class="form-group">
 		<label for="exerciseContent" class="col-sm-2 control-label"></label>
 		<div class="col-sm-10">

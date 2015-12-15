@@ -157,8 +157,8 @@ public class MomentorMemberController {
 	// 회원가입시 이메일 중복검사
 	@RequestMapping("emailcheck.do")
 	@ResponseBody
-	public String emailcheckAjax(String memberEmail1, String memberEmail2) {
-		return momentorMemberService.emailOverlappingCheck(memberEmail1, memberEmail2);
+	public String emailcheckAjax(String memberEmail, String memberEmail2) {
+		return momentorMemberService.emailOverlappingCheck(memberEmail, memberEmail2);
 	}
 	// 회원가입(후 자동 로그인)
 	@RequestMapping("register_result.do")

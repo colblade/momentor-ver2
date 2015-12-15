@@ -144,6 +144,7 @@ public class ContentsController {
 		
 		mv.addObject("exerciseInfo", map.get("exerciseInfo"));
 		mv.addObject("nameList", map.get("nameList"));
+		mv.addObject("URLVideo",map.get("URLVideo"));
 			exerciseBoardService.updateExerciseHits(boardNo);
 		return  mv;
 	}
@@ -156,12 +157,13 @@ public class ContentsController {
 		
 		mv.addObject("exerciseInfo", map.get("exerciseInfo"));
 		mv.addObject("nameList", map.get("nameList"));
+		mv.addObject("URLVideo",map.get("URLVideo"));
 		return mv;
 	}
 	
 	/*관리자 운동게시물 글쓰기*/
 	@RequestMapping("admin_postingExerciseByAdmin.do")
-	public ModelAndView postingExerciseByAdmin(ExerciseVO evo, ExerciseBoardVO ebvo,FileVO vo,String url){
+	public ModelAndView postingExerciseByAdmin(ExerciseVO evo, ExerciseBoardVO ebvo,FileVO vo,String urlPath){
 		ebvo.setExerciseVO(evo);
 		exerciseBoardService.postingExercise(ebvo);
 		
@@ -183,6 +185,9 @@ public class ContentsController {
 				}
 			}
 		}
+		if(urlPath!=null&&!urlPath.equals("")&&!urlPath.trim().equals("null")){
+			exerciseBoardService.insertUploadVideo(evo.getExerciseName(),urlPath);
+		}
 		ModelAndView mv = new ModelAndView("redirect:admin_getExerciseNoHitByNo.do");
 		mv.addObject("boardNo", ebvo.getBoardNo());
 		
@@ -194,27 +199,26 @@ public class ContentsController {
 	public ModelAndView updateViewForAdmin(int eboardNo){
 		Map<String, Object> map  = exerciseBoardService.getExerciseByNo(eboardNo);
 		ModelAndView mv = new ModelAndView("admin_contentmgr_update_view");
-		
 		mv.addObject("exerciseInfo", map.get("exerciseInfo"));
 		mv.addObject("nameList", map.get("nameList"));
+		mv.addObject("URLVideo",map.get("URLVideo"));
 		return mv;
 	}
 	
 	/*관리자 운동게시물 수정*/
 	@RequestMapping("admin_updateExerciseByAdmin.do")
-	public String updateExerciseByAdmin(ExerciseVO evo, ExerciseBoardVO ebvo,FileVO vo){
+	public String updateExerciseByAdmin(ExerciseVO evo, ExerciseBoardVO ebvo,FileVO vo,String urlPath){
 		exerciseBoardService.updateExerciseByAdmin(ebvo, evo);
-	
 		List<MultipartFile> list = vo.getFile();
 		//view 화면에 업로드 된 파일 목록을 전달하기 위한 리스트
 		ArrayList<String> nameList = new ArrayList<String>();
 		for (int i = 0; i < list.size(); i++) {
 			// 만약 업로드 파일이 없으면 파일명은 공란처리 된다.
 			String fileName = (list.get(i).getOriginalFilename());
-		
 			// 업로드 파일이 있으면 파일을 특정 경로로 업로드한다.
-			if (!fileName.equals("")) {		
-				try {File f = new File(path+evo.getExerciseName()+"_"+fileName);
+			if (!fileName.equals("")) {
+				try {
+					File f = new File(path+evo.getExerciseName()+"_"+fileName);
 					list.get(i).transferTo(f);
 					exerciseBoardService.registerExerciseImg(evo.getExerciseName(), fileName, path+evo.getExerciseName()+"_"+fileName);
 					System.out.println(fileName +"업로드 완료");
@@ -224,7 +228,7 @@ public class ContentsController {
 				}
 			}
 		}
-
+		exerciseBoardService.updateExerciseURL(evo.getExerciseName(),urlPath);
 		return "redirect:admin_getExerciseNoHitByNo.do?boardNo="+ebvo.getBoardNo();
 	}
 	
