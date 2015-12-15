@@ -17,14 +17,14 @@ public class CommunityBoardDAOImpl implements CommunityBoardDAO {
 	@Override
 	public CommunityBoardVO postingCommunity(CommunityBoardVO cvo) {
 		sqlSessionTemplate.insert("content.postingCommunity",cvo);
-		int no=sqlSessionTemplate.selectOne("content.getPostingNumber");
+		int no=sqlSessionTemplate.selectOne("content.getCommunityBoardNo");
 		cvo.setBoardNo(no);
 		return cvo;
 	}
 
 	@Override
-	public void deleteCommunity(int cboardNo) {
-		sqlSessionTemplate.delete("content.deleteCommunity",cboardNo);
+	public void deleteCommunityByNo(int cboardNo) {
+		sqlSessionTemplate.delete("content.deleteCommunityByNo",cboardNo);
 	}
 
 	@Override
@@ -39,13 +39,13 @@ public class CommunityBoardDAOImpl implements CommunityBoardDAO {
 	}
 
 	@Override
-	public void deleteAllReply(int cboardNo) {
-		sqlSessionTemplate.delete("content.deleteAllReply", cboardNo);
+	public void deleteAllReplyByNo(int cboardNo) {
+		sqlSessionTemplate.delete("content.deleteAllReplyByNo", cboardNo);
 	}
 	
 	@Override
-	public void deleteReply(int replyNo) {
-		sqlSessionTemplate.delete("content.deleteReply", replyNo);	
+	public void deleteReplyByNo(int replyNo) {
+		sqlSessionTemplate.delete("content.deleteReplyByNo", replyNo);	
 	}
 
 	@Override
@@ -53,11 +53,7 @@ public class CommunityBoardDAOImpl implements CommunityBoardDAO {
 		sqlSessionTemplate.update("content.updateReply",rvo);	
 	}
 
-	@Override
-	public List<CommunityBoardVO> findByCbTitle(String cbTitle) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 	@Override
 	public List<CommunityBoardVO> findByCbNickName(HashMap<String, String> paramMap) {
@@ -77,13 +73,13 @@ public class CommunityBoardDAOImpl implements CommunityBoardDAO {
 	}
 
 	@Override
-	public void deleteRecommend(int cboardNo) {
-		sqlSessionTemplate.delete("content.deleteRecommend",cboardNo);
+	public void deleteRecommendByNo(int cboardNo) {
+		sqlSessionTemplate.delete("content.deleteRecommendByNo",cboardNo);
 	}
 	
 	@Override
-	public List<CommunityBoardVO> getAllPostingList() {
-		List<CommunityBoardVO> list=sqlSessionTemplate.selectList("content.getAllPostingList");
+	public List<CommunityBoardVO> getAllCommunityList() {
+		List<CommunityBoardVO> list=sqlSessionTemplate.selectList("content.getAllCommunityList");
 		return list;
 	}
 
@@ -92,8 +88,8 @@ public class CommunityBoardDAOImpl implements CommunityBoardDAO {
 	}
 
 	@Override
-	public void updateHits(int boardNo) {
-		sqlSessionTemplate.update("content.updateHits", boardNo);
+	public void updateCommunityHits(int boardNo) {
+		sqlSessionTemplate.update("content.updateCommunityHits", boardNo);
 		
 	}
 
@@ -109,28 +105,25 @@ public class CommunityBoardDAOImpl implements CommunityBoardDAO {
 	}
 	
 	@Override
-	public List<CommunityBoardVO> getCommunityBoardListBestTop5ByRecommend() {
+	public List<CommunityBoardVO> getCommunityListBestTop5ByRecommend() {
 		
-		return sqlSessionTemplate.selectList("content.getCommunityBoardListBestTop5ByRecommend");
+		return sqlSessionTemplate.selectList("content.getCommunityListBestTop5ByRecommend");
 	}
 
 	   @Override
-	   public List<BoardVO> getAllPostingList(String pageNo) {
-	      List<BoardVO> list=sqlSessionTemplate.selectList("content.getAllPostingList", pageNo);
-	      //System.out.println(list);
+	   public List<BoardVO> getAllCommunityList(String pageNo) {
+	      List<BoardVO> list=sqlSessionTemplate.selectList("content.getAllCommunityList", pageNo);
 	      return list;
 	   }
 	   @Override
-		public int totalContent(){
-			return sqlSessionTemplate.selectOne("content.totalContent");
+		public int totalCommunity(){
+			return sqlSessionTemplate.selectOne("content.totalCommunity");
 		}
 	   
 	   @Override
 		public Map<String, String> getRecommendInfoByMemberId(Map<String, String> map) {
 			
-			//System.out.println("Dao상에서 memberId와 boardNo의 값 : "+ map);
 		Map<String, String> res = sqlSessionTemplate.selectOne("content.getRecommendInfoByMemberId", map);
-		//System.out.println("res: "+res);
 			return res;
 		}
 
@@ -142,57 +135,57 @@ public class CommunityBoardDAOImpl implements CommunityBoardDAO {
 
 
 		@Override
-		public void insertRecommendInfo(Map<String, String> map) {
-			sqlSessionTemplate.update("content.insertRecommendInfo", map);
+		public void registerRecommendInfo(Map<String, String> map) {
+			sqlSessionTemplate.update("content.registerRecommendInfo", map);
 			
 		}
 
 		@Override
-		public int countRecommend(int boardNo) {
+		public int totalRecommendByNo(int boardNo) {
 			// TODO Auto-generated method stub
-			return sqlSessionTemplate.selectOne("content.countRecommend", boardNo);
+			return sqlSessionTemplate.selectOne("content.totalRecommendByNo", boardNo);
 		}
 
 		@Override
-		public int countNotRecommend(int boardNo) {
+		public int totalNotRecommendByNo(int boardNo) {
 			// TODO Auto-generated method stub
-			return sqlSessionTemplate.selectOne("content.countNotRecommend", boardNo);
+			return sqlSessionTemplate.selectOne("content.totalNotRecommendByNo", boardNo);
 		}
 		@Override
-		public List<CommunityBoardVO> findByTitle(String word) {
+		public List<CommunityBoardVO> findCommunityListByTitle(String word) {
 			// 커뮤니티 게시판 전체 검색
-			return sqlSessionTemplate.selectList("content.findByCommunityTitle",word);
+			return sqlSessionTemplate.selectList("content.findCommunityListByTitle",word);
 		}
-		public List<CommunityBoardVO> getSearchCommunityList(HashMap<String, String> paramMap) {
+		public List<CommunityBoardVO> getCommunityListByTitle(HashMap<String, String> paramMap) {
 			// 커뮤니티 게시판 검색 페이지
-			List<CommunityBoardVO> list=sqlSessionTemplate.selectList("content.getSearchCommunityList", paramMap);
+			List<CommunityBoardVO> list=sqlSessionTemplate.selectList("content.getCommunityListByTitle", paramMap);
 			return list;
 		}
-		public int searchContent(String word){
+		public int totalCommunityByTitle(String word){
 			// 커뮤니티 게시판 검색 총 개수
-			return sqlSessionTemplate.selectOne("content.searchContent", word);
+			return sqlSessionTemplate.selectOne("content.totalCommunityByTitle", word);
 		}
 
 		@Override
-		public void registerCommunityImgFile(HashMap<String, String> map) {
-			sqlSessionTemplate.insert("content.registerCommunityImgFile", map);
+		public void registerCommunityImg(HashMap<String, String> map) {
+			sqlSessionTemplate.insert("content.registerCommunityImg", map);
 			
 		}
 
 		@Override
-		public List<HashMap<String, String>> getCommunityFileList(int boardNo) {
+		public List<HashMap<String, String>> getCommunityImgListByNo(int boardNo) {
 			
-			return sqlSessionTemplate.selectList("content.getCommunityFileList",boardNo);
+			return sqlSessionTemplate.selectList("content.getCommunityImgListByNo",boardNo);
 		}
 
 		@Override
-		public void deleteCommunityImgFile(int boardNo) {
-				sqlSessionTemplate.delete("content.deleteCommunityImgFile", boardNo);			
+		public void deleteAllCommunityImg(int boardNo) {
+				sqlSessionTemplate.delete("content.deleteAllCommunityImg", boardNo);			
 		}
 
 		@Override
-		public void deleteCommunityImgFileByImgName(HashMap<String, String> map) {
-			sqlSessionTemplate.delete("content.deleteCommunityImgFileByImgName", map);
+		public void deleteCommunityImgByImgName(HashMap<String, String> map) {
+			sqlSessionTemplate.delete("content.deleteCommunityImgByImgName", map);
 			
 		}
 

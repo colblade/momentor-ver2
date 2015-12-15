@@ -29,10 +29,10 @@ public interface MomentorMemberDAO {
 	public void myPageDeleteMemberInfo(String memberId); //회원 탈퇴시 일반정보 변경(auth)
 	public void myPageDeleteMemberPhysicalInfo(String memberId); //회원 탈퇴시 신체정보 삭제
 	public int myPasswordCheck(String password); // 회원정보 수정/탈퇴 시 패스워드 체크
-	public List<BoardVO> getMyCommnunityBoardList(Map<String, String> map); // 내가 쓴 커뮤니티 게시글 리스트
-	public int countAllMyCommnunityBoard(String memberId); // 내가 쓴 전체 글 수
-	public List<ReplyVO> getMyReplyList(Map<String, String> map); // 내가 쓴 댓글 리스트
-	public int countAllMyReply(String memberId); // 내가 쓴 전체 댓글 수
+	public List<BoardVO> getCommnunityListByMemberId(Map<String, String> map); // 내가 쓴 커뮤니티 게시글 리스트
+	public int totalCommnunityByMemberId(String memberId); // 내가 쓴 전체 글 수
+	public List<ReplyVO> getReplyListByMemberId(Map<String, String> map); // 내가 쓴 댓글 리스트
+	public int totalReplyByMemberId(String memberId); // 내가 쓴 전체 댓글 수
 	
 	public List<MomentorMemberPhysicalVO> managerGetAllMember(String pageNo); // 관리자가 회원 목록 보기
 	public int totalMemberCount(); // 전체 회원 수

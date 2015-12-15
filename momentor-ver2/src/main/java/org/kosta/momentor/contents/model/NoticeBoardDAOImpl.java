@@ -12,21 +12,20 @@ public class NoticeBoardDAOImpl implements NoticeBoardDAO {
 	private SqlSessionTemplate sqlSessionTemplate;
 
 	@Override
-	public NoticeBoardVO writeNoticeByAdmin(NoticeBoardVO nvo) {
-		System.out.println("DAO : " + nvo);
-		sqlSessionTemplate.insert("content.writeNoticeByAdmin",nvo);
+	public NoticeBoardVO postingNotice(NoticeBoardVO nvo) {
+		sqlSessionTemplate.insert("content.postingNotice",nvo);
 		return nvo;
 	}
 
 	@Override
-	public void deleteNoticeByAdmin(int noticeNo) {
-		sqlSessionTemplate.delete("content.deleteNoticeByAdmin", noticeNo);
+	public void deleteNoticeByNo(int noticeNo) {
+		sqlSessionTemplate.delete("content.deleteNoticeByNo", noticeNo);
 		
 	}
 
 	@Override
-	public void updateNoticeByAdmin(NoticeBoardVO nvo) {
-		sqlSessionTemplate.update("content.updateNoticeByAdmin",nvo);
+	public void updateNotice(NoticeBoardVO nvo) {
+		sqlSessionTemplate.update("content.updateNotice",nvo);
 		
 	}
 
@@ -41,7 +40,7 @@ public class NoticeBoardDAOImpl implements NoticeBoardDAO {
 	}
 
 	@Override
-	public int totalNoticeContent() {
-		return sqlSessionTemplate.selectOne("content.totalNoticeContent");
+	public int totalNotice() {
+		return sqlSessionTemplate.selectOne("content.totalNotice");
 	}
 }

@@ -24,7 +24,7 @@ public class TestJUnit {
 	@Test
 	public void test(){
 
-		List<CommunityBoardVO> list = exerciseBoardDAO.getCommunityBoardListBestTop5ByRecommend();
+		List<CommunityBoardVO> list = exerciseBoardDAO.getCommunityListBestTop5ByRecommend();
 		
 		System.out.println(list);
 	}

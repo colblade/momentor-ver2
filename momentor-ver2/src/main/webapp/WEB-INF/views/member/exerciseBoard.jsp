@@ -70,7 +70,7 @@
 <nav>
   <ul class="pager">
     <c:if test="${sessionScope.pnvo.momentorMemberVO.auth==1 }">	
-    	<li class="next"><a href="${initParam.root}admin_contentmgr_writeView.do">WRITE</a></li>
+    	<li class="next"><a href="${initParam.root}admin_writeView.do">WRITE</a></li>
 	</c:if>	
   </ul>
 </nav>

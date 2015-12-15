@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <body>
+<h2 class="sub-header">공지사항</h2>
 <div class="table-responsive">
  <table class="table table-striped, table-hover">
  <thead>
@@ -21,7 +22,7 @@
 			<a href="${initParam.root}member_getNoticeByNo.do?boardNo=${noticeList.boardNo}">${noticeList.boardTitle }</a>
 		</td>
 		<td class="text-center">${noticeList.boardWdate }</td>
-		<td class="text-center">${noticeList.momentorMemberVO.memberId }</td>
+		<td class="text-center">관리자</td>
 	</tr>
 </c:forEach>
 </tbody>
@@ -30,7 +31,7 @@
 <c:if test="${sessionScope.pnvo!=null&&sessionScope.pnvo.momentorMemberVO.auth==1}">
 	<nav>
 	   <ul class="pager">
-			<li><a href="${initParam.root}admin_noticemgr_writeNoticeByAdminForm.do">WRITE</a>
+			<li><a href="${initParam.root}admin_writeNoticeByAdminForm.do">WRITE</a>
 	   </ul>
     </nav>
 </c:if>

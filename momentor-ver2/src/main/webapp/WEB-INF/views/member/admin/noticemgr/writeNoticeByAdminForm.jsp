@@ -7,7 +7,7 @@
     	});
 	});
 </script>    
-<form action="${initParam.root}admin_noticemgr_writeNoticeByAdmin.do" method="post" id="writeNoticeForm" class="form-horizontal">
+<form action="${initParam.root}admin_writeNoticeByAdmin.do" method="post" id="writeNoticeForm" class="form-horizontal">
    <div class="form-group">
    <label for="boardTitle" class="col-sm-2 control-label">제목 : </label>
 	<div class="col-sm-10">
@@ -27,9 +27,11 @@
      		<textarea style="resize:none" cols="30" rows="7" class="form-control" name="boardContent" id="boardContent"></textarea>
       </div>
    </div>
-      <div class="form-group" align="right">
-     <div class="col-sm-offset-2 col-sm-10">
-     	<input type="button" value="글쓰기" id="writeBtn">
-       </div>
-   </div>
+       <nav>
+	   <ul class="pager">
+     	
+     	<li id="writeBtn"> <a href="#" >글쓰기</a> </li>
+    
+       </ul>
+       </nav>
   </form>

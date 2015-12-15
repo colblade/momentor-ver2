@@ -15,56 +15,38 @@ public class ExerciseBoardDAOImpl implements ExerciseBoardDAO {
 	private SqlSessionTemplate sqlSessionTemplate;
 
 	@Override
-	public void postingExerciseByAdmin(ExerciseBoardVO evo) {
-		 sqlSessionTemplate.insert("content.postingExerciseByAdmin", evo);
+	public void postingExercise(ExerciseBoardVO evo) {
+		 sqlSessionTemplate.insert("content.postingExercise", evo);
 	}
 
 	@Override
-	public void deleteExerciseByAdmin(String exerciseName) {
-		sqlSessionTemplate.delete("content.deleteExerciseByAdmin", exerciseName);
+	public void deleteExerciseByExerciseName(String exerciseName) {
+		sqlSessionTemplate.delete("content.deleteExerciseByExerciseName", exerciseName);
 	}
 
 	@Override
-	public void updateExerciseByAdmin(ExerciseVO evo) {
-		sqlSessionTemplate.update("content.updateExerciseByAdmin", evo);
-		
-	}
-
-/*	@Override
-	public ReplyVO postingReply(ReplyVO rvo) {
-		// TODO Auto-generated method stub
-		return null;
-	}*/
-
-	@Override
-	public void deleteReply(int mboardNo) {
-		// TODO Auto-generated method stub
+	public void updateExercise(ExerciseVO evo) {
+		sqlSessionTemplate.update("content.updateExercise", evo);
 		
 	}
 
 	@Override
-	public void updateReply(int mboardNo) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public List<BoardVO> getExerciseBoardList(String pageNo) {
-		List<BoardVO> list = sqlSessionTemplate.selectList("content.getExerciseBoardList", pageNo);
+	public List<BoardVO> getAllExerciseList(String pageNo) {
+		List<BoardVO> list = sqlSessionTemplate.selectList("content.getAllExerciseList", pageNo);
 		
 		return list;
 		
 	}
 
 	@Override
-	public int countAllExerciseBoard() {
+	public int totalExercise() {
 		// TODO Auto-generated method stub
-		return sqlSessionTemplate.selectOne("content.countAllExerciseBoard");
+		return sqlSessionTemplate.selectOne("content.totalExercise");
 	}
 
 	@Override
-	public int checkExerciseByExerciseName(String exerciseName) {
-		return  sqlSessionTemplate.selectOne("content.checkExerciseByExerciseName", exerciseName);
+	public int exerciseNameOverLappingCheck(String exerciseName) {
+		return  sqlSessionTemplate.selectOne("content.exerciseNameOverLappingCheck", exerciseName);
 	}
 
 	@Override
@@ -72,10 +54,7 @@ public class ExerciseBoardDAOImpl implements ExerciseBoardDAO {
 		return sqlSessionTemplate.selectOne("content.getExerciseByNo", boardNo);
 	}
 
-	@Override
-	public ExerciseBoardVO getExerciseInfoByExName(String exerciseName){
-		return sqlSessionTemplate.selectOne("content.getExerciseInfoByExName", exerciseName);
-	}
+	
 	
 	@Override
 	public void registerExercise(ExerciseVO evo) {
@@ -88,58 +67,62 @@ public class ExerciseBoardDAOImpl implements ExerciseBoardDAO {
 	}
 
 	@Override
-	public void deleteExerciseBoardByAdmin(int eboardNo) {
-		sqlSessionTemplate.delete("content.deleteExerciseBoardByAdmin", eboardNo);
+	public void deleteExerciseBoardByNo(int eboardNo) {
+		sqlSessionTemplate.delete("content.deleteExerciseBoardByNo", eboardNo);
 	}
 
 	@Override
-	public void updateExerciseBoardByAdmin(ExerciseBoardVO ebvo) {
-			sqlSessionTemplate.update("content.updateExerciseBoardByAdmin", ebvo);
+	public void updateExerciseBoard(ExerciseBoardVO ebvo) {
+			sqlSessionTemplate.update("content.updateExerciseBoard", ebvo);
 	}
 
 	@Override
-	public List<ExerciseBoardVO> getExerciseBoardListBestTop5ByHits() {
+	public List<ExerciseBoardVO> getExerciseListBestTop5ByHits() {
 		
-		return sqlSessionTemplate.selectList("content.getExerciseBoardListBestTop5ByHits");
+		return sqlSessionTemplate.selectList("content.getExerciseListBestTop5ByHits");
 		
 	}
 	@Override
-	public List<ExerciseBoardVO> findByTitle(String word) {
+	public List<ExerciseBoardVO> findExerciseListByTitle(String word) {
 		// 운동게시판 전체 검색
-		return sqlSessionTemplate.selectList("content.findByExerciseTitle",word);
+		return sqlSessionTemplate.selectList("content.findExerciseListByTitle",word);
 	}
-	public List<ExerciseBoardVO> getSearchExerciseList(HashMap<String, String> paramMap) {
+	public List<ExerciseBoardVO> getExerciseListByTitle(HashMap<String, String> paramMap) {
 		// 운동게시판 검색 페이지
-		List<ExerciseBoardVO> list=sqlSessionTemplate.selectList("content.getSearchExerciseList", paramMap);
+		List<ExerciseBoardVO> list=sqlSessionTemplate.selectList("content.getExerciseListByTitle", paramMap);
 		return list;
 	}
-	public int searchExerciseContent(String word){
+	public int totalExerciseByTitle(String word){
 		// 운동게시판 검색 총 개수
-		return sqlSessionTemplate.selectOne("content.searchExerciseContent", word);
+		return sqlSessionTemplate.selectOne("content.totalExerciseByTitle", word);
 	}
 	@Override
-	public void registerImgFile(Map<String, String> map) {
-		sqlSessionTemplate.insert("content.registerExerciseImgFile", map);		
-	}
-
-	@Override
-	public List<Map<String, String>> getFileListByExerciseName(String exerciseName) {
-	return	sqlSessionTemplate.selectList("content.getExerciseFileList", exerciseName);		
+	public void registerExerciseImg(Map<String, String> map) {
+		sqlSessionTemplate.insert("content.registerExerciseImg", map);		
 	}
 
 	@Override
-	public void deleteExerciseImgFile(String exerciseName) {
+	public List<Map<String, String>> getExerciseImgListByExerciseName(String exerciseName) {
+	return	sqlSessionTemplate.selectList("content.getExerciseImgListByExerciseName", exerciseName);		
+	}
+
+	@Override
+	public void deleteAllExerciseImg(String exerciseName) {
 
 		
 		
-		sqlSessionTemplate.delete("content.deleteExerciseImgFile", exerciseName)
+		sqlSessionTemplate.delete("content.deleteAllExerciseImg", exerciseName)
 		;
 	}
 
 	@Override
-	public void deleteExerciseImgFileByImgName(Map<String, String> map) {
-		System.out.println(map);
-sqlSessionTemplate.delete("content.deleteExerciseImgFileByImgName",map);		
+	public void deleteExerciseImgByImgName(Map<String, String> map) {
+sqlSessionTemplate.delete("content.deleteExerciseImgByImgName",map);		
+	}
+	
+	@Override
+	public ExerciseBoardVO getExerciseInfoByExName(String exerciseName){
+		return sqlSessionTemplate.selectOne("content.getExerciseInfoByExName", exerciseName);
 	}
 
 }

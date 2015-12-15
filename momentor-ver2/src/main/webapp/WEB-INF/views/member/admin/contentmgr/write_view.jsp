@@ -16,7 +16,7 @@ $(function(){
 	  
 	  
 	  $("#exerciseName").keyup(function(){
-	if($(this).val()==""){
+	if($.trim($(this).val())==""){
 		$("#result").html("운동을 입력하세요").css("background","pink");
 		return false;
 	}
@@ -24,7 +24,7 @@ $(function(){
 	
 	$.ajax({
 		type:"get",
-		url:"checkExerciseName.do?exerciseName="+$("#exerciseName").val(),
+		url:"checkExerciseName.do?exerciseName="+$.trim($("#exerciseName").val()),
 		success:function(data){
 			if(data=="false"){
 				$("#result").html(data).css("background","pink");
@@ -107,7 +107,7 @@ $("#getExerciseBoardList").click(function(){
 									<option value="">운동부위를 선택하세요</option>
 									<option value="상체">상체</option>
 									<option value="하체">하체</option>
-									<option value="상하체">상*하체</option>
+									<option value="전신">전신</option>
 								</select>
 							
 

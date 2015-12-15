@@ -63,25 +63,21 @@ public class ContentsController {
 				// 업로드 파일이 있으면 파일을 특정 경로로 업로드한다.
 				if (!fileName.equals("")) {
 					try {File f = new File(commuPath+cvo.getBoardNo()+"_"+fileName);
-					
-						list.get(i).transferTo(f);
-						
-						communityBoardService.registerCommunityImgFile(cvo.getBoardNo(), fileName, commuPath+cvo.getBoardNo()+"_"+fileName);
+						list.get(i).transferTo(f);	
+						communityBoardService.registerCommunityImg(cvo.getBoardNo(), fileName, commuPath+cvo.getBoardNo()+"_"+fileName);
 						System.out.println(fileName +"업로드 완료");
 						nameList.add(fileName);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
-
 			}
 	      return mv;
 	   }
 	   /*커뮤니티 게시판 게시글 보여주기*/
 	   @RequestMapping("showCommunityList.do")
 	   public ModelAndView showCommunityList(String pageNo){
-	      return new ModelAndView("member_showCommunityList","list",communityBoardService.getAllPostingList(pageNo));
-	      
+	      return new ModelAndView("member_showCommunityList","list",communityBoardService.getAllCommunityList(pageNo));
 	   }
 	 
 	/*커뮤니티 게시판 글쓰기 폼으로 이동*/
@@ -95,40 +91,32 @@ public class ContentsController {
 	   public ModelAndView getCommunityByNo(int boardNo, HttpServletRequest request){
 		   ModelAndView mv = new ModelAndView("my_community_info");
 		      BoardVO vo = (CommunityBoardVO)communityBoardService.getCommunityByNo(boardNo);
-		   
-		      
 		     List<ReplyVO> list = communityBoardService.getReplyListByNo(boardNo);
-		     
-		         communityBoardService.updateHits(boardNo);
-		      
-		      
+		         communityBoardService.updateCommunityHits(boardNo);
 		      //처음에 상세보기로 넘어가려 할 때 pnvo값으로 현재 로그인 한 아이디 값과 게시판 번호를 가지고 온다.
 		      HttpSession session = request.getSession(false);
 		      MomentorMemberPhysicalVO pnvo = (MomentorMemberPhysicalVO)session.getAttribute("pnvo");
 		      Map<String, String> map = null;
 		      if(session!=null&&pnvo!=null){
-		    	  
 		    	  map = communityBoardService.getRecommendInfoByMemberId(boardNo, pnvo.getMomentorMemberVO().getMemberId());
 		      }
-		      
 		      if(map!=null){
 		    	  mv.addObject("recommendInfo", map);
 		      }
 		      mv.addObject("info", vo);
 		      mv.addObject("replyList", list);
-		      List<HashMap<String, String>> nameList = communityBoardService.getCommunityFileList(boardNo);
+		      List<HashMap<String, String>> nameList = communityBoardService.getCommunityImgListByNo(boardNo);
 		      if(nameList!=null){
 		    	  mv.addObject("nameList", nameList);
 		      }  
 	      return mv;
-	      
 	   }
 	
 	/*운동게시물 보여주기*/   
 	@RequestMapping("member_exerciseBoard.do")
 	public ModelAndView member_exerciseBoard(String pageNo){
 		ModelAndView mv = new ModelAndView("member_exerciseBoard");
-		ListVO vo = exerciseBoardService.getExerciseBoardList(pageNo);
+		ListVO vo = exerciseBoardService.getAllExerciseList(pageNo);
 		
 		ArrayList<ExerciseBoardVO> list = (ArrayList)vo.getList();
 		PagingBean pb = vo.getPagingBean();
@@ -137,18 +125,12 @@ public class ContentsController {
 		mv.addObject("pageObject", pb);
 		return mv;
 	}
-	/*관리자용 운동게시판 글쓰기 jsp로 넘어가기*/
-	@RequestMapping("admin_contentmgr_writeView.do")
-	public String writeViewByAdmin(){
-		
-		return "admin_contentmgr_write_view";
-	}
+	
 	/*ajax로 중복되는 운동명 검사*/
 	@RequestMapping("checkExerciseName.do")
 	@ResponseBody
 	public String checkExerciseName(String exerciseName){
-		String result = exerciseBoardService.checkExerciseByExerciseName(exerciseName);
-		
+		String result = exerciseBoardService.exerciseNameOverLappingCheck(exerciseName);
 		return result;
 	}
 	
@@ -176,11 +158,12 @@ public class ContentsController {
 		mv.addObject("nameList", map.get("nameList"));
 		return mv;
 	}
+	
 	/*관리자 운동게시물 글쓰기*/
 	@RequestMapping("admin_postingExerciseByAdmin.do")
-	public ModelAndView postingExerciseByAdmin(ExerciseVO evo, ExerciseBoardVO ebvo,FileVO vo){
+	public ModelAndView postingExerciseByAdmin(ExerciseVO evo, ExerciseBoardVO ebvo,FileVO vo,String url){
 		ebvo.setExerciseVO(evo);
-		exerciseBoardService.postingExerciseByAdmin(ebvo);
+		exerciseBoardService.postingExercise(ebvo);
 		
 		List<MultipartFile> list = vo.getFile();
 		//view 화면에 업로드 된 파일 목록을 전달하기 위한 리스트
@@ -191,17 +174,14 @@ public class ContentsController {
 			// 업로드 파일이 있으면 파일을 특정 경로로 업로드한다.
 			if (!fileName.equals("")) {
 				try {File f = new File(path+evo.getExerciseName()+"_"+fileName);
-				
-					list.get(i).transferTo(f);
-					
-					exerciseBoardService.insertUploadFile(evo.getExerciseName(), fileName, path+evo.getExerciseName()+"_"+fileName);
+					list.get(i).transferTo(f);	
+					exerciseBoardService.registerExerciseImg(evo.getExerciseName(), fileName, path+evo.getExerciseName()+"_"+fileName);
 					System.out.println(fileName +"업로드 완료");
 					nameList.add(fileName);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-
 		}
 		ModelAndView mv = new ModelAndView("redirect:admin_getExerciseNoHitByNo.do");
 		mv.addObject("boardNo", ebvo.getBoardNo());
@@ -223,67 +203,62 @@ public class ContentsController {
 	/*관리자 운동게시물 수정*/
 	@RequestMapping("admin_updateExerciseByAdmin.do")
 	public String updateExerciseByAdmin(ExerciseVO evo, ExerciseBoardVO ebvo,FileVO vo){
-exerciseBoardService.updateExerciseByAdmin(ebvo, evo);
-		
-		
+		exerciseBoardService.updateExerciseByAdmin(ebvo, evo);
+	
 		List<MultipartFile> list = vo.getFile();
 		//view 화면에 업로드 된 파일 목록을 전달하기 위한 리스트
 		ArrayList<String> nameList = new ArrayList<String>();
 		for (int i = 0; i < list.size(); i++) {
 			// 만약 업로드 파일이 없으면 파일명은 공란처리 된다.
 			String fileName = (list.get(i).getOriginalFilename());
-			
-			
+		
 			// 업로드 파일이 있으면 파일을 특정 경로로 업로드한다.
 			if (!fileName.equals("")) {		
-				
 				try {File f = new File(path+evo.getExerciseName()+"_"+fileName);
-				
 					list.get(i).transferTo(f);
-					
-					exerciseBoardService.insertUploadFile(evo.getExerciseName(), fileName, path+evo.getExerciseName()+"_"+fileName);
+					exerciseBoardService.registerExerciseImg(evo.getExerciseName(), fileName, path+evo.getExerciseName()+"_"+fileName);
 					System.out.println(fileName +"업로드 완료");
 					nameList.add(fileName);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-
 		}
-		
-		
+
 		return "redirect:admin_getExerciseNoHitByNo.do?boardNo="+ebvo.getBoardNo();
 	}
+	
 	/*관리자 운동 게시물 삭제 */
 	@RequestMapping("admin_deleteExerciseByAdmin.do")
 	public String admin_deleteExerciseByAdmin(int eboardNo, String exerciseName){
 		exerciseBoardService.deleteExerciseByAdmin(eboardNo,exerciseName);
 		return "redirect:member_exerciseBoard.do";
 	}
+	
 	/*커뮤니티 게시판 게시물 삭제*/
 	@RequestMapping("my_deleteCommunity.do")
 	public ModelAndView deleteCommunity(int boardNo){
 		communityBoardService.deleteCommunity(boardNo);
 		return new ModelAndView("redirect:/showCommunityList.do");	
 	}
+	
 	/*커뮤니티 게시판 게시물 수정 페이지로 이동*/
 	@RequestMapping("my_updateCommunityForm.do")
 	public ModelAndView updateForm(int boardNo){
 		CommunityBoardVO cvo = communityBoardService.getCommunityByNo(boardNo);
 		ModelAndView mv = new ModelAndView("my_updateCommunityForm");
-		List<HashMap<String, String>> nameList = communityBoardService.getCommunityFileList(boardNo);
+		List<HashMap<String, String>> nameList = communityBoardService.getCommunityImgListByNo(boardNo);
 	      if(nameList!=null){
 	    	  mv.addObject("nameList", nameList);
 	      }
 		mv.addObject("cvo", cvo);
 		return mv;
 	}
+	
 	/* 커뮤니티 게시판 게시물 수정 */
 	@RequestMapping(value = "my_updateCommunity.do", method = RequestMethod.POST)
 	public ModelAndView updateCommunity(CommunityBoardVO cvo, FileVO vo) {
 		communityBoardService.updateCommunity(cvo);
-		
-		
 		 List<MultipartFile> list = vo.getFile();
 			//view 화면에 업로드 된 파일 목록을 전달하기 위한 리스트
 			ArrayList<String> nameList = new ArrayList<String>();
@@ -293,19 +268,15 @@ exerciseBoardService.updateExerciseByAdmin(ebvo, evo);
 				// 업로드 파일이 있으면 파일을 특정 경로로 업로드한다.
 				if (!fileName.equals("")) {
 					try {File f = new File(commuPath+cvo.getBoardNo()+"_"+fileName);
-					
 						list.get(i).transferTo(f);
-						
-						communityBoardService.registerCommunityImgFile(cvo.getBoardNo(), fileName, commuPath+cvo.getBoardNo()+"_"+fileName);
+						communityBoardService.registerCommunityImg(cvo.getBoardNo(), fileName, commuPath+cvo.getBoardNo()+"_"+fileName);
 						System.out.println(fileName +"업로드 완료");
 						nameList.add(fileName);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
-
 			}
-		
 		return new ModelAndView("redirect:/member_ getCommunityNoHitByNo.do","boardNo", cvo.getBoardNo());
 	}
 	
@@ -323,6 +294,7 @@ exerciseBoardService.updateExerciseByAdmin(ebvo, evo);
 		}
 		return replyList;
 	}
+	
 	/* 덧글 번호로 덧글 반환 */
 	@RequestMapping("my_getReplyByNo.do")
 	@ResponseBody
@@ -340,7 +312,6 @@ exerciseBoardService.updateExerciseByAdmin(ebvo, evo);
 	@RequestMapping(value="my_updateReply.do", method = RequestMethod.POST)
 	@ResponseBody
 	public List<ReplyVO> updateReply(int replyNo, String updateReplyContent,int boardNo){
-		System.out.println(boardNo);
 		ReplyVO rvo = new ReplyVO();
 		rvo.setReplyNo(replyNo);
 		rvo.setContent(updateReplyContent);
@@ -355,11 +326,11 @@ exerciseBoardService.updateExerciseByAdmin(ebvo, evo);
 		}
 		return replyList;
 	}
+	
 	/* 덧글 등록(커뮤니티) */
 	@RequestMapping(value = "my_registReply.do", method = RequestMethod.POST)
 	@ResponseBody
 	public List<ReplyVO> registReply(ReplyVO rvo){
-		System.out.println(rvo);
 		communityBoardService.postingReply(rvo);
 		List<ReplyVO> replyList = communityBoardService.getReplyListByNo(rvo.getCommunityBoardVO().getBoardNo());
 		for(int i=0;i<replyList.size();i++){
@@ -371,11 +342,12 @@ exerciseBoardService.updateExerciseByAdmin(ebvo, evo);
 		}
 		return replyList;
 	}
+	
 	/* 덧글 삭제(커뮤니티) */
 	@RequestMapping("my_deleteReply.do")
 	@ResponseBody
 	public List<ReplyVO> deleteReply(int replyNo, int boardNo){
-		communityBoardService.deleteReply(replyNo);
+		communityBoardService.deleteReplyByNo(replyNo);
 		List<ReplyVO> replyList = communityBoardService.getReplyListByNo(boardNo);
 		for(int i=0;i<replyList.size();i++){
 			try {
@@ -386,17 +358,17 @@ exerciseBoardService.updateExerciseByAdmin(ebvo, evo);
 		}
 		return replyList;
 	}
+	
 	/* 히트수 증가하지 않고 커뮤니티 글 보기 */
 	@RequestMapping("member_ getCommunityNoHitByNo.do")
 	public ModelAndView getCommunityNoHitByNo(int boardNo){
-		//System.out.println("Controller boardNo : "+boardNo);
 		BoardVO vo = (CommunityBoardVO)communityBoardService.getCommunityByNo(boardNo);
 		List<ReplyVO> list = communityBoardService.getReplyListByNo(boardNo);
 		
 		ModelAndView mv = new ModelAndView("my_community_info");
 		mv.addObject("info", vo);
 		mv.addObject("replyList", list);
-		List<HashMap<String, String>> nameList = communityBoardService.getCommunityFileList(boardNo);
+		List<HashMap<String, String>> nameList = communityBoardService.getCommunityImgListByNo(boardNo);
 	      if(nameList!=null){
 	    	  mv.addObject("nameList", nameList);
 	      }  
@@ -426,41 +398,41 @@ exerciseBoardService.updateExerciseByAdmin(ebvo, evo);
 			return new ModelAndView("admin_getNoticeByNo","nvo",nvo);
 		}
 		/*관리자가 공지사항 글작성 하는 form*/
-		@RequestMapping("admin_noticemgr_writeNoticeByAdminForm.do")
+		@RequestMapping("admin_writeNoticeByAdminForm.do")
 		public ModelAndView writeNoticeByAdminForm(HttpServletRequest request){
 			MomentorMemberPhysicalVO pnvo = (MomentorMemberPhysicalVO) request.getSession().getAttribute("pnvo");
-			System.out.println(pnvo);
 			return new ModelAndView("admin_noticemgr_writeNoticeByAdminForm","pnvo",pnvo);
 		}
 		
 		/*관리자가 공지사항 글작성*/
-		@RequestMapping("admin_noticemgr_writeNoticeByAdmin.do")
+		@RequestMapping("admin_writeNoticeByAdmin.do")
 		public ModelAndView writeNoticeByAdmin(HttpServletRequest request, NoticeBoardVO nvo){
 			HttpSession session = request.getSession(false);
 			MomentorMemberPhysicalVO pnvo =  (MomentorMemberPhysicalVO) session.getAttribute("pnvo");
 			nvo.setMomentorMemberVO(pnvo.getMomentorMemberVO());
-			noticeBoardService.writeNoticeByAdmin(nvo);
+			noticeBoardService.postingNotice(nvo);
 			return new ModelAndView("admin_noticemgr_writeNoticeResult","nvo",nvo);
 		}
 		/*관리자가 공지사항 글 수정 form*/
-		@RequestMapping(value="admin_noticemgr_noticeUpdateForm.do")
+		@RequestMapping(value="admin_noticeUpdateForm.do")
 		public ModelAndView noticeUpdateForm(int noticeNo){
 			NoticeBoardVO nvo = noticeBoardService.getNoticeByNo(noticeNo);
 			return new ModelAndView("admin_noticemgr_noticeUpdateForm","nvo",nvo);
 		}
 		/*관리자가 공지사항 글 수정*/
-		@RequestMapping(value="admin_noticemgr_noticeUpdate.do", method=RequestMethod.POST)
+		@RequestMapping(value="admin_noticeUpdate.do", method=RequestMethod.POST)
 		public ModelAndView noticeUpdate(HttpServletRequest request, NoticeBoardVO nvo){
-			noticeBoardService.updateNoticeByAdmin(nvo);
+			noticeBoardService.updateNotice(nvo);
 			return new ModelAndView("admin_noticemgr_noticeUpdateResult","nvo",nvo);
 		}
 		/*관리자가 공지사항 글 삭제*/
-		@RequestMapping(value="admin_noticemgr_noticeDelete.do")
+		@RequestMapping(value="admin_noticeDelete.do")
 		public ModelAndView noticeDelete(HttpServletRequest request, int noticeNo){
-			System.out.println("admin_noticemgr_noticeDelete.do -> nvo : " + noticeNo);
-			noticeBoardService.deleteNoticeByAdmin(noticeNo);
+			
+			noticeBoardService.deleteNoticeByNo(noticeNo);
 			return new ModelAndView("admin_noticemgr_noticeDeleteResult");
 		}
+		
 		/**
 		 * 추천/비추천 ajax로 하는 부분.
 		 * 
@@ -474,12 +446,7 @@ exerciseBoardService.updateExerciseByAdmin(ebvo, evo);
 		@ResponseBody
 		public Map<String, String> updateRecommendInfo(String memberId, int boardNo,String recommend, String notRecommend){
 			int num=0;
-		
-			
 			communityBoardService.updateRecommendInfo(boardNo, memberId, recommend, notRecommend);
-			
-			
-			
 		if ((recommend!=null&&recommend.equals("Y"))||(notRecommend!=null&&notRecommend.equals("Y"))) {
 			num = 1;
 		} else {
@@ -492,7 +459,7 @@ exerciseBoardService.updateExerciseByAdmin(ebvo, evo);
 			communityBoardService.updateNotRecommend(boardNo, num);
 			num = 0;
 		}
-		String count[] = communityBoardService.countRecommend(boardNo);
+		String count[] = communityBoardService.totalRecommendByNo(boardNo);
 		Map<String, String> map = communityBoardService.getRecommendInfoByMemberId(boardNo, memberId);
 		
 		map.put("recommendCount", count[0]);
@@ -509,8 +476,8 @@ exerciseBoardService.updateExerciseByAdmin(ebvo, evo);
 			} else if(word.equals("_")){
 				word = "`" + word;
 			}
-			List<ExerciseBoardVO> ebList = exerciseBoardService.findByTitle(word); // 운동게시판 검색
-			List<CommunityBoardVO> cbList = communityBoardService.findByTitle(word); // 커뮤니티 검색
+			List<ExerciseBoardVO> ebList = exerciseBoardService.findExerciseListByTitle(word); // 운동게시판 검색
+			List<CommunityBoardVO> cbList = communityBoardService.findCommunityListByTitle(word); // 커뮤니티 검색
 			List<ExerciseBoardVO> elist = new ArrayList<ExerciseBoardVO>(); // 운동게시판 5개씩 검색
 			List<CommunityBoardVO> clist = new ArrayList<CommunityBoardVO>(); // 커뮤니티 5개씩 검색
 			if(cbList.size() >= 5){
@@ -539,48 +506,38 @@ exerciseBoardService.updateExerciseByAdmin(ebvo, evo);
 			mv.addObject("cbList", clist); // 화면에 보여지는 커뮤니티
 			return mv;
 		}
+		
 		@RequestMapping("member_showSearchCommunity.do") // 커뮤니티 전체 검색 페이지로 이동
 		public ModelAndView showSearchCommunity(String word, String pageNo){
 			ModelAndView mv = new ModelAndView("member_showSearchCommunity");
 			mv.addObject("word", word);
-			mv.addObject("list", communityBoardService.getSearchCommunityList(pageNo, word));
+			mv.addObject("list", communityBoardService.getCommunityListByTitle(pageNo, word));
 			return mv;			
 		}
+		
 		@RequestMapping("member_showSearchExercise.do") // 운동게시판 전체 검색 페이지로 이동
 		public ModelAndView showSearchExercise(String word, String pageNo){
 			ModelAndView mv = new ModelAndView("member_showSearchExercise");
 			mv.addObject("word", word);
-			mv.addObject("list", exerciseBoardService.getSearchExerciseList(pageNo, word));
+			mv.addObject("list", exerciseBoardService.getExerciseListByTitle(pageNo, word));
 			return mv;			
 		}
 		
-		/*뭐하는 아일까..?*/
+		/*관리자용 운동게시판 글쓰기 jsp로 넘어가기*/
 		@RequestMapping("admin_writeView.do")
 		public String writeViewFileByAdmin(){
-			
 			return "admin_contentmgr_write_view";
 		}
 		
-		
 		@Resource(name = "exerciseUploadPath")
 		private String path;
-		
-		
-		
+
 		/*ajax 운동게시물 사진 개별 삭제*/
 		@RequestMapping("admin_deleteExerciseImgFileByImgName.do")
 		@ResponseBody
 		public List<Map<String, String>> deleteExerciseImgFileByImgName(String exerciseName,String imgName){
-
-		System.out.println("exerciseName : " + exerciseName);
-		System.out.println("imgName: " + imgName);
-
-		exerciseBoardService.deleteExerciseImgFileByImgName(exerciseName,
-				imgName);
-
-		List<Map<String, String>> list = exerciseBoardService
-				.getFileListByExerciseName(exerciseName);
-			System.out.println(list);
+		exerciseBoardService.deleteExerciseImgByImgName(exerciseName,imgName);
+		List<Map<String, String>> list = exerciseBoardService.getExerciseImgListByExerciseName(exerciseName);
 		return list;
 		}
 		
@@ -590,7 +547,7 @@ exerciseBoardService.updateExerciseByAdmin(ebvo, evo);
 			ModelAndView mv = new ModelAndView();
 			mv.addObject("word", searchWord);
 			if(searchType.equals("cbTitle")){
-				mv.addObject("list", communityBoardService.getSearchCommunityList(pageNo, searchWord));
+				mv.addObject("list", communityBoardService.getCommunityListByTitle(pageNo, searchWord));
 			} else if(searchType.equals("mNickName")) {
 				mv.addObject("list", communityBoardService.findByCbNickName(pageNo, searchWord));
 			}
@@ -601,11 +558,9 @@ exerciseBoardService.updateExerciseByAdmin(ebvo, evo);
 		/*ajax 커뮤니티 게시물 사진 개별 삭제*/
 		@RequestMapping("my_deleteCommunityImgFileByImgName.do")
 		@ResponseBody
-		public List<HashMap<String, String>> deleteCommunityImgFileByImgName(int boardNo,String imgName){
-			System.out.println("아니 왜애애애");
-		communityBoardService.deleteCommunityImgFileByImgName(boardNo, imgName);
-		List<HashMap<String, String>> list = communityBoardService.getCommunityFileList(boardNo);
-			System.out.println(list);
-		return list;
+		public List<HashMap<String, String>> deleteCommunityImgFileByImgName(int boardNo, String imgName) {
+			communityBoardService.deleteCommunityImgByImgName(boardNo, imgName);
+			List<HashMap<String, String>> list = communityBoardService.getCommunityImgListByNo(boardNo);
+			return list;
 		}
 }

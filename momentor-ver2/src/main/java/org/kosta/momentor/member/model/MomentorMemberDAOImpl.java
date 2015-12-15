@@ -78,20 +78,20 @@ public class MomentorMemberDAOImpl implements MomentorMemberDAO {
 		return sqlSessionTemplate.selectOne("member.myPasswordCheck", password);
 	}
 	@Override
-	public List<BoardVO> getMyCommnunityBoardList(Map<String, String> map) {
-		return sqlSessionTemplate.selectList("content.getMyCommnunityBoardList", map);
+	public List<BoardVO> getCommnunityListByMemberId(Map<String, String> map) {
+		return sqlSessionTemplate.selectList("content.getCommnunityListByMemberId", map);
 	}
 	@Override
-	public int countAllMyCommnunityBoard(String memberId) {
-		return sqlSessionTemplate.selectOne("content.countAllMyCommnunityBoard", memberId);
+	public int totalCommnunityByMemberId(String memberId) {
+		return sqlSessionTemplate.selectOne("content.totalCommnunityByMemberId", memberId);
 	}
 	@Override
-	public List<ReplyVO> getMyReplyList(Map<String, String> map) {
-		return sqlSessionTemplate.selectList("content.getMyReplyList", map);
+	public List<ReplyVO> getReplyListByMemberId(Map<String, String> map) {
+		return sqlSessionTemplate.selectList("content.getReplyListByMemberId", map);
 	}
 	@Override
-	public int countAllMyReply(String memberId) {
-		return sqlSessionTemplate.selectOne("content.countAllMyReply", memberId);
+	public int totalReplyByMemberId(String memberId) {
+		return sqlSessionTemplate.selectOne("content.totalReplyByMemberId", memberId);
 	}
 	
 	

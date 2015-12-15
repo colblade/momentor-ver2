@@ -15,7 +15,7 @@
 		});
 	});
 </script>
-<form method="post" name="noticeUpdateForm" id="noticeUpdateForm" action="${initParam.root} admin_noticemgr_noticeUpdate.do" class="form-horizontal">
+<form method="post" name="noticeUpdateForm" id="noticeUpdateForm" action="${initParam.root} admin_noticeUpdate.do" class="form-horizontal">
 	<input type="hidden" name="memberId" value="${sessionScope.mvo.memberId}">
 	<input type="hidden" name="boardNo" value="${requestScope.nvo.boardNo }">
 <div class="form-group">

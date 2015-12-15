@@ -16,9 +16,9 @@ public class ExerciseBoardServiceImpl implements ExerciseBoardService {
 	private ExerciseBoardDAO exerciseBoardDAO;
 
 	@Override
-	public void postingExerciseByAdmin(ExerciseBoardVO evo) {
+	public void postingExercise(ExerciseBoardVO evo) {
 		exerciseBoardDAO.registerExercise(evo.getExerciseVO());
-		exerciseBoardDAO.postingExerciseByAdmin(evo);
+		exerciseBoardDAO.postingExercise(evo);
 		
 	}
 
@@ -26,46 +26,31 @@ public class ExerciseBoardServiceImpl implements ExerciseBoardService {
 	public void deleteExerciseByAdmin(int eboardNo, String exerciseName) {
 				//먼저 게시물을 지우고 그 다음
 				//운동을 지운다.
-		exerciseBoardDAO.deleteExerciseImgFile(exerciseName);
-		exerciseBoardDAO.deleteExerciseBoardByAdmin(eboardNo);
-		exerciseBoardDAO.deleteExerciseByAdmin(exerciseName);
+		exerciseBoardDAO.deleteAllExerciseImg(exerciseName);
+		exerciseBoardDAO.deleteExerciseBoardByNo(eboardNo);
+		exerciseBoardDAO.deleteExerciseByExerciseName(exerciseName);
 		
 	}
 
 	@Override
 	public void updateExerciseByAdmin(ExerciseBoardVO ebvo,ExerciseVO evo) {
-		exerciseBoardDAO.updateExerciseByAdmin( evo);
-		exerciseBoardDAO.updateExerciseBoardByAdmin(ebvo);
+		exerciseBoardDAO.updateExercise( evo);
+		exerciseBoardDAO.updateExerciseBoard(ebvo);
 	}
 
-	@Override
-	public ReplyVO postingReply(ReplyVO rvo) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
+	
 
 	@Override
-	public void deleteReply(int mboardNo) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void updateReply(int mboardNo) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public ListVO getExerciseBoardList(String pageNo) {
+	public ListVO getAllExerciseList(String pageNo) {
 
 		if(pageNo==null||pageNo.equals("")){
 			pageNo = "1";
 		}
 		
-		ArrayList<BoardVO> list = (ArrayList)exerciseBoardDAO.getExerciseBoardList(pageNo);
+		ArrayList<BoardVO> list = (ArrayList)exerciseBoardDAO.getAllExerciseList(pageNo);
 		
-		PagingBean pagingBean = new PagingBean(exerciseBoardDAO.countAllExerciseBoard(), Integer.parseInt(pageNo));
+		PagingBean pagingBean = new PagingBean(exerciseBoardDAO.totalExercise(), Integer.parseInt(pageNo));
 		ListVO vo = new ListVO(list, pagingBean);
 		
 		
@@ -73,8 +58,8 @@ public class ExerciseBoardServiceImpl implements ExerciseBoardService {
 	}
 
 	@Override
-	public String checkExerciseByExerciseName(String exerciseName) {
-		int res = exerciseBoardDAO.checkExerciseByExerciseName(exerciseName);
+	public String exerciseNameOverLappingCheck(String exerciseName) {
+		int res = exerciseBoardDAO.exerciseNameOverLappingCheck(exerciseName);
 		String result = "false";
 		if(res==0){
 			result = "true";
@@ -91,31 +76,31 @@ public class ExerciseBoardServiceImpl implements ExerciseBoardService {
 	}
 
 	@Override
-	public List<ExerciseBoardVO> getExerciseBoardListBestTop5ByHits() {
-		return exerciseBoardDAO.getExerciseBoardListBestTop5ByHits();
+	public List<ExerciseBoardVO> getExerciseListBestTop5ByHits() {
+		return exerciseBoardDAO.getExerciseListBestTop5ByHits();
 	}
 	@Override
-	public List<ExerciseBoardVO> findByTitle(String word) {
+	public List<ExerciseBoardVO> findExerciseListByTitle(String word) {
 		// 운동게시판 전체 검색
-		return exerciseBoardDAO.findByTitle(word);
+		return exerciseBoardDAO.findExerciseListByTitle(word);
 	}
-	 public ListVO getSearchExerciseList(String pageNo, String word) {
+	 public ListVO getExerciseListByTitle(String pageNo, String word) {
 		 // 운동 게시판 검색 페이지
 			if(pageNo==null||pageNo=="") 
 				pageNo="1";
-			int total=exerciseBoardDAO.searchExerciseContent(word);
+			int total=exerciseBoardDAO.totalExerciseByTitle(word);
 			ArrayList<BoardVO> list= null;
 			HashMap<String, String> paramMap = new HashMap<String, String>();
 			paramMap.put("word", word);
 			paramMap.put("pageNo", pageNo);
-			list = (ArrayList)exerciseBoardDAO.getSearchExerciseList(paramMap);
+			list = (ArrayList)exerciseBoardDAO.getExerciseListByTitle(paramMap);
 			PagingBean paging=new PagingBean(total,Integer.parseInt(pageNo));
 			ListVO lvo=new ListVO(list,paging);
 	      return lvo;
 	   }
 	 
 	 @Override
-		public void insertUploadFile(String exerciseName, String imgName,
+		public void registerExerciseImg(String exerciseName, String imgName,
 				String imgPath) {
 
 			Map<String, String> map = new HashMap<String, String>();
@@ -124,7 +109,7 @@ public class ExerciseBoardServiceImpl implements ExerciseBoardService {
 			map.put("imgName", imgName);
 			map.put("imgPath", imgPath);
 			
-			exerciseBoardDAO.registerImgFile(map);
+			exerciseBoardDAO.registerExerciseImg(map);
 		}
 
 		@Override
@@ -133,33 +118,35 @@ public class ExerciseBoardServiceImpl implements ExerciseBoardService {
 			Map<String, Object> result = new HashMap<String, Object>();
 			ExerciseBoardVO ebvo = exerciseBoardDAO.getExerciseByNo(boardNo);
 			result.put("exerciseInfo", exerciseBoardDAO.getExerciseByNo(boardNo));
-			result.put("nameList",exerciseBoardDAO.getFileListByExerciseName(ebvo.getExerciseVO().getExerciseName()));
+			result.put("nameList",exerciseBoardDAO.getExerciseImgListByExerciseName(ebvo.getExerciseVO().getExerciseName()));
 			
 			
 			return result;
 		}
 		
-	@Override
-	public Map<String, Object> getExerciseInfoByExName(String exerciseName){
-		Map<String, Object> result = new HashMap<String, Object>();
-		ExerciseBoardVO ebvo = exerciseBoardDAO.getExerciseInfoByExName(exerciseName);
-		result.put("exerciseInfo", ebvo);
-		result.put("nameList",exerciseBoardDAO.getFileListByExerciseName(exerciseName));
-		return result;
-	}
+	
 
 		@Override
-		public void deleteExerciseImgFileByImgName(String exerciseName,
+		public void deleteExerciseImgByImgName(String exerciseName,
 				String imgName) {
 	Map<String, String> map = new HashMap<String, String>();
 	map.put("exerciseName", exerciseName);
 	map.put("imgName", imgName);
-	exerciseBoardDAO.deleteExerciseImgFileByImgName(map);
+	exerciseBoardDAO.deleteExerciseImgByImgName(map);
 		}
 
 		@Override
-		public List<Map<String, String>> getFileListByExerciseName(String exerciseName) {
+		public List<Map<String, String>> getExerciseImgListByExerciseName(String exerciseName) {
 			
-			return exerciseBoardDAO.getFileListByExerciseName(exerciseName);
+			return exerciseBoardDAO.getExerciseImgListByExerciseName(exerciseName);
+		}
+
+		@Override
+		public Map<String, Object> getExerciseInfoByExName(String exerciseName) {
+			Map<String, Object> result = new HashMap<String, Object>();
+			ExerciseBoardVO ebvo = exerciseBoardDAO.getExerciseInfoByExName(exerciseName);
+			result.put("exerciseInfo", ebvo);
+			result.put("nameList",exerciseBoardDAO.getExerciseImgListByExerciseName(exerciseName));
+			return result;
 		}
 }

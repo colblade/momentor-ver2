@@ -104,7 +104,7 @@ $("#getExerciseByNo").click(function(){
 				<option value="">--운동부위를 선택하세요--</option>
 				<option value="상체">상체</option>
 				<option value="하체">하체</option>
-				<option value="상하체">상*하체</option>
+				<option value="전신">전신</option>
 			</select>
 
 

@@ -155,7 +155,7 @@ public class MomentorMemberServiceImpl implements MomentorMemberService {
 		return (passwordCheck!=0&&password.equals(mpvo.getMomentorMemberVO().getMemberPassword())) ? "ok":"fail"; 
 	}
 	@Override
-	public ListVO getMyCommnunityBoardList(String memberId, String pageNo) {
+	public ListVO getCommnunityListByMemberId(String memberId, String pageNo) {
 		if(pageNo==null||pageNo.equals("")){
 			pageNo = "1";
 		}
@@ -163,12 +163,12 @@ public class MomentorMemberServiceImpl implements MomentorMemberService {
 		map.put("memberId", memberId);
 		map.put("pageNo", pageNo);
 		ListVO lvo = new ListVO();
-		lvo.setList((ArrayList)momentorMemberDAO.getMyCommnunityBoardList(map));
-		lvo.setPagingBean(new PagingBean(momentorMemberDAO.countAllMyCommnunityBoard(memberId), Integer.parseInt(pageNo)));
+		lvo.setList((ArrayList)momentorMemberDAO.getCommnunityListByMemberId(map));
+		lvo.setPagingBean(new PagingBean(momentorMemberDAO.totalCommnunityByMemberId(memberId), Integer.parseInt(pageNo)));
 		return lvo;
 	}
 	@Override
-	public ReListVO getMyReplyList(String memberId, String pageNo) {
+	public ReListVO getReplyListByMemberId(String memberId, String pageNo) {
 		if(pageNo==null||pageNo.equals("")){
 			pageNo = "1";
 		}
@@ -176,8 +176,8 @@ public class MomentorMemberServiceImpl implements MomentorMemberService {
 		map.put("memberId", memberId);
 		map.put("pageNo", pageNo);		
 		ReListVO rvo = new ReListVO();
-		rvo.setList((ArrayList<ReplyVO>)momentorMemberDAO.getMyReplyList(map));
-		rvo.setPagingBean(new PagingBean(momentorMemberDAO.countAllMyReply(memberId), Integer.parseInt(pageNo)));
+		rvo.setList((ArrayList<ReplyVO>)momentorMemberDAO.getReplyListByMemberId(map));
+		rvo.setPagingBean(new PagingBean(momentorMemberDAO.totalReplyByMemberId(memberId), Integer.parseInt(pageNo)));
 		return rvo;
 	}
 	

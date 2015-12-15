@@ -23,11 +23,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	VALUES(MEMBER_SEQ.NEXTVAL,#{momentorMemberVO.memberId},#{boardTitle},SYSDATE,#{boardContent},0,0,0)
 	</insert>
 	<!-- 작성한 글의 번호를 가져온다 -->
-	<select id="getPostingNumber" resultType="int">
+	<select id="getCommunityBoardNo" resultType="int">
 	SELECT MEMBER_SEQ.CURRVAL FROM DUAL
 	</select>
-	<!-- 모든 글 리스트 출력 -->
-	<select id="getAllPostingList" resultMap="cbvoMap">
+	<!-- 모든 커뮤니티 글 리스트 출력 -->
+	<select id="getAllCommunityList" resultMap="cbvoMap">
 	 select b.MEMBER_NO,b.MEMBERID,m.NICKNAME,m.AUTH,b.TITLE,b.MEMBER_DATE,b.CONTENT,b.MEMBER_HITS,b.RECOMMEND,b.NOTRECOMMEND from (
 			select MEMBER_NO,MEMBERID,TITLE,MEMBER_DATE,CONTENT,MEMBER_HITS,RECOMMEND,NOTRECOMMEND,ceil(rownum/5) as page from (
 					select MEMBER_NO,MEMBERID,TITLE,to_char(MEMBER_DATE,'YYYY.MM.DD') as MEMBER_DATE,
@@ -35,14 +35,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		     )
        ) b,MOMENTOR_MEMBER m where b.MEMBERID=m.MEMBERID and page=#{value}
 	</select>
-	<!-- 아이디로 닉네임 검색 -->
-	<select id="findNicknameById" resultType="mvo" parameterType="String">
-	SELECT MEMBERID,NICKNAME
-	FROM MOMENTOR_MEMBER
-	WHERE MEMBERID=#{value}
-	</select>
+	
 	<!-- 글 번호로 커뮤니티 글 삭제 -->
-	<delete id="deleteCommunity" parameterType="int">
+	<delete id="deleteCommunityByNo" parameterType="int">
 	DELETE FROM MEMBER_BOARD
 	WHERE MEMBER_NO=#{value}
 	</delete>
@@ -57,11 +52,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		VALUES (REPLY_SEQ.NEXTVAL, #{communityBoardVO.boardNo},#{momentorMemberVO.memberId},#{content},SYSDATE)
 	</insert>
 	<!-- 댓글 삭제 -->
-	<delete id="deleteReply" parameterType="int">
+	<delete id="deleteReplyByNo" parameterType="int">
 		DELETE FROM MEMBER_REPLY WHERE REPLY_NO=#{value}
 	</delete>
 	<!-- 댓글 전체 삭제 -->
-	<delete id="deleteAllReply" parameterType="int">
+	<delete id="deleteAllReplyByNo" parameterType="int">
 		DELETE FROM MEMBER_REPLY WHERE MEMBER_NO=#{value}
 	</delete>
 	<!-- 단일 댓글 가져오기 -->
@@ -84,7 +79,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	
 		<!-- 내가 쓴 커뮤니티 글 리스트를 보여준다. -->
-	<select id="getMyCommnunityBoardList" resultType="cbvo"
+	<select id="getCommnunityListByMemberId" resultType="cbvo"
 		resultMap="cbvoMap" >
 		SELECT MEMBER_NO ,MEMBERID,TITLE,MEMBER_DATE, CONTENT,MEMBER_HITS,RECOMMEND,NOTRECOMMEND
 		FROM (SELECT MEMBER_NO ,MEMBERID,TITLE,MEMBER_DATE, CONTENT,MEMBER_HITS,RECOMMEND,NOTRECOMMEND,CEIL(ROWNUM/5) AS PAGE
@@ -107,7 +102,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 
  	<!-- 내가 쓴 댓글 리스트 보여주기 -->
-	<select id="getMyReplyList"  resultType="rvo" resultMap="rvoMap">
+	<select id="getReplyListByMemberId"  resultType="rvo" resultMap="rvoMap">
 	SELECT R.REPLY_NO, R.MEMBER_NO, R.MEMBERID, R.CONTENT, R.REPLY_DATE, M.TITLE FROM
 	(SELECT REPLY_NO, MEMBER_NO, MEMBERID, CONTENT, REPLY_DATE, CEIL(ROWNUM/5) AS PAGE FROM
 	(SELECT REPLY_NO, MEMBER_NO, MEMBERID, CONTENT, TO_CHAR(REPLY_DATE,'YYYY.MM.DD HH:MI') AS REPLY_DATE
@@ -120,7 +115,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	AND PAGE = #{pageNo}
 	</select>
 	<!-- 토탈 -->
-     <select id="totalContent" resultType="int">
+     <select id="totalCommunity" resultType="int">
 		select count(*) from MEMBER_BOARD
 	</select>
 	
@@ -134,8 +129,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 조회수 증가 -->
 	</select>
- 	<update id="updateHits" parameterType="int">
- 	UPDATE MEMBER_BOARD SET MEMBER_HITS = MEMBER_HITS +1 WHERE MEMBER_NO = ${value}
+ 	<update id="updateCommunityHits" parameterType="int">
+ 	UPDATE MEMBER_BOARD SET MEMBER_HITS = MEMBER_HITS +1 WHERE MEMBER_NO = #{value}
  	</update>
  	
  	
@@ -160,7 +155,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  
  	</resultMap>
  	<!-- 운동 게시물 보여주기 -->
- 	<select id="getExerciseBoardList" resultType="ebvo" resultMap="ebvoMap">
+ 	<select id="getAllExerciseList" resultType="ebvo" resultMap="ebvoMap">
  	
  	SELECT B.EXERCISENAME,B.EXERCISE_NO, B.TITLE, B.EXERCISE_DATE, B.MEMBERID,B.EXERCISE_HITS, M.MEMBERNAME,M.AUTH FROM(
 SELECT EXERCISE_NO, TITLE, EXERCISE_DATE, CEIL(ROWNUM/5) AS PAGE, MEMBERID,EXERCISENAME ,EXERCISE_HITS FROM(
@@ -176,11 +171,11 @@ M.MEMBERID = B.MEMBERID AND PAGE  =#{value}
  	<!-- 2015-11-30 -->
  	
  	<!-- 전체 운동 게시물 수 조회 -->
- 	<select id="countAllExerciseBoard" resultType="int">
+ 	<select id="totalExercise" resultType="int">
  	SELECT COUNT(*) FROM EXERCISE_BOARD
  	</select>
  	<!-- 운동이름이 존재유무 검사하는 q -->
- 	<select id="checkExerciseByExerciseName" resultType="int">
+ 	<select id="exerciseNameOverLappingCheck" resultType="int">
  	SELECT COUNT(*) FROM EXERCISE_BOARD WHERE EXERCISENAME = #{value}
  	</select>
  	
@@ -191,7 +186,7 @@ M.MEMBERID = B.MEMBERID AND PAGE  =#{value}
  </insert>
  	
  	<!-- 운동 게시물 등록하기 -->
- 	<insert id="postingExerciseByAdmin" parameterType="ebvo">
+ 	<insert id="postingExercise" parameterType="ebvo">
  	
  	INSERT INTO EXERCISE_BOARD (EXERCISE_NO,EXERCISENAME,MEMBERID,TITLE,EXERCISE_DATE,CONTENT)
  	VALUES(EXERCISE_SEQ.NEXTVAL,#{exerciseVO.exerciseName},#{momentorMemberVO.memberId},#{boardTitle},SYSDATE,#{boardContent})
@@ -210,14 +205,7 @@ M.MEMBERID = B.MEMBERID AND PAGE  =#{value}
   EB.EXERCISENAME = EX.EXERCISENAME AND 
   EXERCISE_NO = #{value}
   </select>
-  
-  <!-- 운동명으로 해당 운동게시물 불러오기 -->
-  <select id="getExerciseInfoByExName" resultType="ebvo" resultMap="ebvoMap">
-  	SELECT EB.EXERCISENAME, EB.EXERCISE_NO, EB.TITLE, TO_CHAR(EB.EXERCISE_DATE, 'YYYY.MM.DD') AS EXERCISE_DATE, EB.CONTENT, EB.MEMBERID, EX.EXERCISEBODY
-  	FROM EXERCISE_BOARD EB, EXERCISE EX
-  	WHERE EB.EXERCISENAME = EX.EXERCISENAME AND EX.EXERCISENAME = #{value}
-  </select>
- 
+
  	<!-- 운동게시판 조회수 증가 -->
  	<update id="updateExerciseHits" parameterType="int">
  	UPDATE EXERCISE_BOARD SET EXERCISE_HITS = EXERCISE_HITS +1 WHERE EXERCISE_NO =#{value}
@@ -225,20 +213,20 @@ M.MEMBERID = B.MEMBERID AND PAGE  =#{value}
  	
  	
  	<!-- 운동게시물 삭제 -->
- 	<delete id="deleteExerciseBoardByAdmin" parameterType="int">
+ 	<delete id="deleteExerciseBoardByNo" parameterType="int">
  	DELETE FROM EXERCISE_BOARD WHERE EXERCISE_NO = #{value}
  	</delete>
  	
  	<!-- 운동 삭제 -->
- 	<delete id="deleteExerciseByAdmin" parameterType="string">
+ 	<delete id="deleteExerciseByExerciseName" parameterType="string">
  	DELETE FROM EXERCISE WHERE EXERCISENAME = #{value}
  	</delete>
  	<!-- 운동 게시물 수정 -->
- 	<update id="updateExerciseBoardByAdmin" >
+ 	<update id="updateExerciseBoard" >
  	UPDATE EXERCISE_BOARD SET TITLE = #{boardTitle}, CONTENT = #{boardContent}
  	WHERE EXERCISE_NO = #{boardNo}
  	</update>
- 	<update id="updateExerciseByAdmin">
+ 	<update id="updateExercise">
  	UPDATE EXERCISE SET EXERCISEBODY = #{exerciseBody}
  	WHERE EXERCISENAME = #{exerciseName}
  	</update>
@@ -247,7 +235,7 @@ M.MEMBERID = B.MEMBERID AND PAGE  =#{value}
  	<!-- 2015-12-01 -->
  	
  	<!-- 커뮤니티 게시판 추천수 TOP5  -->
- 	<select id="getCommunityBoardListBestTop5ByRecommend" resultType="cbvo" resultMap="cbvoMap">
+ 	<select id="getCommunityListBestTop5ByRecommend" resultType="cbvo" resultMap="cbvoMap">
  <![CDATA[
 	SELECT MEMBER_NO, TITLE,  MEMBER_DATE, MEMBER_HITS, RECOMMEND,NOTRECOMMEND,RANKING,NICKNAME FROM
 (SELECT B.MEMBER_NO, B.TITLE, TO_CHAR(B.MEMBER_DATE,'YYYY.MM.DD') AS MEMBER_DATE,
@@ -260,7 +248,7 @@ WHERE RANKING<=5 ]]>
  
  	<!-- 운동 게시판 조회수 TOP5 -->
  	
- 	<select id="getExerciseBoardListBestTop5ByHits" resultType="ebvo" resultMap="ebvoMap">
+ 	<select id="getExerciseListBestTop5ByHits" resultType="ebvo" resultMap="ebvoMap">
  	 <![CDATA[
 	SELECT EXERCISE_NO,EXERCISENAME,TITLE,EXERCISE_HITS,MEMBERID,EXERCISE_DATE, RANKING FROM
 (SELECT EXERCISE_NO,EXERCISENAME,TITLE,  EXERCISE_HITS,MEMBERID, TO_CHAR(EXERCISE_DATE,'YYYY.MM.DD') AS EXERCISE_DATE,
@@ -274,12 +262,12 @@ WHERE RANKING<=5 ]]>
  	
  	<!-- 내가 쓴 글 전체 게시물 수 -->
  	
- 	<select id="countAllMyCommnunityBoard" resultType="int">
+ 	<select id="totalCommnunityByMemberId" resultType="int">
  	SELECT COUNT(*) FROM MEMBER_BOARD WHERE MEMBERID = #{value}
  	</select>
  	
  	<!-- 내가 쓴 전체 덧글 수 -->
- 	<select id="countAllMyReply" resultType="int">
+ 	<select id="totalReplyByMemberId" resultType="int">
  	
  	SELECT COUNT(*) FROM MEMBER_REPLY WHERE MEMBERID = #{value}
  	</select>
@@ -300,7 +288,7 @@ WHERE RANKING<=5 ]]>
        ) where page=#{value}
 	
 	</select>
-	<select id="totalNoticeContent" resultType="int">
+	<select id="totalNotice" resultType="int">
 		select count(*) from NOTICE_BOARD
 	</select>
 	<select id="getNoticeByNo" resultType="nvo" resultMap="nvoMap">
@@ -308,18 +296,18 @@ WHERE RANKING<=5 ]]>
 		from NOTICE_BOARD
 		where notice_No = #{value}
 	</select>
-	<insert id="writeNoticeByAdmin" parameterType="nvo">
+	<insert id="postingNotice" parameterType="nvo">
 		insert into NOTICE_BOARD(NOTICE_NO, MEMBERID, TITLE, NOTICE_DATE,CONTENT)
 		values(NOTICE_SEQ.nextVal, #{momentorMemberVO.memberId}, #{boardTitle},sysdate,#{boardContent})
 	</insert>
 	<!-- 관리자가 공지사항 글 수정 -->
-	<update id="updateNoticeByAdmin" parameterType="nvo">
+	<update id="updateNotice" parameterType="nvo">
 		update NOTICE_BOARD
 		set title=#{boardTitle}, notice_date=sysdate ,content=#{boardContent}
 		where notice_no = #{boardNo}
 	</update>
 	<!-- 관리자가 공지사항 글 삭제 -->
-	<delete id="deleteNoticeByAdmin">
+	<delete id="deleteNoticeByNo">
 		delete from NOTICE_BOARD where notice_no=#{noticeNo}
 	</delete>
 	
@@ -334,7 +322,7 @@ WHERE RANKING<=5 ]]>
 	</update>
 
 	<!-- 멤버가 해당 게시물에서 추천 비추천을 눌렀을 때 맨 처음 했으면 insert -->
-	<insert id="insertRecommendInfo" parameterType="map">
+	<insert id="registerRecommendInfo" parameterType="map">
 	INSERT INTO RECOMMEND_INFO 
 	<choose>
 	<when test="recommend !=null and !recommend.equals('')">
@@ -369,21 +357,21 @@ WHERE RANKING<=5 ]]>
 	</select>
 
 	<!-- 해당 게시물의 모든 추천수를 가지고 온다. -->
-	<select id="countRecommend" resultType="int" parameterType="int">
+	<select id="totalRecommendByNo" resultType="int" parameterType="int">
 	SELECT RECOMMEND FROM MEMBER_BOARD WHERE MEMBER_NO= #{value}
 	</select>
 
 	<!-- 해당 게시물의 모든 비추천수를 가지고 온다. -->
-	<select id="countNotRecommend" resultType="int" parameterType="int">
+	<select id="totalNotRecommendByNo" resultType="int" parameterType="int">
 		SELECT NOTRECOMMEND FROM MEMBER_BOARD WHERE MEMBER_NO =#{value}
 	</select>
 	
 	<!-- 해당 게시물의 추천/비추천 테이블을 삭제한다 -->
-	<delete id="deleteRecommend" parameterType="int">
+	<delete id="deleteRecommendByNo" parameterType="int">
 	DELETE FROM RECOMMEND_INFO WHERE MEMBER_NO=#{value}
 	</delete>
 <!-- 운동게시판 검색 -->
-  <select id="findByExerciseTitle" resultMap="ebvoMap" resultType="ebvo">
+  <select id="findExerciseListByTitle" resultMap="ebvoMap" resultType="ebvo">
   <![CDATA[  
 	SELECT B.EXERCISE_NO, B.TITLE, B.EXERCISE_DATE, B.EXERCISE_HITS, M.MEMBERNAME,M.AUTH
 FROM exercise_board B, MOMENTOR_MEMBER M
@@ -392,7 +380,7 @@ WHERE B.memberId = M.memberId and title like '%'||#{word}||'%' ESCAPE '`' order 
   </select>
   
 <!-- 커뮤니티 검색 --> 
-  <select id="findByCommunityTitle" resultType="cbvo" resultMap="cbvoMap">
+  <select id="findCommunityListByTitle" resultType="cbvo" resultMap="cbvoMap">
   <![CDATA[  
    SELECT C.MEMBER_NO, C.TITLE, C.MEMBER_DATE, C.MEMBER_HITS, M.NICKNAME,M.AUTH
 FROM MEMBER_BOARD C, MOMENTOR_MEMBER M
@@ -400,13 +388,13 @@ WHERE C.memberId = M.memberId and title like '%'||#{word}||'%' ESCAPE '`' order 
     ]]>
   </select>
  <!-- 커뮤니티 검색 개수 -->
- <select id="searchContent" resultType="int">
+ <select id="totalCommunityByTitle" resultType="int">
 SELECT count(*)
 FROM MEMBER_BOARD C, MOMENTOR_MEMBER M
 WHERE C.memberId = M.memberId and title like '%'||#{word}||'%' ESCAPE '`'
  </select>
- 
- <select id="getSearchCommunityList" resultMap="cbvoMap" >
+ <!-- 검색된 커뮤니티 목록 -->
+ <select id="getCommunityListByTitle" resultMap="cbvoMap" >
  <![CDATA[  
 	SELECT MEMBER_NO ,MEMBERID,TITLE,MEMBER_DATE, CONTENT,MEMBER_HITS,RECOMMEND,NOTRECOMMEND
 		FROM (SELECT MEMBER_NO ,MEMBERID,TITLE,MEMBER_DATE, CONTENT,MEMBER_HITS,RECOMMEND,NOTRECOMMEND,CEIL(ROWNUM/5) AS PAGE
@@ -417,13 +405,14 @@ WHERE C.memberId = M.memberId and title like '%'||#{word}||'%' ESCAPE '`'
 	</select>
 	
 	<!-- 운동게시판 검색 개수 -->
- <select id="searchExerciseContent" resultType="int">
+ <select id="totalExerciseByTitle" resultType="int">
 SELECT count(*)
 FROM exercise_board B, MOMENTOR_MEMBER M
 WHERE B.memberId = M.memberId and title like '%'||#{word}||'%' ESCAPE '`'
  </select>
  
- <select id="getSearchExerciseList" resultMap="ebvoMap" >
+ <!-- 검색된 운동 목록 -->
+ <select id="getExerciseListByTitle" resultMap="ebvoMap" >
  <![CDATA[  
 SELECT B.EXERCISENAME,B.EXERCISE_NO, B.TITLE, B.EXERCISE_DATE, B.MEMBERID,B.EXERCISE_HITS, M.MEMBERNAME,M.AUTH FROM(
 SELECT EXERCISE_NO, TITLE, EXERCISE_DATE, CEIL(ROWNUM/5) AS PAGE, MEMBERID,EXERCISENAME ,EXERCISE_HITS FROM(
@@ -437,51 +426,55 @@ M.MEMBERID = B.MEMBERID AND PAGE=#{pageNo}
 	</select>
 	
 	<!-- exerciseimg 등록 -->
-	<insert id="registerExerciseImgFile" parameterType="map">
+	<insert id="registerExerciseImg" parameterType="map">
  	INSERT INTO EXERCISE_IMG (EXERCISENAME, IMGNAME, IMGPATH)
  	VALUES (#{exerciseName},#{imgName},#{imgPath})
  </insert>
 
 <!-- 해당 운동 이미지 가지고오기 -->
-<select id="getExerciseFileList" resultType="map">
+<select id="getExerciseImgListByExerciseName" resultType="map">
 	SELECT EXERCISENAME , IMGNAME ,IMGPATH  FROM EXERCISE_IMG WHERE EXERCISENAME=#{value}
 </select>
 
  <!-- exercise IMG 전체 삭제-->
- <delete id="deleteExerciseImgFile">
+ <delete id="deleteAllExerciseImg">
  
  DELETE FROM EXERCISE_IMG WHERE EXERCISENAME = #{exerciseName}
  </delete>
  <!-- exercise img 개별 삭제 -->
- <delete id = "deleteExerciseImgFileByImgName">
+ <delete id = "deleteExerciseImgByImgName">
  DELETE FROM EXERCISE_IMG WHERE EXERCISENAME = #{exerciseName} AND IMGNAME = #{imgName}
  </delete>
 	
-	
-		<!-- MEMBER_IMG
-		MEMBER_NO NUMBER NOT NULL,
-IMGNAME VARCHAR2(300) NOT NULL,
-IMGPATH VARCHAR2(1000) NOT NULL,
- -->
+
 	<!-- community img 등록 -->
-	<insert id="registerCommunityImgFile" parameterType="map">
+	<insert id="registerCommunityImg" parameterType="map">
  	INSERT INTO MEMBER_IMG (MEMBER_NO, IMGNAME, IMGPATH)
  	VALUES (#{boardNo},#{imgName},#{imgPath})
  </insert>
 
 <!-- 해당 커뮤니티 이미지 가지고오기 -->
-<select id="getCommunityFileList" resultType="map">
+<select id="getCommunityImgListByNo" resultType="map">
 	SELECT MEMBER_NO AS BOARDNO , IMGNAME ,IMGPATH  FROM MEMBER_IMG WHERE MEMBER_NO=#{value}
 </select>
 
  <!-- 커뮤니티 IMG 전체 삭제-->
- <delete id="deleteCommunityImgFile">
+ <delete id="deleteAllCommunityImg">
  
  DELETE FROM MEMBER_IMG WHERE MEMBER_NO = #{boardNo}
  </delete>
  <!-- 커뮤니티 img 개별 삭제 -->
- <delete id = "deleteCommunityImgFileByImgName">
+ <delete id = "deleteCommunityImgByImgName">
  DELETE FROM MEMBER_IMG WHERE MEMBER_NO = #{boardNo} AND IMGNAME = #{imgName}
  </delete>
+	
+	
+	<!-- 운동명으로 해당 운동게시물 불러오기 -->
+  <select id="getExerciseInfoByExName" resultType="ebvo" resultMap="ebvoMap">
+  	SELECT EB.EXERCISENAME, EB.EXERCISE_NO, EB.TITLE, TO_CHAR(EB.EXERCISE_DATE, 'YYYY.MM.DD') AS EXERCISE_DATE, EB.CONTENT, EB.MEMBERID, EX.EXERCISEBODY
+  	FROM EXERCISE_BOARD EB, EXERCISE EX
+  	WHERE EB.EXERCISENAME = EX.EXERCISENAME AND EX.EXERCISENAME = #{value}
+  </select>
+
 	
  </mapper>

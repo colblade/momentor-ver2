@@ -6,4 +6,3 @@
 		location.href="${initParam.root}member_getAllNoticeList.do";
 	});
 </script>
-공지사항 글작성 완료

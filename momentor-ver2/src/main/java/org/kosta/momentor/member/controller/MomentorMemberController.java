@@ -69,8 +69,8 @@ public class MomentorMemberController {
 		 * tiles definition name으로 home이 있으면 tiles 적용 응답화면 제공
 		 * 만약 없으면 viewResolver 우선 순위에 의해 일반 jsp로 응답*/	 
 		ModelAndView mv = new ModelAndView();
-		List<ExerciseBoardVO> ebList =	exerciseBoardService.getExerciseBoardListBestTop5ByHits();
-		List<CommunityBoardVO> cbList =	communityBoardService.getCommunityBoardListBestTop5ByRecommend();
+		List<ExerciseBoardVO> ebList =	exerciseBoardService.getExerciseListBestTop5ByHits();
+		List<CommunityBoardVO> cbList =	communityBoardService.getCommunityListBestTop5ByRecommend();
 		mv.addObject("exerciseTop5List", ebList);
 		mv.addObject("communityTop5List", cbList);
 		mv.setViewName("home");
@@ -80,8 +80,8 @@ public class MomentorMemberController {
 	@RequestMapping("login_home.do")
 	public ModelAndView loginHome(){
 		ModelAndView mv = new ModelAndView();
-		List<ExerciseBoardVO> ebList =	exerciseBoardService.getExerciseBoardListBestTop5ByHits();
-		List<CommunityBoardVO> cbList =	communityBoardService.getCommunityBoardListBestTop5ByRecommend();
+		List<ExerciseBoardVO> ebList =	exerciseBoardService.getExerciseListBestTop5ByHits();
+		List<CommunityBoardVO> cbList =	communityBoardService.getCommunityListBestTop5ByRecommend();
 		mv.addObject("exerciseTop5List", ebList);
 		mv.addObject("communityTop5List", cbList);
 		mv.setViewName("login_home");
@@ -238,7 +238,7 @@ public class MomentorMemberController {
 	@RequestMapping("my_getMyCommnunityBoardList")
 	public ModelAndView getMyCommnunityBoardList(String memberId, String pageNo){
 		ModelAndView mv = new ModelAndView();
-		ListVO lvo = momentorMemberService.getMyCommnunityBoardList(memberId, pageNo);
+		ListVO lvo = momentorMemberService.getCommnunityListByMemberId(memberId, pageNo);
 		ArrayList<CommunityBoardVO> list = (ArrayList)lvo.getList();
 		PagingBean pb = lvo.getPagingBean();
 		mv.addObject("boardList", list);
@@ -250,7 +250,7 @@ public class MomentorMemberController {
 	@RequestMapping("my_getMyReplyList")
 	public ModelAndView getMyReplyList(String memberId, String pageNo){
 		ModelAndView mv = new ModelAndView();
-		ReListVO rvo = momentorMemberService.getMyReplyList(memberId, pageNo);
+		ReListVO rvo = momentorMemberService.getReplyListByMemberId(memberId, pageNo);
 		ArrayList<ReplyVO> list = (ArrayList)rvo.getList();
 		PagingBean pb = rvo.getPagingBean();
 		mv.addObject("replyList", list);
@@ -341,7 +341,7 @@ public class MomentorMemberController {
 		ArrayList<HashMap<String, Object>> imgCartList = new ArrayList<HashMap<String, Object>>();
 		for(int i=0; i<cartList.size(); i++){
 			String exerciseName = cartList.get(i).getExerciseBoardVO().getExerciseVO().getExerciseName();
-			List<Map<String, String>> map = (ArrayList)exerciseBoardService.getFileListByExerciseName(exerciseName);
+			List<Map<String, String>> map = (ArrayList)exerciseBoardService.getExerciseImgListByExerciseName(exerciseName);
 			if(map != null){
 				HashMap<String, Object> paramMap = new HashMap<String, Object>();
 				paramMap.put(exerciseName, map);
@@ -446,7 +446,7 @@ public class MomentorMemberController {
 		ArrayList<HashMap<String, Object>> imgCartList = new ArrayList<HashMap<String, Object>>();
 		for(int i=0; i<cartList.size(); i++){
 			String exerciseName = cartList.get(i).getExerciseBoardVO().getExerciseVO().getExerciseName();
-			List<Map<String, String>> fileListMap = (ArrayList)exerciseBoardService.getFileListByExerciseName(exerciseName);
+			List<Map<String, String>> fileListMap = (ArrayList)exerciseBoardService.getExerciseImgListByExerciseName(exerciseName);
 			HashMap<String, Object> paramMap = new HashMap<String, Object>();
 			if(fileListMap != null){
 				paramMap.put(exerciseName, fileListMap);

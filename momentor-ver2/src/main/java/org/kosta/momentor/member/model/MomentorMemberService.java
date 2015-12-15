@@ -18,8 +18,8 @@ public interface MomentorMemberService {
 	public String updateMember(String myBirthDate, MomentorMemberVO vo, MomentorMemberPhysicalVO pnvo) throws Exception; // 회원정보 수정(vo와 pnvo를 같이 업데이트하기위해 추가)
 	public String deleteMemeber(String memberId) throws Exception; //회원 탈퇴
 	public String myPasswordCheck(String password, String memberId); // 회원정보 수정/탈퇴 시 패스워드 체크
-	public ListVO getMyCommnunityBoardList(String memberId,String pageNo); // 내가 쓴 커뮤니티 게시글 리스트
-	public ReListVO getMyReplyList(String memberId,String pageNo); // 내가 쓴 댓글 리스트
+	public ListVO getCommnunityListByMemberId(String memberId,String pageNo); // 내가 쓴 커뮤니티 게시글 리스트
+	public ReListVO getReplyListByMemberId(String memberId,String pageNo); // 내가 쓴 댓글 리스트
 	
 	public MemberListVO managerGetAllMember(String pageNo); // 관리자가 회원 목록 보기
 	public MemberListVO managerFindMemberById(String memberId,String pageNo); // 관리자가 아이디로 회원 검색

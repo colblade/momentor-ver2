@@ -21,10 +21,10 @@ public class CommunityBoardServiceImpl implements CommunityBoardService {
 
 	@Override
 	public void deleteCommunity(int cboardNo) {//커뮤니티 게시판 글삭제
-		communityBoardDAO.deleteCommunityImgFile(cboardNo);//해당 게시물 이미지 삭제
-		communityBoardDAO.deleteAllReply(cboardNo);//무결성에 따른 덧글 우선삭제
-		communityBoardDAO.deleteRecommend(cboardNo);//무결성에 따른 추천 우선 삭제
-		communityBoardDAO.deleteCommunity(cboardNo);//그후 게시글 번호로 게시글 삭제	
+		communityBoardDAO.deleteAllCommunityImg(cboardNo);//해당 게시물 이미지 삭제
+		communityBoardDAO.deleteAllReplyByNo(cboardNo);//무결성에 따른 덧글 우선삭제
+		communityBoardDAO.deleteRecommendByNo(cboardNo);//무결성에 따른 추천 우선 삭제
+		communityBoardDAO.deleteCommunityByNo(cboardNo);//그후 게시글 번호로 게시글 삭제	
 	}
 
 	@Override
@@ -39,8 +39,8 @@ public class CommunityBoardServiceImpl implements CommunityBoardService {
 	}
 
 	@Override
-	public void deleteReply(int replyNo) {
-		communityBoardDAO.deleteReply(replyNo);
+	public void deleteReplyByNo(int replyNo) {
+		communityBoardDAO.deleteReplyByNo(replyNo);
 		
 	}
 
@@ -55,18 +55,14 @@ public class CommunityBoardServiceImpl implements CommunityBoardService {
 		return communityBoardDAO.getReplyByNo(replyNo);
 	}  
 	
-	@Override
-	public List<CommunityBoardVO> findByCbTitle(String cbTitle) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 	@Override
 	public ListVO findByCbNickName(String pageNo, String searchWord) {
 		if(pageNo==null||pageNo==""){
 			pageNo="1";
 		}
-		int total=communityBoardDAO.searchContent(searchWord);
+		int total=communityBoardDAO.totalCommunityByTitle(searchWord);
 		ArrayList<BoardVO> list= null;
 		HashMap<String, String> paramMap = new HashMap<String, String>();
 		paramMap.put("word", searchWord);
@@ -77,32 +73,21 @@ public class CommunityBoardServiceImpl implements CommunityBoardService {
 		return lvo;
    }
 
-	@Override
-	public void updateRecommend(int cbRecommend) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
-	public void updateNotRecommend(int cbNotRecommend) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	   public ListVO getAllPostingList(String pageNo) {
+	   public ListVO getAllCommunityList(String pageNo) {
 			if(pageNo==null||pageNo=="") 
 				pageNo="1";
-			ArrayList<BoardVO> list=(ArrayList)communityBoardDAO.getAllPostingList(pageNo);
-			int total=communityBoardDAO.totalContent();
+			ArrayList<BoardVO> list=(ArrayList)communityBoardDAO.getAllCommunityList(pageNo);
+			int total=communityBoardDAO.totalCommunity();
 			PagingBean paging=new PagingBean(total,Integer.parseInt(pageNo));
 			ListVO lvo=new ListVO(list,paging);
 	      return lvo;
 	   }
 	@Override
-	public void updateHits(int boardNo) {
+	public void updateCommunityHits(int boardNo) {
 	
-		communityBoardDAO.updateHits(boardNo);
+		communityBoardDAO.updateCommunityHits(boardNo);
 		
 	}
 
@@ -114,12 +99,11 @@ public class CommunityBoardServiceImpl implements CommunityBoardService {
 
 
 	@Override
-	public List<CommunityBoardVO> getCommunityBoardListBestTop5ByRecommend() {
+	public List<CommunityBoardVO> getCommunityListBestTop5ByRecommend() {
 		// TODO Auto-generated method stub
-		return communityBoardDAO.getCommunityBoardListBestTop5ByRecommend();
+		return communityBoardDAO.getCommunityListBestTop5ByRecommend();
 	}
 	   public CommunityBoardVO getCommunityByNo(int boardNo) {
-		      //System.out.println("service:"+boardNo);
 		      return communityBoardDAO.getCommunityByNo(boardNo);
 		   }
 	   
@@ -140,10 +124,8 @@ public class CommunityBoardServiceImpl implements CommunityBoardService {
 			int res = communityBoardDAO.updateRecommendInfo(map);
 			
 			if(res==0){
-				communityBoardDAO.insertRecommendInfo(map);
-				System.out.println("communityService updateRecommend insert실행");
+				communityBoardDAO.registerRecommendInfo(map);
 			}else{
-				System.out.println("communityService updateRecommend update실행");
 				
 			}
 		}
@@ -186,54 +168,54 @@ public class CommunityBoardServiceImpl implements CommunityBoardService {
 	 * 해당 게시물의 추천/비추천 수를 가지고 온다.
 	 */
 		@Override
-		public String[] countRecommend(int boardNo) {
+		public String[] totalRecommendByNo(int boardNo) {
 
-		   String res[] = {String.valueOf(communityBoardDAO.countRecommend(boardNo)),
-		         String.valueOf(communityBoardDAO.countNotRecommend(boardNo))};
+		   String res[] = {String.valueOf(communityBoardDAO.totalRecommendByNo(boardNo)),
+		         String.valueOf(communityBoardDAO.totalNotRecommendByNo(boardNo))};
 
 		   return res;
 		}
-	public List<CommunityBoardVO> findByTitle(String word) {
+	public List<CommunityBoardVO> findCommunityListByTitle(String word) {
 		   // 커뮤니티 전체 검색
-			return communityBoardDAO.findByTitle(word);
+			return communityBoardDAO.findCommunityListByTitle(word);
 		}
-	   public ListVO getSearchCommunityList(String pageNo, String word) {
+	   public ListVO getCommunityListByTitle(String pageNo, String word) {
 		   // 커뮤니티 게시판 검색 페이지 이동
 			if(pageNo==null||pageNo=="") 
 				pageNo="1";
-			int total=communityBoardDAO.searchContent(word);
+			int total=communityBoardDAO.totalCommunityByTitle(word);
 			ArrayList<BoardVO> list= null;
 			HashMap<String, String> paramMap = new HashMap<String, String>();
 			paramMap.put("word", word);
 			paramMap.put("pageNo", pageNo);
-			list = (ArrayList)communityBoardDAO.getSearchCommunityList(paramMap);
+			list = (ArrayList)communityBoardDAO.getCommunityListByTitle(paramMap);
 			PagingBean paging=new PagingBean(total,Integer.parseInt(pageNo));
 			ListVO lvo=new ListVO(list,paging);
 	      return lvo;
 	   }
 	   @Override
-		public void registerCommunityImgFile(int boardNo,String imgName, String imgPath) {
+		public void registerCommunityImg(int boardNo,String imgName, String imgPath) {
 	HashMap<String, String> map = new HashMap<String, String>();
 	map.put("boardNo", String.valueOf(boardNo));
 	map.put("imgName", imgName);
 	map.put("imgPath", imgPath);
-			communityBoardDAO.registerCommunityImgFile(map);
+			communityBoardDAO.registerCommunityImg(map);
 			
 		}
 
 		@Override
-		public List<HashMap<String, String>> getCommunityFileList(int boardNo) {
+		public List<HashMap<String, String>> getCommunityImgListByNo(int boardNo) {
 			// TODO Auto-generated method stub
-			return communityBoardDAO.getCommunityFileList(boardNo);
+			return communityBoardDAO.getCommunityImgListByNo(boardNo);
 		}
 
 
 		@Override
-		public void deleteCommunityImgFileByImgName(int boardNo, String imgName) {
+		public void deleteCommunityImgByImgName(int boardNo, String imgName) {
 
 			HashMap<String, String> map = new HashMap<String, String>();
 			map.put("boardNo", String.valueOf(boardNo));
 			map.put("imgName", imgName);
-			communityBoardDAO.deleteCommunityImgFileByImgName(map);		
+			communityBoardDAO.deleteCommunityImgByImgName(map);		
 		}
 }

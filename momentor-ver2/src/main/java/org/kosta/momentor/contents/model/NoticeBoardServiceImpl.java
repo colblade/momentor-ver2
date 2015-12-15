@@ -13,19 +13,19 @@ public class NoticeBoardServiceImpl implements NoticeBoardService {
 	private NoticeBoardDAO noticeBoardDAO;
 
 	@Override
-	public NoticeBoardVO writeNoticeByAdmin(NoticeBoardVO nvo) {
-		return noticeBoardDAO.writeNoticeByAdmin(nvo);
+	public NoticeBoardVO postingNotice(NoticeBoardVO nvo) {
+		return noticeBoardDAO.postingNotice(nvo);
 	}
 
 	@Override
-	public void deleteNoticeByAdmin(int noticeNo) {
-		noticeBoardDAO.deleteNoticeByAdmin(noticeNo);
+	public void deleteNoticeByNo(int noticeNo) {
+		noticeBoardDAO.deleteNoticeByNo(noticeNo);
 		
 	}
 
 	@Override
-	public void updateNoticeByAdmin(NoticeBoardVO nvo) {
-		noticeBoardDAO.updateNoticeByAdmin(nvo);
+	public void updateNotice(NoticeBoardVO nvo) {
+		noticeBoardDAO.updateNotice(nvo);
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class NoticeBoardServiceImpl implements NoticeBoardService {
 			pageNo="1";
 		}
 		List<BoardVO> noticeList = noticeBoardDAO.getAllNoticeList(pageNo);
-		int total = noticeBoardDAO.totalNoticeContent();
+		int total = noticeBoardDAO.totalNotice();
 		PagingBean paging=new PagingBean(total,Integer.parseInt(pageNo));
 		ListVO lvo = new ListVO((ArrayList<BoardVO>) noticeList,paging);
 		return lvo;

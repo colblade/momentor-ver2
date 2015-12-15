@@ -100,13 +100,13 @@
 </style>
 <body>
 <div class="row marketing">
-	<div class="col-lg-6">
-		<h4>운동 게시판 조회수 TOP5!</h4>
+	<div class="col-md-6">
+		
 		<div class="table-responsive">
-			<table class="table table-striped">
+			<table class="table">
 				<thead>
+				<tr><td colspan="6" ><h4 >운동 게시판 조회수 TOP5!</h4></td></tr>
 					<tr>
-
 						<th colspan="3" align="center">타이틀</th>
 
 						<th>작성자</th>
@@ -114,16 +114,28 @@
 						<th>조회</th>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody >
 					<c:forEach items="${requestScope.exerciseTop5List }" var="list">
 						<tr>
 							<td>${list.ranking }</td>
 							<td><a
-								href="${initParam.root }member_getExerciseByNo.do?boardNo=${list.boardNo}&pageNo=${param.pageNo}">${fn:substring(list.boardTitle,0,4)}..</a></td>
+								href="${initParam.root }member_getExerciseByNo.do?boardNo=${list.boardNo}&pageNo=${param.pageNo}">
+								<c:choose>
+								<c:when test="${fn:length(list.boardTitle)>6 }">
+								${fn:substring(list.boardTitle,0,5)}..
+								</c:when>
+								<c:otherwise>
+								${list.boardTitle}
+								</c:otherwise>
+								</c:choose>
+								
+								
+								
+								</a></td>
 							<td>${list.exerciseVO.exerciseName }</td>
 							<td>관리자</td>
 							<td>${list.boardWdate }</td>
-							<td>${list.exerciseHits }</td>
+							<td style="text-align: center;">${list.exerciseHits }</td>
 						</tr>
 
 					</c:forEach>
@@ -133,31 +145,49 @@
 		
 
 	</div>
-	<div class="col-lg-6">
-		<h4>커뮤니티 게시판 추천수 TOP5!</h4>
+	<div class="col-md-6">
+		
 		<div class="table-responsive">
-			<table class="table table-striped">
+			<table class="table">
 				<thead>
+				<tr><td colspan="6" ><h4>커뮤니티 게시판 추천수 TOP5!</h4></td></tr>
 					<tr>
-						<th colspan="2">제목</th>
+
+						<th colspan="2">타이틀</th>
 						<th>작성자</th>
-						<th>조회수</th>
 						<th>추천수</th>
-						<th>비추천수</th>
+						<!-- <th>비추천수</th> -->
 						<th>작성일</th>
+						<th>조회수</th>
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach items="${requestScope.communityTop5List }" var="list">
+					<c:forEach items="${requestScope.communityTop5List }" var="list" varStatus="vs">
+					<c:choose>
+					<c:when test="${vs.index<5 }">
+					
 						<tr>
 							<td>${list.ranking }</td>
-							<td><a href="${initParam.root }my_getCommunityByNo.do?boardNo=${list.boardNo}">${fn:substring(list.boardTitle,0,4)}..</a></td>
+							
+							<td><a href="${initParam.root }my_getCommunityByNo.do?boardNo=${list.boardNo}">
+							<c:choose>
+							<c:when test="${fn:length(list.boardTitle)>6 }">
+							${fn:substring(list.boardTitle,0,5)}..
+							</c:when>
+							<c:otherwise>
+							${list.boardTitle }
+							</c:otherwise>
+							</c:choose></a>
+							</td>
 							<td>${list.momentorMemberVO.nickName }</td>
-							<td>${list.memberHits }</td>
-							<td>${list.recommend }</td>
-							<td>${list.notRecommend }</td>
+							<td style="text-align: center;">${list.recommend }</td>
+							<%-- <td>${list.notRecommend }</td> --%>
 							<td>${list.boardWdate }</td>
+							<td style="text-align: center;">${list.memberHits }</td>
 						</tr>
+					</c:when>
+					<c:otherwise></c:otherwise>
+					</c:choose>
 
 					</c:forEach>
 				</tbody>
@@ -165,6 +195,8 @@
 		</div>
 	
 	</div>
+	
+	
 
 </div>
    <div id="wrap">
