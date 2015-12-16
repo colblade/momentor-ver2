@@ -620,4 +620,10 @@ UPDATE EXERCISE_URL SET URLPATH =#{urlPath} WHERE EXERCISENAME =#{exerciseName}
 	UPDATE FAQ_BOARD set TITLE=#{boardTitle},CONTENT=#{boardContent}
 	WHERE FAQ_NO=#{boardNo}
 </update>
+
+	<!-- 각 커뮤니티 게시물 마다 댓글수  -->
+<select id="getReplyCountList" resultType="map">
+		SELECT A.MEMBER_NO as boardNo, (SELECT COUNT(*) FROM MEMBER_REPLY B WHERE B.Member_no=A.MEMBER_NO)  as replyCount
+		FROM MEMBER_BOARD A
+</select>
  </mapper>

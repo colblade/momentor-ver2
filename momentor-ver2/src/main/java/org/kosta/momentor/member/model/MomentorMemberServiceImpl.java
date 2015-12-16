@@ -80,7 +80,7 @@ public class MomentorMemberServiceImpl implements MomentorMemberService {
 		return (count==0) ? "ok":"fail";
 	}
 	@Override
-	public void registerMember(MomentorMemberVO vo, String date, String memberEmail, String memberEmail2,String memberWeight,String memberHeight) {
+	public void registerMember(MomentorMemberVO vo, String date, String memberEmail, String memberEmail2,String memberWeight,String memberHeight,String infoPublic) {
 		MomentorMemberPhysicalVO pnvo=new MomentorMemberPhysicalVO();
 	    SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat ("yyyy", Locale.KOREA);
         Date currentTime = new Date();

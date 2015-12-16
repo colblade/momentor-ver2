@@ -62,7 +62,22 @@
          <c:when test="${sessionScope.pnvo==null }">
             <td>${posting.boardTitle}</td>
          </c:when>
-         <c:otherwise><td><a href="my_getCommunityByNo.do?boardNo=${posting.boardNo}">${posting.boardTitle}</a></td></c:otherwise>
+         <c:otherwise>
+         	<td>
+         		<c:forEach items="${requestScope.replyCountList }" var="replyCountList">
+         			<c:if test="${posting.boardNo == replyCountList.BOARDNO}">
+	         			<c:choose>
+		         			<c:when test="${replyCountList.REPLYCOUNT > 0}">
+		         				<a href="my_getCommunityByNo.do?boardNo=${posting.boardNo}">${posting.boardTitle} (${replyCountList.REPLYCOUNT})</a>
+		         			</c:when>
+		         			<c:otherwise>
+		         				<a href="my_getCommunityByNo.do?boardNo=${posting.boardNo}">${posting.boardTitle}</a>
+		         			</c:otherwise>
+		         		</c:choose>
+	         		</c:if>
+         		</c:forEach>
+         	</td>
+         </c:otherwise>
       </c:choose>
           <c:choose>
          <c:when test="${sessionScope.pnvo==null}">

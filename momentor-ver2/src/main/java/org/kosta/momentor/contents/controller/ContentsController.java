@@ -84,7 +84,12 @@ public class ContentsController {
 	   /*커뮤니티 게시판 게시글 보여주기*/
 	   @RequestMapping("showCommunityList.do")
 	   public ModelAndView showCommunityList(String pageNo){
-	      return new ModelAndView("member_showCommunityList","list",communityBoardService.getAllCommunityList(pageNo));
+		   ModelAndView mv = new ModelAndView();
+		   mv.setViewName("member_showCommunityList");
+		   mv.addObject("list", communityBoardService.getAllCommunityList(pageNo));
+		   List<Map<String, Integer>> replyCountList = communityBoardService.getReplyCountList();
+		   mv.addObject("replyCountList", replyCountList);
+		   return mv;
 	   }
 	 
 	/*커뮤니티 게시판 글쓰기 폼으로 이동*/

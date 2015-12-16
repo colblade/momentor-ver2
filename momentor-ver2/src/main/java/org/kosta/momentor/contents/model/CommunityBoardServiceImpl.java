@@ -218,4 +218,8 @@ public class CommunityBoardServiceImpl implements CommunityBoardService {
 			map.put("imgName", imgName);
 			communityBoardDAO.deleteCommunityImgByImgName(map);		
 		}
+		@Override
+		public List<Map<String, Integer>> getReplyCountList() {
+			return communityBoardDAO.getReplyCountList();
+		}
 }

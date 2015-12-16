@@ -55,7 +55,8 @@ public void deleteAllCommunityImg(int boardNo);
 //해당 커뮤니티 게시글 img 개별 삭제 boardNo, imgName을 가지고 옵니다.
 public void deleteCommunityImgByImgName(HashMap<String, String> map);
 
-
+//해당 커뮤니티 댓글 총 갯수
+public List<Map<String, Integer>> getReplyCountList();
 
 }
 

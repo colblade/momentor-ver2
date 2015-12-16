@@ -46,4 +46,6 @@ public interface CommunityBoardService {
 
 	//해당 커뮤니티 게시글 img 개별 삭제 boardNo, imgName을 가지고 옵니다.
 	public void deleteCommunityImgByImgName(int boardNo, String imgName);
+	
+	public List<Map<String, Integer>> getReplyCountList();
 }

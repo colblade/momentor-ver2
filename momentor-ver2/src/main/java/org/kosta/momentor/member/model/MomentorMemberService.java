@@ -12,7 +12,7 @@ public interface MomentorMemberService {
 	public String idOverlappingCheck(String idcheck); // 회원가입시 아이디 중복 검사
 	public String nickNameOverlappingCheck(String nickName); // 회원가입시 닉네임 중복 검사
 	public String emailOverlappingCheck(String memberEmail,String memberEmail2); // 회원가입시 이메일 중복검사
-	public void registerMember(MomentorMemberVO vo, String date, String memberEmail, String memberEmail2,String memberWeight,String memberHeight); // 회원가입
+	public void registerMember(MomentorMemberVO vo, String date, String memberEmail, String memberEmail2,String memberWeight,String memberHeight,String infoPublic); // 회원가입
 
 	public MomentorMemberPhysicalVO myPageMemberInfo(String memberId); // 마이페이지에서 본인 회원정보 보기 
 	public String updateMember(String myBirthDate, MomentorMemberVO vo, MomentorMemberPhysicalVO pnvo) throws Exception; // 회원정보 수정(vo와 pnvo를 같이 업데이트하기위해 추가)

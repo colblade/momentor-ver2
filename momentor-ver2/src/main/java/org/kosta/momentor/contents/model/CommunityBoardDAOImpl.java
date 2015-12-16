@@ -188,5 +188,8 @@ public class CommunityBoardDAOImpl implements CommunityBoardDAO {
 			sqlSessionTemplate.delete("content.deleteCommunityImgByImgName", map);
 			
 		}
-
+		@Override
+		public List<Map<String, Integer>> getReplyCountList(){
+			return sqlSessionTemplate.selectList("content.getReplyCountList");
+		}
 }

@@ -126,8 +126,8 @@
     	$("#nick").keyup(function(){
     	   var nick=$("#nick").val().trim();
     	   $('#nick').val($('#nick').val().trim()); 
-    	   if(nick.length<4 || nick.length>10){
-    	      $("#nickCheckView").html("닉네임은 4자이상 10자 이하여야 함!").css(
+    	   if(nick.length<2 || nick.length>10){
+    	      $("#nickCheckView").html("닉네임은 1자이상 10자 이하여야 함!").css(
     	            "color","pink");
     	      checkResultNick="";
     	      checkNickNameFlag=false;
@@ -261,10 +261,6 @@
     			 checkNameFlag=true;
     		 }
     	});
-    	
-    	$("#address").keyup(function(){
-    		$("#address").val($("#address").val().trim());
-    	});
     	$("#email1").keyup(function(){
     		$("#email1").val($("#email1").val().trim());
     	});
@@ -327,7 +323,7 @@
      	      alert("성별을 선택해주세요");
      	      return false;
      	   }
-     	   if( $("input[name='info_public']:checked").length==0){
+     	   if( $("input[name='infoPublic']:checked").length==0){
       	      alert("정보 공개 여부를 선택해주세요");
       	      return false;
       	   }
@@ -572,8 +568,8 @@
          </div>
              <div class="form-group">
             <label for="">『정보 공개 여부』</label>
-      		<label for="">공개</label><input type="radio" value="1" name="info_public">
-      		<label for="">비공개</label><input type="radio" value="2" name="info_public">
+      		<label for="">공개</label><input type="radio" value="1" name="infoPublic">
+      		<label for="">비공개</label><input type="radio" value="2" name="infoPublic">
          </div>
           <span id="showRegister"></span>
       </div>

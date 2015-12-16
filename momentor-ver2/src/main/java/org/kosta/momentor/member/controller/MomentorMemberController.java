@@ -164,9 +164,9 @@ public class MomentorMemberController {
 	// 회원가입(후 자동 로그인)
 	@RequestMapping("register_result.do")
 	@ResponseBody
-	public ModelAndView register(HttpServletRequest request, String date, String memberEmail, String memberEmail2, MomentorMemberVO vo, String memberWeight, String memberHeight){
+	public ModelAndView register(HttpServletRequest request, String date, String memberEmail, String memberEmail2, MomentorMemberVO vo, String memberWeight, String memberHeight,String infoPublic){
 		HttpSession session=request.getSession();
-		momentorMemberService.registerMember(vo, date, memberEmail, memberEmail2, memberWeight, memberHeight);
+		momentorMemberService.registerMember(vo, date, memberEmail, memberEmail2, memberWeight, memberHeight,infoPublic);
 		MomentorMemberPhysicalVO pnvo = momentorMemberService.login(vo);
 		session.setAttribute("pnvo", pnvo);
 		return new ModelAndView("redirect:registerOk.do", "pnvo", pnvo);
