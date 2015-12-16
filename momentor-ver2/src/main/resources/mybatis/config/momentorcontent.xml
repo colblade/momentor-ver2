@@ -574,4 +574,50 @@ UPDATE EXERCISE_URL SET URLPATH =#{urlPath} WHERE EXERCISENAME =#{exerciseName}
 	 	insert into QNA_BOARD(QNA_NO, MEMBERID, TITLE, QNA_DATE, CONTENT, ref, restep, relevel)
 		values(#{boardNo}, #{momentorMemberVO.memberId}, #{boardTitle},sysdate,#{boardContent},#{ref},#{restep},#{relevel})
 	 </insert>
+	 
+		<resultMap type="fvo" id="fvoMap">
+			<result column="FAQ_NO" property="boardNo" />
+			<result column="TITLE" property="boardTitle" />
+			<result column="CONTENT" property="boardContent" />
+		</resultMap>
+
+<!-- 페이징에 사용될 FAQ의 모든 글의 갯수 -->
+<select id="totalFAQContent" resultType="int">
+	SELECT COUNT(*) FROM FAQ_BOARD
+</select>
+
+<!-- FAQ 모든 게시글 출력 -->
+<select id="getAllFAQList" resultType="nvo" resultMap="fvoMap">
+	SELECT FAQ_NO,TITLE,CONTENT FROM(
+		SELECT FAQ_NO, TITLE, CONTENT, CEIL(rownum/5) AS page FROM(
+			SELECT FAQ_NO, TITLE, CONTENT FROM FAQ_BOARD ORDER BY FAQ_NO DESC
+		)
+	) WHERE page=#{value}
+</select>
+
+<!-- 글 번호로 FAQ 상세보기 -->
+<select id="getFAQByNo" parameterType="int" resultMap="fvoMap">
+	SELECT FAQ_NO,TITLE,CONTENT FROM FAQ_BOARD WHERE FAQ_NO=#{value}
+</select>	
+
+<!-- FAQ 글 작성하기 -->
+<insert id="postingFAQ" parameterType="fvo">
+	INSERT INTO FAQ_BOARD (FAQ_NO,TITLE,CONTENT) VALUES (FAQ_BOARD_SEQ.NEXTVAL,#{boardTitle},#{boardContent})
+</insert>
+
+<!-- 작성한 FAQ의 글번호를 가져온다 -->
+<select id="getFAQPostingNumber" resultType="int">
+	SELECT FAQ_BOARD_SEQ.CURRVAL FROM DUAL
+</select>
+
+<!-- FAQ 글 삭제 -->
+<delete id="deleteFAQByNo" parameterType="int">
+	DELETE FROM FAQ_BOARD WHERE FAQ_NO=#{value}
+</delete>
+
+<!-- FAQ 글 수정 -->
+<update id="updateFAQ" parameterType="fvo">
+	UPDATE FAQ_BOARD set TITLE=#{boardTitle},CONTENT=#{boardContent}
+	WHERE FAQ_NO=#{boardNo}
+</update>
  </mapper>

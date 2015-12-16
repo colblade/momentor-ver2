@@ -46,7 +46,7 @@
               <ul class="dropdown-menu" role="menu">
                <li><a href="${initParam.root} member_getAllNoticeList.do">공지사항</a></li>
                 <li class="divider"></li>
-                <li><a href="#">FAQ</a></li>
+                <li><a href="${initParam.root }showFAQList.do?pageNo=1">FAQ</a></li>
                 <li><a href="${initParam.root} member_getAllQNAList.do?pageNo=1">Q&A</a></li>
               </ul>
             </li>

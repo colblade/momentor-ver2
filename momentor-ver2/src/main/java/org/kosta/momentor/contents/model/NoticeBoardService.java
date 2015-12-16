@@ -7,4 +7,9 @@ public interface NoticeBoardService {
 	public void updateNotice(NoticeBoardVO nvo);//글 수정
 	public ListVO getAllNoticeList(String pageNo); //전체목록
 	public NoticeBoardVO getNoticeByNo(int boardNo);//공지사항글 상세보기
+	public ListVO getAllFAQList(String pageNo);//FAQ 전체 리스트 출력
+	public FAQBoardVO getFAQByNo(int boardNo);//글 번호로 FAQ 상세보기
+	public int postingFAQ(FAQBoardVO nvo);//FAQ 글 작성
+	public void deleteFAQByNo(int boardNo);//FAQ 글 삭제
+	public void updateFAQ(FAQBoardVO fvo);//FAQ 글 수정
 }

@@ -45,8 +45,10 @@
  			<c:choose>
 				<c:when test="${QNAList.ref eq QNAList.boardNo }">
 				<c:choose>
-				<c:when test="${QNAList.momentorMemberVO.memberId eq sessionScope.pnvo.momentorMemberVO.memberId }">
-				<a href="${initParam.root}member_getQNAByNo.do?boardNo=${QNAList.boardNo}">${QNAList.boardTitle }</a>
+				<c:when test="${QNAList.momentorMemberVO.memberId eq sessionScope.pnvo.momentorMemberVO.memberId}">
+				<c:if test="${sessionScope.pnvo.momentorMemberVO.auth != 1 }">
+					<a href="${initParam.root}member_getQNAByNo.do?boardNo=${QNAList.boardNo}">${QNAList.boardTitle }</a>
+				</c:if>0
 				<c:set var = "boardNo" value="${QNAList.boardNo }"/>
 				</c:when>
 				<c:otherwise>
@@ -70,9 +72,9 @@
 				</c:when>
 			</c:choose>
 
-			<c:if test="${sessionScope.pnvo.momentorMemberVO.auth==1 }">
+ 			<c:if test="${sessionScope.pnvo.momentorMemberVO.auth==1 }">
 				<a href="${initParam.root}member_getQNAByNo.do?boardNo=${QNAList.boardNo}">${QNAList.boardTitle }</a>
-			</c:if>
+			</c:if> 
 
 			
 		</td>
