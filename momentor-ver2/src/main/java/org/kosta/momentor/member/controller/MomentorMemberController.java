@@ -22,6 +22,7 @@ import java.util.Map;
 
 
 
+
 //github.com/colblade/Momentor-test.git
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -163,9 +164,9 @@ public class MomentorMemberController {
 	// 회원가입(후 자동 로그인)
 	@RequestMapping("register_result.do")
 	@ResponseBody
-	public ModelAndView register(HttpServletRequest request, String date, String memberEmail1, String memberEmail2, MomentorMemberVO vo, String memberWeight, String memberHeight){
+	public ModelAndView register(HttpServletRequest request, String date, String memberEmail, String memberEmail2, MomentorMemberVO vo, String memberWeight, String memberHeight){
 		HttpSession session=request.getSession();
-		momentorMemberService.registerMember(vo, date, memberEmail1, memberEmail2, memberWeight, memberHeight);
+		momentorMemberService.registerMember(vo, date, memberEmail, memberEmail2, memberWeight, memberHeight);
 		MomentorMemberPhysicalVO pnvo = momentorMemberService.login(vo);
 		session.setAttribute("pnvo", pnvo);
 		return new ModelAndView("redirect:registerOk.do", "pnvo", pnvo);
@@ -377,34 +378,46 @@ public class MomentorMemberController {
 	// 플래너에 운동 등록
 	@RequestMapping("my_registerInPlanner.do")
 	@ResponseBody
-	public ArrayList<PlannerVO> registerExerciseInPlanner(PlannerVO pvo){
+	public Map<String, Object> registerExerciseInPlanner(PlannerVO pvo){
 		plannerService.registerExerciseInPlanner(pvo);
-		return (ArrayList<PlannerVO>) plannerService.getPlannerListByDate(pvo);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("plannerList", plannerService.getPlannerListByDate(pvo));
+		map.put("selectDate", pvo.getPlannerDate());
+		return map;
 	}
 	// 플래너에서 운동 삭제
 	@RequestMapping("my_deleteExerciseInPlanner.do")
 	@ResponseBody
-	public ArrayList<PlannerVO> deleteExerciseInPlanner(HttpServletRequest request, PlannerVO pvo){
+	public Map<String, Object> deleteExerciseInPlanner(HttpServletRequest request, PlannerVO pvo){
 		String[] deleteArray = request.getParameterValues("exerciseVO.exerciseName");
 		for(int i=0; i<deleteArray.length; i++){
 			pvo.setExerciseVO(new ExerciseVO(deleteArray[i], null));
 			plannerService.deleteExerciseInPlanner(pvo);
 		}
-		return (ArrayList<PlannerVO>) plannerService.getPlannerListByDate(pvo);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("plannerList", plannerService.getPlannerListByDate(pvo));
+		map.put("selectDate", pvo.getPlannerDate());
+		return map;
 	}
 	// 플래너에서 달성도 등록
 	@RequestMapping("my_updateAchievementInPlanner.do")
 	@ResponseBody
-	public ArrayList<PlannerVO> updateAchievementInPlanner(PlannerVO pvo){
+	public Map<String, Object> updateAchievementInPlanner(PlannerVO pvo){
 		plannerService.updateAchievementInPlanner(pvo);
-		return (ArrayList<PlannerVO>) plannerService.getPlannerListByDate(pvo);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("plannerList", plannerService.getPlannerListByDate(pvo));
+		map.put("selectDate", pvo.getPlannerDate());
+		return map;
 	}
 	// 플래너의 목표세트 수정
 	@RequestMapping("my_updateTargetSetInPlanner.do")
 	@ResponseBody
-	public ArrayList<PlannerVO> updateTargetSetInPlanner(PlannerVO pvo){
+	public Map<String, Object> updateTargetSetInPlanner(PlannerVO pvo){
 		plannerService.updateTargetSetInPlanner(pvo);
-		return (ArrayList<PlannerVO>) plannerService.getPlannerListByDate(pvo);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("plannerList", plannerService.getPlannerListByDate(pvo));
+		map.put("selectDate", pvo.getPlannerDate());
+		return map;
 	}
 	// 해당일의 플래너 코멘트 불러오기
 	@RequestMapping("my_getPlannerContentByDate.do")

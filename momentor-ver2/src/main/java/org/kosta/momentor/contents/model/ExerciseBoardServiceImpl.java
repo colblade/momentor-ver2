@@ -147,6 +147,7 @@ public class ExerciseBoardServiceImpl implements ExerciseBoardService {
 			ExerciseBoardVO ebvo = exerciseBoardDAO.getExerciseInfoByExName(exerciseName);
 			result.put("exerciseInfo", ebvo);
 			result.put("nameList",exerciseBoardDAO.getExerciseImgListByExerciseName(exerciseName));
+			result.put("URLVideo",exerciseBoardDAO.getURLByExerciseName(ebvo.getExerciseVO().getExerciseName()));
 			return result;
 		}
 

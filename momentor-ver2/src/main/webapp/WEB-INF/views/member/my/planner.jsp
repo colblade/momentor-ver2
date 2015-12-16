@@ -5,7 +5,6 @@
 
 <script src="${initParam.root}dist/js/jquery.easy-pie-chart.js"></script>
 <link href="${initParam.root}dist/css/jquery.easy-pie-chart.css" rel="stylesheet" media="screen">
-<%-- <link href="${initParam.root}dist/css/bootstrap-theme.css" rel="stylesheet" media="screen"> --%>
 
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -25,8 +24,8 @@
 				type:"post",
 				url:"my_updateAchievementInPlanner.do",
 				data:"momentorMemberVO.memberId=${sessionScope.pnvo.momentorMemberVO.memberId}&plannerDate=${requestScope.selectDate}&exerciseVO.exerciseName="+updateAchiveEx+"&achievement="+achievementValue,
-				success:function(resultList){
-					plannerListFunc(resultList);
+				success:function(result){
+					plannerListFunc(result);
 				}
 			});
 		});
@@ -56,8 +55,8 @@
 						type:"post",
 						url:"my_updateTargetSetInPlanner.do",
 						data:"momentorMemberVO.memberId=${sessionScope.pnvo.momentorMemberVO.memberId}&plannerDate=${requestScope.selectDate}&exerciseVO.exerciseName="+updateTargetEx+"&targetSet="+updateTargetVal,
-						success:function(resultList){
-							plannerListFunc(resultList);
+						success:function(result){
+							plannerListFunc(result);
 						}
 					});
 					alert("수정되었습니다.");
@@ -95,8 +94,8 @@
 				type:"post",
 				url:"my_deleteExerciseInPlanner.do",
 				data:"momentorMemberVO.memberId=${sessionScope.pnvo.momentorMemberVO.memberId}&plannerDate=${requestScope.selectDate}"+deleteCheckCompArray,
-				success:function(resultList){
-					plannerListFunc(resultList);
+				success:function(result){
+					plannerListFunc(result);
 				}
 			});
 		});
@@ -105,6 +104,11 @@
 		// 임시 목표 set에 숫자외의 문자를 입력시 공백으로 초기화
 		$("#cartListTable").on("keyup", "#tempTargetSet", function(){
 				$(this).val($(this).val().replace(/[^0-9]/gi, ""));
+		});
+		// 선택 열(tr) 클릭시 radio checked
+		$("#cartListBody").children().click(function(){
+			var selectExName = $(this).children().eq(3).text();
+			$("input:radio[name=tempExerciseName]:radio[value='" + selectExName + "']").prop("checked", true);
 		});
 		// 찜 리스트에서 임시 등록란으로 올리기
 		$("#cartListTable").on("click", "#selectExerciseBtn", function(){
@@ -138,34 +142,39 @@
 				dataType:"json",
 				success:function(cartListResult){
 					// 찜 카트가 비어있지 않을때만 table의 틀 출력
-					var cartTableFrame = "찜 된 운동이 없습니다.";
+					var cartTableFrame = "<div class='panel panel-primary'>" + 
+													"<div class='panel-heading'><h4>찜 바구니</h4></div>" + 
+													"<div class='panel-body'>찜 된 운동이 없습니다.</div></div>";
 					if(cartListResult.cartList.length != 0){
-						cartTableFrame = "<table class='table table-hover'>" + 
+						cartTableFrame = "<div class='panel panel-primary'>" + 
+												"<div class='panel-heading'><h4>찜 바구니</h4></div>" + 
+												"<div class='panel-body'>" +
+												"<table class='table table-hover'>" + 
 												"<thead><tr><th>선택</th><th>번호</th><th colspan='2'>운동명</th><th>삭제</th></tr></thead>" + 
-												"<tbody id='cartListBody'>";
-
-						 $.each(cartListResult.cartList, function(index, list){
+												"<tbody id='cartListBody'>";	
+						 $.each(cartListResult.cartList, function(index1, list){
 							var exName = list.exerciseBoardVO.exerciseVO.exerciseName;
 							var exImg = "";
-							$.each(cartListResult.imgCartList, function(index, imgMap){
-								$.each(imgMap, function(key, value){
-									//alert(value.IMGNAME);
-									$.each(value, function(i, imgList){
-										//alert(imgList.IMGNAME);
-										exImg += "<img src = '${initParam.root}upload/" + imgList.EXERCISENAME + "_" + imgList.IMGNAME + "' style='width: 10%; height: 10%;'>";
-									});
+							$.each(cartListResult.imgCartList, function(index2, imgMap){
+								$.map(imgMap, function(value, key){
+									if(key == exName){
+										/* $.each(value, function(i, imgList){
+											exImg += "<img src = '${initParam.root}exerciseimg/" + imgList.EXERCISENAME + "_" + imgList.IMGNAME + "' style='width: 50px; height: 50px;'>";
+										}); */
+										// 운동 이미지를 한장만 불러오기 위해 0번째 index의 이미지만 지정
+										exImg += "<img src = '${initParam.root}exerciseimg/" + value[0].EXERCISENAME + "_" + value[0].IMGNAME + "' style='width: 50px; height: 50px;'>";
+									}
 								});
 							});
 							cartTableFrame += "<tr><td><input type='radio' name='tempExerciseName' value=" + exName + "></td>" + 
-																"<td>" + (index+1) + "</td>" + 
+																"<td>" + (index1+1) + "</td>" + 
 																"<td>" + exImg + "</td>" + 
 																"<td>" + exName + "</td>" + 
 																"<td><input type='button' class='deleteInCartBtn' value='삭제'></td></tr>";
 						});
-						
 						cartTableFrame += "<tr><td colspan='5'>목표 set <input type='text' name='tempTargetSet' id='tempTargetSet' style='text-align: right'>" + 
 													" <input type='button' id='selectExerciseBtn' value='선택'></td></tr>" + 
-													"</tbody></table>";
+													"</tbody></table></div></div>";
 					}
 					$("#cartListTable").html(cartTableFrame);
 				}
@@ -213,10 +222,10 @@
 				url:"my_registerInPlanner.do",
 				// data로 memberId, exerciseName, plannerDate, targetSet 를 보내주어야 함.
 				data:"exerciseVO.exerciseName=" + $("#exerciseName").val() + "&targetSet=" + $("#targetSet").val() + "&momentorMemberVO.memberId=${sessionScope.pnvo.momentorMemberVO.memberId}&plannerDate=${requestScope.selectDate}",
-				success:function(resultList){
+				success:function(result){
 					$("#exerciseName").val("");
 					$("#targetSet").val("");
-					plannerListFunc(resultList);
+					plannerListFunc(result);
 				}
 			});
 		});
@@ -282,6 +291,11 @@
 					$.each(result.nameList, function(index, fileName){
 						showExeciseInfoComp += "<img src='${initParam.root}exerciseimg/" + fileName.EXERCISENAME + "_" + fileName.IMGNAME + "' title='" + fileName.IMGNAME + "' style='width: 70%; height: 70%;'>"
 					});
+					if(result.URLVideo != null){
+						showExeciseInfoComp += "<br><br><dd class='url'>" + 
+															"<iframe src='" + result.URLVideo.URLPATH + "' type='application/x-shockwave-flash' width='570' height='356'></iframe>" + 
+															"</dd>";
+					}
 					showExeciseInfoComp += "<h3>" + result.exerciseInfo.boardTitle + "</h3>" + 
 														"<br><pre>" + result.exerciseInfo.boardContent + "</pre><br>";
 					$("#showExeciseInfo").html(showExeciseInfoComp);
@@ -306,18 +320,18 @@
 	var todayVal = year + '-' + mon + '-' + day;
 	
 	// 플래너에 등록, 플래너에서 삭제, 달성 시 플래너 리스트를 출력하는 공통 function
-	function plannerListFunc(resultList){
+	function plannerListFunc(result){
 		var listTableFrame = "<div class='panel panel-primary'>" + 
-										"<div class='panel-heading'><h4>" + todayVal + "</h4></div>" + 
+										"<div class='panel-heading'><h4>" + result.selectDate + "</h4></div>" + 
 										"<div class='panel-body'>등록된 운동이 없습니다.</div></div>";
-		if(resultList.length != 0){
+		if(result.plannerList.length != 0){
 			listTableFrame = "<div class='panel panel-primary'>" + 
-									"<div class='panel-heading'><h4>" + resultList[0].plannerDate + "</h4></div>" + 
+									"<div class='panel-heading'><h4>" + result.selectDate + "</h4></div>" + 
 									"<div class='panel-body'>" + 
 									"<table class='table table-bordered plannerTable'>" + 
 									"<thead><tr><th><input type='checkbox' name='allCheck'></th><th>운동명</th><th>달성세트</th><th colspan='2'>목표세트</th><th>달성도</th><th>당일 달성도</th><th>당월 달성도</th>" + 
 									"</tr></thead><tbody id='listBody'>";
-				$.each(resultList, function(index, list){
+				$.each(result.plannerList, function(index, list){
 					listTableFrame += "<tr>";
 					listTableFrame += "<td><input type='checkbox' name='deleteCheck' value=" + list.exerciseVO.exerciseName + "></td>" + 
 												"<td><a href='#' class='exViewModal'>" + list.exerciseVO.exerciseName + "</a></td>";
@@ -344,8 +358,8 @@
 					}
 					listTableFrame += "<td><center><div class='chart' data-percent='" + list.achievementPercent + "'>" + list.achievementPercent + "%</div></center></td>";
 					if(index == 0){
-						listTableFrame += "<td style='vertical-align: middle' rowspan=" + resultList.length + ">" + "<center><div class='chart' data-percent='" + list.achievementPercentDay + "'>" + list.achievementPercentDay + "%</div></center></td>" + 
-													"<td style='vertical-align: middle' rowspan=" + resultList.length + ">" + "<center><div class='chart' data-percent='" + list.achievementPercentMonth +  "'>" + list.achievementPercentMonth + "%</div></center></td>";
+						listTableFrame += "<td style='vertical-align: middle' rowspan=" + result.plannerList.length + ">" + "<center><div class='chart' data-percent='" + list.achievementPercentDay + "'>" + list.achievementPercentDay + "%</div></center></td>" + 
+													"<td style='vertical-align: middle' rowspan=" + result.plannerList.length + ">" + "<center><div class='chart' data-percent='" + list.achievementPercentMonth +  "'>" + list.achievementPercentMonth + "%</div></center></td>";
 					}
 					listTableFrame += "</tr>";
 				});
@@ -358,11 +372,10 @@
         $('.chart').easyPieChart({animate: 1000});
 	}
 	
-
 </script>
 
-<!-- 플래너에 등록된 운동 목록 -->
 
+<!-- 플래너에 등록된 운동 목록 -->
 <span id="plannerListTable">
 <c:choose>
 	<c:when test="${requestScope.plannerListByDate.size() != 0}">
@@ -440,16 +453,17 @@
 </span>
 <br><hr><br>
 
-<!-- 임시등록란 -->
 
+<!-- 임시등록란 -->
 <div class="panel panel-primary">
 <div class="panel-heading"><h4>선택 확인 / 등록</h4></div>
 <div class="panel-body">
-목표운동 <input type="text" name="exerciseVO.exerciseName" id="exerciseName" style="text-align: right" size="22" readonly ><br>
-목표세트 <input type="text" name="targetSet" id="targetSet" style="text-align: right" size="12"> set
-<input type="button" id="regPlannerBtn" value="등록">
+	목표운동 <input type="text" name="exerciseVO.exerciseName" id="exerciseName" style="text-align: right" size="22" readonly ><br>
+	목표세트 <input type="text" name="targetSet" id="targetSet" style="text-align: right" size="12"> set
+	<input type="button" id="regPlannerBtn" value="등록">
 </div></div> 
 <br><hr><br>
+
 
 <!-- 찜한 운동 리스트 -->
 <span id="cartListTable">
@@ -465,14 +479,16 @@
 				</tr>
 			</thead>
 			<tbody id='cartListBody'>
-				<c:forEach items="${requestScope.cartList}" var="clist" varStatus="status">
+				<c:forEach items="${requestScope.cartList}" var="clist" varStatus="status1">
 				<tr>
 					<td><input type="radio" name="tempExerciseName" value="${clist.exerciseBoardVO.exerciseVO.exerciseName}"></td>
-					<td>${status.count }</td>
+					<td>${status1.count }</td>
 					<td>
 						<c:forEach items="${requestScope.imgCartList}" var ="imgList">
-							<c:forEach items="${imgList.get(clist.exerciseBoardVO.exerciseVO.exerciseName) }" var = "map">
-								<img src = "${initParam.root}exerciseimg/${map.EXERCISENAME}_${map.IMGNAME}" style="width: 10%; height: 10%;">
+							<c:forEach items="${imgList.get(clist.exerciseBoardVO.exerciseVO.exerciseName) }" var = "map" varStatus="status2">
+								<c:if test="${status2.index < 1}">
+									<img src = "${initParam.root}exerciseimg/${map.EXERCISENAME}_${map.IMGNAME}" style="width: 50px; height: 50px;">
+								</c:if>
 							</c:forEach>
 						</c:forEach>
 					</td>
@@ -488,10 +504,14 @@
 		</table></div></div>
 	</c:when>
 	<c:otherwise>
-		찜 된 운동이 없습니다.
+		<div class="panel panel-primary">
+			<div class="panel-heading"><h4>찜 바구니</h4></div>
+			<div class="panel-body">찜 된 운동이 없습니다.</div>
+		</div>
 	</c:otherwise>
 </c:choose>
 </span>
+
 
 <!-- Modal -->
 <div class="modal fade" id="exView" tabindex="-1" role="dialog" aria-labelledby="exViewModalLabel" aria-hidden="true">
