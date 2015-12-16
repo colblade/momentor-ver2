@@ -108,14 +108,10 @@ public class ExerciseBoardDAOImpl implements ExerciseBoardDAO {
 
 	@Override
 	public void deleteAllExerciseImg(String exerciseName) {
-
-		
-		
-		sqlSessionTemplate.delete("content.deleteAllExerciseImg", exerciseName)
-		;
+		sqlSessionTemplate.delete("content.deleteAllExerciseImg", exerciseName);
 	}
-	public void registerURL(HashMap<String,String> paramMap){
-		sqlSessionTemplate.insert("content.registerExerciseURL",paramMap);
+	public void registerVideoURL(HashMap<String,String> paramMap){
+		sqlSessionTemplate.insert("content.registerVideoURL",paramMap);
 	}
 	@Override
 	public void deleteExerciseImgByImgName(Map<String, String> map) {
@@ -133,9 +129,8 @@ sqlSessionTemplate.delete("content.deleteExerciseImgByImgName",map);
 		return sqlSessionTemplate.selectOne("content.getExerciseInfoByExName", exerciseName);
 	}
 	@Override
-	public void updateExerciseURL(HashMap<String,String> paramMap) {
-		// TODO Auto-generated method stub
-		sqlSessionTemplate.update("content.updateExerciseURL",paramMap);
+	public int updateExerciseURL(HashMap<String,String> paramMap) {
+		return sqlSessionTemplate.update("content.updateExerciseURL",paramMap);
 	}
 
 }

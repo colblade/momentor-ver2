@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <script type="text/javascript">
 $(function(){
 	
@@ -71,90 +71,109 @@ $(function(){
 </script>
 
 <br>
-<c:set value="${requestScope.exerciseInfo}" var = "info"></c:set>
+<c:set value="${requestScope.exerciseInfo}" var="info"></c:set>
 
 <div class="container">
 
 
-      <div class="row">
+	<div class="row">
 
-        <div class="col-sm-8 blog-main">
+		<div class="col-sm-8 blog-main">
 
-          <div class="blog-post">
-          <br><br><span id ="boardNo">${info.boardNo }</span>
-            <h2 class="blog-post-title">제목&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp; ${info.boardTitle }</h2>
-            <h3 class = "blog-post-title" >운동이름&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp; <span id="exerciseName">${info.exerciseVO.exerciseName }</span></h3>
-            
-            <hr>
-            <p class="blog-post-meta">${info.boardWdate } by <a href="#">관리자</a></p>
-			
-			<c:if test="${not empty requestScope.nameList }">
-			<c:forEach items="${requestScope.nameList }" var="fileName"
-								varStatus="vs">
-			<img src="${initParam.root}exerciseimg/${fileName.EXERCISENAME}_${fileName.IMGNAME}"
-									title=" ${fileName.IMGNAME }">
-									
-								</c:forEach>
-								</c:if>	
-									<div id="player">
-    <dl id="player_text">
-    </dl>
-</div><!-- player -->
-<div id="list">
-    <dl class="movs">
-    <c:set var="urlPath" value="${requestScope.URLVideo}"></c:set>
-  <c:choose>
-  <c:when test="${urlPath.URLPATH=='empty'}">
-     </c:when>
-    <c:when test="${urlPath.URLPATH!=null }">
-    	<dd class="url"><iframe src="${urlPath.URLPATH}"  type="application/x-shockwave-flash" width="800" height="450"></iframe></dd>
-    </c:when>
-    <c:otherwise>
-    </c:otherwise>
-     </c:choose>
-    </dl>
+			<div class="blog-post">
+				<br>
+				<br>
+				<span id="boardNo">${info.boardNo }</span>
+				<h2 class="blog-post-title">제목&nbsp;&nbsp; |
+					&nbsp;&nbsp;&nbsp;&nbsp; ${info.boardTitle }</h2>
+				<h3 class="blog-post-title">
+					운동이름&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp; <span id="exerciseName">${info.exerciseVO.exerciseName }</span>
+				</h3>
+
+				<hr>
+				<p class="blog-post-meta">${info.boardWdate }
+					by <a href="#">관리자</a>
+				</p>
+
+				<c:if test="${not empty requestScope.nameList }">
+					<c:forEach items="${requestScope.nameList }" var="fileName"
+						varStatus="vs">
+						<img
+							src="${initParam.root}exerciseimg/${fileName.EXERCISENAME}_${fileName.IMGNAME}"
+							title=" ${fileName.IMGNAME }">
+
+					</c:forEach>
+				</c:if>
+				<div id="player">
+					<dl id="player_text">
+					</dl>
+				</div>
+				<!-- player -->
+				<div id="list">
+					<dl class="movs">
+						<c:set var="urlPath" value="${requestScope.URLVideo}"></c:set>
+						<c:if test="${urlPath.URLPATH!=null }">
+							<dd class="url">
+								<iframe src="${urlPath.URLPATH}"
+									type="application/x-shockwave-flash" width="750" height="468"></iframe>
+							</dd>
+						</c:if>
+					</dl>
+				</div>
+				<pre>${info.boardContent }</pre>
+				<br>
+				<br>
+				<br>
+				<hr>
+
+			</div>
+		</div>
+		<!-- /.blog-sidebar -->
+
+	</div>
+	<!-- /.row -->
+	<nav>
+		<ul class="pager">
+			<c:if test="${sessionScope.pnvo.momentorMemberVO.auth==1 }">
+				<li><a
+					href="${initParam.root }admin_updateViewForAdmin.do?eboardNo=${info.boardNo }">수정하기</a></li>
+				<li id="delBtn"><a href="#">삭제하기</a></li>
+			</c:if>
+			<li><a
+				href="${initParam.root }member_exerciseBoard.do?pageNo=${param.pageNo}">뒤로가기</a></li>
+			<!-- Button trigger modal -->
+			<c:if test="${sessionScope.pnvo != null}">
+				<li><a href="#" id="regInCartModal">찜하기</a></li>
+			</c:if>
+		</ul>
+	</nav>
 </div>
-                        <pre>${info.boardContent }</pre>
-            <br><br><br>
-            <hr>
-       
-          </div>
-        </div><!-- /.blog-sidebar -->
+<!-- /.container -->
 
-      </div><!-- /.row -->
-		 <nav>
-	   <ul class="pager">
-	   <c:if test="${sessionScope.pnvo.momentorMemberVO.auth==1 }">	
-	   <li><a href = "${initParam.root }admin_updateViewForAdmin.do?eboardNo=${info.boardNo }">수정하기</a></li>
-	   <li id = "delBtn"><a href="#">삭제하기</a></li>
-	   </c:if>
-	   <li><a href = "${initParam.root }member_exerciseBoard.do?pageNo=${param.pageNo}">뒤로가기</a></li>
-	   <!-- Button trigger modal -->
-	   <c:if test="${sessionScope.pnvo != null}">
-	   		<li><a href="#" id="regInCartModal" >찜하기</a> </li>
-	   </c:if>
-	   </ul>
-	   </nav>
-    </div><!-- /.container -->
-
-	<!-- Modal -->
-	<div class="modal fade" id="regInCart" tabindex="-1" role="dialog" aria-labelledby="regInCartLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="idFindCheck">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="regInCartLabel">찜하기</h4>
-					</div>
-					<div class="modal-body">
-						<span id="showCartList"></span>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-primary" id="regInCartBtn">담기</button>
-							<button type="button" class="btn btn-primary" id="movePlannerBtn">플래너로 이동</button>
-							<button type="button" class="btn btn-default" data-dismiss="modal" id="closeBtn">닫기</button>
-						</div>
+<!-- Modal -->
+<div class="modal fade" id="regInCart" tabindex="-1" role="dialog"
+	aria-labelledby="regInCartLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="idFindCheck">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="regInCartLabel">찜하기</h4>
+				</div>
+				<div class="modal-body">
+					<span id="showCartList"></span>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" id="regInCartBtn">담기</button>
+						<button type="button" class="btn btn-primary" id="movePlannerBtn">플래너로
+							이동</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal"
+							id="closeBtn">닫기</button>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+</div>

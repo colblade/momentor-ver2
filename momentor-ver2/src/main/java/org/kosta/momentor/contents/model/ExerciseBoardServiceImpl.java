@@ -151,24 +151,25 @@ public class ExerciseBoardServiceImpl implements ExerciseBoardService {
 		}
 
 		@Override
-		public void insertUploadVideo(String exerciseName, String url) {
+		public void registerVideoURL(String exerciseName, String url) {
 			HashMap<String,String>paramMap=new HashMap<String,String>();
 			paramMap.put("exerciseName",exerciseName);
 			paramMap.put("urlPath", url);
-			exerciseBoardDAO.registerURL(paramMap);
+			exerciseBoardDAO.registerVideoURL(paramMap);
 		}
 		@Override
-		public void updateExerciseURL(String exerciseName,String url) {
+		public void updateExerciseURL(String exerciseName,String urlPath) {
 			HashMap<String,String> paramMap = new HashMap<String,String>();
-			if(url==null||url.equals("")||url.trim().equals("null")){
+			if(urlPath==null||urlPath.equals("")||urlPath.trim().equals("null")){
+				exerciseBoardDAO.deleteExerciseURL(exerciseName);
+			}else if(urlPath!=null&&!urlPath.equals("")&&!urlPath.trim().equals("null")){
 				paramMap.put("exerciseName", exerciseName);
-				paramMap.put("urlPath", "empty");
-				exerciseBoardDAO.updateExerciseURL(paramMap);
-			}else{
-				paramMap.put("exerciseName", exerciseName);
-				paramMap.put("urlPath", url);
-				exerciseBoardDAO.updateExerciseURL(paramMap);
-		}
+				paramMap.put("urlPath", urlPath);
+				int updateCount = exerciseBoardDAO.updateExerciseURL(paramMap);
+				if(updateCount == 0){
+					exerciseBoardDAO.registerVideoURL(paramMap);
+				}
+			}
 		}
 
 		public HashMap<String,String> getURLByExerciseName(String exerciseName){

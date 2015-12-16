@@ -39,7 +39,7 @@ public interface ExerciseBoardService {
 	public Map<String, Object> getExerciseInfoByExName(String exerciseName);
 	
 	//URL 등록
-	public void insertUploadVideo(String exerciseName,String url);
+	public void registerVideoURL(String exerciseName,String url);
 	//url 통해 영상 보기
 	public HashMap<String,String> getURLByExerciseName(String exerciseName);
 	//url 업데이트

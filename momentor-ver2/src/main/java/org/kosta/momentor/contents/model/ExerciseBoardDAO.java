@@ -51,12 +51,12 @@ public void deleteAllExerciseImg(String exerciseName);
 public void deleteExerciseImgByImgName(Map<String, String> map);
 
 //URL 업로드
-public void registerURL(HashMap<String,String> paramMap);
+public void registerVideoURL(HashMap<String,String> paramMap);
 
 //URL을 통해 영상 불러오기
 public HashMap<String,String> getURLByExerciseName(String exerciseName);
 //영상 삭제
 public void deleteExerciseURL(String exerciseName);
-//url 업데이트
-public void updateExerciseURL(HashMap<String,String> paramMap);
+//영상 url 업데이트
+public int updateExerciseURL(HashMap<String,String> paramMap);
 }

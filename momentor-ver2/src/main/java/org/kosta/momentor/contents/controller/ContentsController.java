@@ -186,7 +186,7 @@ public class ContentsController {
 			}
 		}
 		if(urlPath!=null&&!urlPath.equals("")&&!urlPath.trim().equals("null")){
-			exerciseBoardService.insertUploadVideo(evo.getExerciseName(),urlPath);
+			exerciseBoardService.registerVideoURL(evo.getExerciseName(),urlPath);
 		}
 		ModelAndView mv = new ModelAndView("redirect:admin_getExerciseNoHitByNo.do");
 		mv.addObject("boardNo", ebvo.getBoardNo());

@@ -488,7 +488,7 @@ UPDATE EXERCISE_URL SET URLPATH =#{urlPath} WHERE EXERCISENAME =#{exerciseName}
 	SELECT EXERCISENAME,URLPATH FROM EXERCISE_URL WHERE EXERCISENAME=#{value}
 </select>
 	<!--  exerciseURL 등록 -->
-	<insert id="registerExerciseURL" parameterType="map">
+	<insert id="registerVideoURL" parameterType="map">
 	INSERT INTO EXERCISE_URL (EXERCISENAME,URLPATH)
 	VALUES (#{exerciseName},#{urlPath})
 	</insert>
