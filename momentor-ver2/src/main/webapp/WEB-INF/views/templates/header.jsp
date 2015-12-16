@@ -47,7 +47,7 @@
                <li><a href="${initParam.root} member_getAllNoticeList.do">공지사항</a></li>
                 <li class="divider"></li>
                 <li><a href="#">FAQ</a></li>
-                <li><a href="#">Q&A</a></li>
+                <li><a href="${initParam.root} member_getAllQNAList.do?pageNo=1">Q&A</a></li>
               </ul>
             </li>
           </ul>

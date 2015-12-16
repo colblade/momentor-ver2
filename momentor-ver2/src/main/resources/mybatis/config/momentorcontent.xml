@@ -278,7 +278,7 @@ WHERE RANKING<=5 ]]>
 		<result column="memberId" property="momentorMemberVO.memberId" />	
 		<result column="content" property="boardContent" />			
 	</resultMap>
-
+	<!-- 공지사항 목록 -->
 	<select id="getAllNoticeList" resultType="nvo" resultMap="nvoMap"> 
 		select notice_No, title,notice_Date,memberId from (
 		select notice_No,Title,notice_Date,ceil(rownum/5) as page, memberId from (
@@ -288,14 +288,17 @@ WHERE RANKING<=5 ]]>
        ) where page=#{value}
 	
 	</select>
+	<!-- 총 공지사항 글 -->
 	<select id="totalNotice" resultType="int">
 		select count(*) from NOTICE_BOARD
 	</select>
+	<!-- 공지사항 상세글보기 -->
 	<select id="getNoticeByNo" resultType="nvo" resultMap="nvoMap">
 		select notice_No, title, notice_Date, memberId, content 
 		from NOTICE_BOARD
 		where notice_No = #{value}
 	</select>
+	<!-- 관리자가 공지사항 글쓰기 -->
 	<insert id="postingNotice" parameterType="nvo">
 		insert into NOTICE_BOARD(NOTICE_NO, MEMBERID, TITLE, NOTICE_DATE,CONTENT)
 		values(NOTICE_SEQ.nextVal, #{momentorMemberVO.memberId}, #{boardTitle},sysdate,#{boardContent})
@@ -492,4 +495,83 @@ UPDATE EXERCISE_URL SET URLPATH =#{urlPath} WHERE EXERCISENAME =#{exerciseName}
 	INSERT INTO EXERCISE_URL (EXERCISENAME,URLPATH)
 	VALUES (#{exerciseName},#{urlPath})
 	</insert>
+	
+	<!-- QNA resultMap -->
+	<resultMap type="qvo" id="qvoMap">
+		<result column="qna_No" property="boardNo" />
+		<result column="title" property="boardTitle" />
+		<result column="qna_Date" property="boardWdate" />
+		<result column="memberId" property="momentorMemberVO.memberId" />	
+		<result column="content" property="boardContent" />			
+		<result column="qna_Hits" property="qnaHits" />			
+	</resultMap>
+	
+	<!-- QNA 목록 -->
+	<select id="getAllQNAList" resultType="qvo" resultMap="qvoMap"> 
+       	SELECT qna_No ,MEMBERID,title,qna_Date, CONTENT,QNA_HITS, ref, restep, relevel
+		FROM (SELECT qna_No ,MEMBERID,title,qna_Date, CONTENT,QNA_HITS,CEIL(ROWNUM/5) AS PAGE, ref, restep, relevel
+		FROM (SELECT qna_No ,MEMBERID,title,TO_CHAR(qna_Date,'YYYY.MM.DD HH24:MI:SS') AS qna_Date, CONTENT,QNA_HITS, ref, restep, relevel
+		FROM QNA_BOARD
+		ORDER BY ref desc,restep asc
+			<!-- ref desc, restep asc, qna_No desc -->
+		)
+		)
+		WHERE PAGE = #{value}
+	
+	</select>
+	
+	<!-- QNA 총 게시물 수 -->
+	<select id="totalQNAContent" resultType="int">
+		select count(*) from QNA_BOARD
+	</select>	
+	
+	<!-- QNA 상세 글 보기 -->
+	<select id="getQNAByNo" resultType="qvo" resultMap="qvoMap">
+		select qna_No, title, qna_Date,memberId,qna_Hits, Content, ref, restep, relevel 
+		from QNA_BOARD
+		where qna_No = #{value}
+	</select>
+	
+	<!-- 유저가 QNA 글작성 -->
+	<insert id="writeQNA" parameterType="qvo">
+		<selectKey keyProperty="boardNo" resultType="int" order="BEFORE">
+			select QNA_SEQ.nextVal from dual
+		</selectKey>
+		insert into QNA_BOARD(QNA_NO, MEMBERID, TITLE, QNA_DATE, CONTENT, ref, restep, relevel)
+		values(#{boardNo}, #{momentorMemberVO.memberId}, #{boardTitle},sysdate,#{boardContent},#{boardNo},0,0)
+	</insert>
+	
+	<!-- 유저가 QNA 글 수정, 관리자가 답글 글 수정 -->
+	<update id="updateQNA" parameterType="qvo">
+		update QNA_BOARD
+		set title=#{boardTitle}, qna_date=sysdate ,content=#{boardContent}
+		where qna_No = #{boardNo}
+	</update>	
+	
+	<!-- 유저가 QNA 글 삭제, 관리자가 답글 글 삭제 -->
+	<delete id="deleteQNA">
+		delete from QNA_BOARD where qna_No=#{value}
+	</delete>
+	
+	<!-- QNA 조회수 -->
+	<update id="qnaUpdateHits" parameterType="int">
+ 		UPDATE QNA_BOARD SET qna_Hits = qna_Hits +1 WHERE qna_No = ${value}
+ 	</update>
+	
+	<!-- 답글계산 -->
+	<update id="updateRestep" parameterType="hashmap">
+	 	UPDATE 	QNA_BOARD 
+		  SET 		restep = restep+1
+	 	WHERE     ref=#{ref}
+	 	 AND 		restep > #{restep}
+	 </update>
+	
+	<!-- 관리자가 답글 쓰기 -->
+	<insert id="writeQNAReply" parameterType="qvo">
+	 	<selectKey keyProperty="boardNo" resultType="int" order="BEFORE">
+			select QNA_SEQ.nextVal from dual
+		</selectKey>
+	 	insert into QNA_BOARD(QNA_NO, MEMBERID, TITLE, QNA_DATE, CONTENT, ref, restep, relevel)
+		values(#{boardNo}, #{momentorMemberVO.memberId}, #{boardTitle},sysdate,#{boardContent},#{ref},#{restep},#{relevel})
+	 </insert>
  </mapper>

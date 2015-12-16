@@ -11,8 +11,8 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<typeAlias type="org.kosta.momentor.contents.model.CommunityBoardVO" alias="cbvo"/>	
 		<typeAlias type="org.kosta.momentor.contents.model.ReplyVO" alias ="rvo"/>
 		<typeAlias type="org.kosta.momentor.contents.model.BoardVO" alias ="bvo"/>
-	<typeAlias type="org.kosta.momentor.contents.model.NoticeBoardVO" alias="nvo"/>
-		
+		<typeAlias type="org.kosta.momentor.contents.model.NoticeBoardVO" alias="nvo"/>
+		<typeAlias type="org.kosta.momentor.contents.model.QNABoardVO" alias="qvo"/>
 		
 		 	<!-- - - - - - - - - - - - -2015-11-28- - - - - - - - - - -->
 		<typeAlias type="org.kosta.momentor.contents.model.ExerciseBoardVO" alias="ebvo"/>

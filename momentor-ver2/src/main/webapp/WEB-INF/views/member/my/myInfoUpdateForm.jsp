@@ -1,9 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+<%@ taglib prefix="fn"  uri="http://java.sun.com/jsp/jstl/functions"%>    
 <script type="text/javascript">
 $(document).ready(function(){
 	var checkResultPassword = "";
 	var checkResultNickName = "";
+	var pnvoNickName="${sessionScope.pnvo.momentorMemberVO.nickName}";
 	$("#memberPasswordCheck").keyup(function(){
 		var memberPasswordCheck=$("#memberPasswordCheck").val().trim();
 		if(memberPasswordCheck.length==0){
@@ -32,7 +35,6 @@ $(document).ready(function(){
 	
 	$("#nickName").keyup(function(){
 		var nickName=$("#nickName").val().trim();
-		var pnvo="${sessionScope.pnvo.momentorMemberVO.nickName}";
 		if(nickName.length==0){
 			$("#checkResultNickNameView").html("닉네임을 입력하세요").css("color","orange");
 			checkResultNickName="";
@@ -43,7 +45,7 @@ $(document).ready(function(){
 			url:"nickNameCheck.do",
 			data:"nickName="+$("#nickName").val(),
 			success:function(data){
-				if(nickName==pnvo){
+				if(nickName==pnvoNickName){
 					data="ok";
 				}
 				if(data=="fail"){
@@ -59,40 +61,70 @@ $(document).ready(function(){
 	});//keyup
 	
 	$("#myInfoUpdate").click(function(){
+		var reg_pwd = /^.*(?=.{6,12})(?=.*[0-9])(?=.*[a-zA-Z]).*$/;
+		var regex=/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
+		if(!reg_pwd.test($("#memberPassword").val())){
+			alert("패스워드를 6~12자 사이의 영문 숫자 조합으로 입력하시오");
+			$("#memberPassword").focus();
+			return false;
+		}
+		if(!regex.test($("#memberEmail").val())){
+			alert("이메일을 형식에 맞도록 입력하시오");
+			$("#memberEmail").focus();
+			return false;
+		}		
+		
 		if($("#memberPassword").val()==null||$("#memberPassword").val()==""){
 			alert("패스워드를 입력하시오");
+			$("#memberPassword").focus();
 			return false;
 		}
 		if($("#memberName").val()==null||$("#memberName").val()==""){
 			alert("이름를 입력하시오");
+			$("#memberName").focus();
 			return false;
+		}
+		if($("#nickName").val()==pnvoNickName){
+			checkResultNickName = pnvoNickName;
 		}
 		if($("#nickName").val()==null||$("#nickName").val()==""){
 			alert("별명를 입력하시오");
+			$("#nickName").focus();
 			return false;
 		}
 		if($("#memberEmail").val()==null||$("#memberEmail").val()==""){
 			alert("이메일을 입력하시오");
+			$("#memberEmail").focus();
+			return false;
+		}
+		if($("#myBirthDate").val()==null||$("#myBirthDate").val()==""){
+			alert("생년월일을 입력하시오");
+			$("#myBirthDate").focus();
 			return false;
 		}
 		if($("#memberAddress").val()==null||$("#memberAddress").val()==""){
 			alert("주소를 입력하시오");
+			$("#memberAddress").focus();
 			return false;
 		}
 		if($("#memberWeight").val()==null||$("#memberWeight").val()==""){
 			alert("몸무게를 입력하시오");
+			$("#memberWeight").focus();
 			return false;
 		}
 		if(isNaN($("#memberWeight").val())){
 			alert("몸무게를 숫자로 입력하시오");
+			$("#memberWeight").focus();
 			return false;
 		}
 		if($("#memberHeight").val()==null||$("#memberHeight").val()==""){
 			alert("키를 입력하시오");
+			$("#memberHeight").focus();
 			return false;
 		}
 		if(isNaN($("#memberHeight").val())){
 			alert("키를 숫자로 입력하시오");
+			$("#memberHeight").focus();
 			return false;
 		}
 		if(checkResultPassword==null||checkResultPassword==""){
@@ -123,7 +155,26 @@ $(document).ready(function(){
 	<hr>
 	<p class="blog-post-meta">이름 : <input type="text" name="memberName" id="memberName" value="${requestScope.pnvo.momentorMemberVO.memberName }"></p>
 	<hr>
-    <p class="blog-post-meta">생년월일 : <input type="text" class="datepicker" name="myBirthDate" id="myBirthDate"class="form-control"></p>     
+    <p class="blog-post-meta">생년월일 : 
+    
+    <c:set value="${requestScope.pnvo.momentorMemberVO.birthMonth}" var = "bmonth"/>
+        <c:set value="${requestScope.pnvo.momentorMemberVO.birthDay}" var = "bday"/>
+    <c:choose>
+    <c:when test="${bmonth<10 and bday<10}"> 
+   		<input type="text" class="datepicker" name="myBirthDate" id="myBirthDate"class="form-control" value="${requestScope.pnvo.momentorMemberVO.birthYear}-0${requestScope.pnvo.momentorMemberVO.birthMonth}-0${requestScope.pnvo.momentorMemberVO.birthDay}">  
+    </c:when>
+    <c:when test="${bmonth<10 and bday>9}">
+       	<input type="text" class="datepicker" name="myBirthDate" id="myBirthDate"class="form-control" value="${requestScope.pnvo.momentorMemberVO.birthYear}-0${requestScope.pnvo.momentorMemberVO.birthMonth}-${requestScope.pnvo.momentorMemberVO.birthDay}">  
+    </c:when>
+    <c:when test="${bmonth>9 and bday<10}">
+        <input type="text" class="datepicker" name="myBirthDate" id="myBirthDate"class="form-control" value="${requestScope.pnvo.momentorMemberVO.birthYear}-${requestScope.pnvo.momentorMemberVO.birthMonth}-0${requestScope.pnvo.momentorMemberVO.birthDay}">  
+    </c:when>
+	<c:otherwise>
+ 		<input type="text" class="datepicker" name="myBirthDate" id="myBirthDate"class="form-control" value="${requestScope.pnvo.momentorMemberVO.birthYear}-${requestScope.pnvo.momentorMemberVO.birthMonth}-${requestScope.pnvo.momentorMemberVO.birthDay}">  
+	</c:otherwise>
+    </c:choose>
+   
+    </p>     
 	<hr>
 	<p class="blog-post-meta">별명 : <input type="text" name="nickName" id="nickName" value="${requestScope.pnvo.momentorMemberVO.nickName}">
 	<span id="checkResultNickNameView"></span>
@@ -138,6 +189,8 @@ $(document).ready(function(){
 	<p class="blog-post-meta">몸무게 : <input type="text" name="memberWeight" value="${requestScope.pnvo.memberWeight}" id="memberWeight"></p>
 	<hr>
 	<p class="blog-post-meta">키 : <input type="text" name="memberHeight" value="${requestScope.pnvo.memberHeight}" id="memberHeight"></p>
+	<hr>
+	<p class="blog-post-meta">정보 공개 : <select name="infoPublic" ><option value ="1" selected="selected"> 공개</option><option value ="2" > 비공개</option></select>	
 	<hr>
 	<div align="center"><input class="btn btn-default" type="button" value="수정완료" id="myInfoUpdate"></div>
 </form>

@@ -18,8 +18,9 @@ $(document).ready(function(){
 	}); 
 });
 </script>
-
-<div style="width: 60%; padding-left: 450px">
+<c:choose>
+	<c:when test="${requestScope.pnvo.momentorMemberVO.infoPublic == 1}">
+<div style="width: 70%; padding-left: 400px">
 <form method="post" name="myInfo" action="#">
 	<p class="text-center">아이디 : ${requestScope.pnvo.momentorMemberVO.memberId}</p>
 	<hr>
@@ -51,7 +52,17 @@ $(document).ready(function(){
 	<hr>
 <br>
 </form>
-</div>			 
+</div>			
+	</c:when>
+	<c:otherwise>
+		<div style="width: 60%; padding-left: 450px">
+			<form method="post" name="myInfo" action="#">
+				<p class="text-center">회원정보 비공개입니다.</p>
+			</form>
+		</div>
+	</c:otherwise>	 
+</c:choose>
+ 
 	<div align="center">
 	<input type="button" value="회원정보수정하기" id="memberInfoUpdateBtn" class="btn btn-default">&nbsp;&nbsp;&nbsp;
 	<input type="button" value="탈퇴하기" id="memberInfoDeleteBtn" class="btn btn-default">

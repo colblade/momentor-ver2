@@ -9,7 +9,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.kosta.momentor.cart.model.ExerciseVO;
@@ -23,10 +25,13 @@ import org.kosta.momentor.contents.model.ListVO;
 import org.kosta.momentor.contents.model.NoticeBoardService;
 import org.kosta.momentor.contents.model.NoticeBoardVO;
 import org.kosta.momentor.contents.model.PagingBean;
+import org.kosta.momentor.contents.model.QNABoardService;
+import org.kosta.momentor.contents.model.QNABoardVO;
 import org.kosta.momentor.contents.model.ReplyVO;
 import org.kosta.momentor.member.model.MomentorMemberPhysicalVO;
 import org.kosta.momentor.member.model.MomentorMemberVO;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -40,7 +45,8 @@ public class ContentsController {
 	private ExerciseBoardService exerciseBoardService;
 	@Resource
 	private CommunityBoardService communityBoardService;
-	
+	@Resource
+	private QNABoardService qnaBoardService;
 	@Resource(name = "communityUploadPath")
 	private String commuPath;
 	
@@ -566,5 +572,88 @@ public class ContentsController {
 			communityBoardService.deleteCommunityImgByImgName(boardNo, imgName);
 			List<HashMap<String, String>> list = communityBoardService.getCommunityImgListByNo(boardNo);
 			return list;
+		}
+		
+		
+		/*qna part */
+		/* QNA 목록불러오기*/
+		@RequestMapping("member_getAllQNAList.do")
+		public ModelAndView MygetAllQNAList(HttpServletRequest request,String pageNo){
+			return new ModelAndView("member_getAllQNAList","QNAList",qnaBoardService.getAllQNAList(pageNo));
+		}
+		
+		/*조회수 증가하지 않게하는경우 */
+		@RequestMapping("getQNAByNoNoHit.do")
+	  	public ModelAndView getQNAByNoNoHit(int boardNo){
+		  	return new ModelAndView("member_getQNAByNo","qvo",qnaBoardService.getQNAByNoNoHit(boardNo));
+	  	}
+		
+		/*QNA 상세목록 보기*/
+		@RequestMapping("member_getQNAByNo.do")
+		public ModelAndView MygetQNAByNo(int boardNo, @CookieValue(value="QNABoard",required=false) String cookieValue,HttpServletResponse response){
+			QNABoardVO qvo = null;
+			if(cookieValue==null){
+				response.addCookie(new Cookie("QNABoard", ""+boardNo+""));
+				qvo = qnaBoardService.getQNAByNo(boardNo);
+			}else if(cookieValue.indexOf("|"+boardNo+"|")==-1){
+				cookieValue+="|"+boardNo+"|";
+				response.addCookie(new Cookie("QNABoard", cookieValue));
+				qvo = qnaBoardService.getQNAByNo(boardNo);
+			}else{
+				qvo = qnaBoardService.getQNAByNoNoHit(boardNo);
+			}
+			
+			return new ModelAndView("member_getQNAByNo","qvo",qvo);
+		}
+		
+		/*로그인한 유저가 QNA의 글작성폼*/
+		@RequestMapping("my_writeQNAForm.do")
+		public ModelAndView writeQNAForm(HttpServletRequest request){
+			MomentorMemberPhysicalVO pnvo = (MomentorMemberPhysicalVO) request.getSession().getAttribute("pnvo");
+			return new ModelAndView("my_writeQNAForm","pnvo",pnvo);
+		}
+		
+		/*로그인한 유저가 QNA 글작성*/
+		@RequestMapping("my_writeQNA.do")
+		public ModelAndView writeQNA(HttpServletRequest request, QNABoardVO qvo){
+			HttpSession session = request.getSession(false);
+			MomentorMemberPhysicalVO pnvo =  (MomentorMemberPhysicalVO) session.getAttribute("pnvo");
+			qvo.setMomentorMemberVO(pnvo.getMomentorMemberVO());
+			qnaBoardService.writeQNA(qvo);
+			return new ModelAndView("my_writeQNAResult","qvo",qvo);
+		}
+		
+		/*유저가 QNA글 수정 폼*/
+		@RequestMapping("my_updateQNAForm.do")
+		public ModelAndView updateQNAForm(int qnaNo){
+			QNABoardVO qvo = qnaBoardService.getQNAByNo(qnaNo);
+			return new ModelAndView("my_updateQNAForm","qvo",qvo);
+		}
+		
+		/*유저가 QNA 글 수정, 관리자가 QNA 답변 글 수정*/
+		@RequestMapping(value="my_updateQNA.do", method=RequestMethod.POST)
+		public ModelAndView updateQNA(HttpServletRequest request, QNABoardVO qvo){
+			qnaBoardService.updateQNA(qvo);
+			return new ModelAndView("my_updateQNAResult","qvo",qvo);
+		}
+		
+		/*유저가 QNA 글 삭제, 관리자가 QNA 답변 글 삭제*/
+		@RequestMapping(value="my_deleteQNA.do")
+		public ModelAndView deleteQNA(HttpServletRequest request, int qnaNo){
+			qnaBoardService.deleteQNA(qnaNo);
+			return new ModelAndView("my_DeleteQNAResult");
+		}
+		
+		/*관리자가 QNA 답변쓰기 폼*/
+		@RequestMapping("admin_replyView.do")
+		public ModelAndView replyView(int boardNo) {		
+			return new ModelAndView("admin_noticemgr_replyForm","qvo",qnaBoardService.getQNAByNoNoHit(boardNo));
+		}
+		
+		/*관리자가 QNA 답변쓰기*/
+		@RequestMapping("admin_qnaReply.do")
+		public ModelAndView reply(QNABoardVO qvo) throws Exception{		
+			qnaBoardService.qnaReply(qvo);	
+			return new ModelAndView("redirect:getQNAByNoNoHit.do?boardNo="+qvo.getBoardNo());
 		}
 }

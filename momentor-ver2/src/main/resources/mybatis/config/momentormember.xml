@@ -21,6 +21,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    <result property="momentorMemberVO.memberEmail" column="memberEmail"/>
 		<result property="momentorMemberVO.gender" column="gender"/>
 		<result property="momentorMemberVO.memberAddress" column="memberAddress"/>
+		<result property="momentorMemberVO.infoPublic" column="info_Public"/>
 	</resultMap>
    
 	<select id="login" parameterType="mvo" resultMap="physicalRM">
@@ -49,7 +50,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="emailOverlappingCheck" resultType="int">
 		select count(*) from MOMENTOR_MEMBER where memberEmail=#{value}
 	</select> 
-
+	
 	<insert id="registerMember" parameterType="mvo" >
 		INSERT INTO MOMENTOR_MEMBER 
 		(MEMBERID, MEMBERPASSWORD, MEMBERNAME, BIRTHYEAR,BIRTHMONTH, BIRTHDAY, NICKNAME, MEMBEREMAIL, GENDER, MEMBERADDRESS,info_public)
@@ -63,14 +64,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 
 	<select id="myPageMemberInfo" resultMap="physicalRM">
-		select m.memberId, m.memberPassword, m.memberName, m.birthYear, m.birthMonth, m.birthDay, m.nickName, m.memberEmail, m.gender, m.memberAddress, mf.memberWeight, mf.memberHeight, mf.age, mf.bmi
+		select m.memberId, m.memberPassword, m.memberName, m.birthYear, m.birthMonth, m.birthDay, m.nickName, m.memberEmail, m.gender, m.memberAddress, m.info_Public, mf.memberWeight, mf.memberHeight, mf.age, mf.bmi
 		from MOMENTOR_MEMBER m, MOMEMTOR_MEMBER_PHYSICAL mf
 		where m.memberId=mf.memberId and m.memberId=#{memberId}
 	</select>
 	
 	<update id="myPageMemberInfoUpdate" parameterType="mvo">
 		update MOMENTOR_MEMBER
-		set memberPassword=#{memberPassword}, memberName=#{memberName}, birthYear=#{birthYear}, birthMonth=#{birthMonth}, birthDay=#{birthDay}, nickName=#{nickName}, memberEmail=#{memberEmail}, gender=#{gender}, memberAddress=#{memberAddress}
+		set memberPassword=#{memberPassword}, memberName=#{memberName}, birthYear=#{birthYear}, birthMonth=#{birthMonth}, birthDay=#{birthDay}, nickName=#{nickName}, memberEmail=#{memberEmail}, gender=#{gender}, memberAddress=#{memberAddress}, INFO_PUBLIC=#{infoPublic}
 		where memberId=#{memberId}  
 	</update>
 	
@@ -94,6 +95,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select count(*) from MOMENTOR_MEMBER where memberPassword=#{memberPassword}
 	</select>
 	
+	<select id="myNickNameCheck" resultType="int">
+		select count(*) from MOMENTOR_MEMBER where nickName=#{nickName}
+	</select>
+		
 	<select id="managerGetAllMember" resultMap="physicalRM">
 		select M.MEMBERID,M.MEMBERPASSWORD,M.MEMBERNAME,M.BIRTHYEAR,M.BIRTHMONTH,M.BIRTHDAY,P.MEMBERHEIGHT,P.MEMBERWEIGHT,P.AGE,M.NICKNAME,M.MEMBEREMAIL,M.GENDER,M.MEMBERADDRESS,P.BMI from (
 			select MEMBERID,MEMBERPASSWORD,MEMBERNAME,BIRTHYEAR,BIRTHMONTH,BIRTHDAY,NICKNAME,memberEmail,GENDER,MEMBERADDRESS,AUTH,ceil(rownum/5) as page from (
