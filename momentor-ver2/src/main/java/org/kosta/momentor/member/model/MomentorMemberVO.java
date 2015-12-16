@@ -12,18 +12,19 @@ public class MomentorMemberVO {
 	private String gender;		//성별
 	private String memberAddress;	//주소
 	private int auth;			//관리자와 일반회원 비교
+	private int infoPublic;
 	public MomentorMemberVO() {
 		super();
 	}
 	public MomentorMemberVO(String memberId, String memberPassword,
-			String memberName, int birtyhYear, int birthMonth, int birthDay,
+			String memberName, int birthYear, int birthMonth, int birthDay,
 			String nickName, String memberEmail, String gender,
-			String memberAddress, int auth) {
+			String memberAddress, int auth, int infoPublic) {
 		super();
 		this.memberId = memberId;
 		this.memberPassword = memberPassword;
 		this.memberName = memberName;
-		this.birthYear = birtyhYear;
+		this.birthYear = birthYear;
 		this.birthMonth = birthMonth;
 		this.birthDay = birthDay;
 		this.nickName = nickName;
@@ -31,6 +32,7 @@ public class MomentorMemberVO {
 		this.gender = gender;
 		this.memberAddress = memberAddress;
 		this.auth = auth;
+		this.infoPublic = infoPublic;
 	}
 	public String getMemberId() {
 		return memberId;
@@ -98,16 +100,22 @@ public class MomentorMemberVO {
 	public void setAuth(int auth) {
 		this.auth = auth;
 	}
+	public int getInfoPublic() {
+		return infoPublic;
+	}
+	public void setInfoPublic(int infoPublic) {
+		this.infoPublic = infoPublic;
+	}
 	@Override
 	public String toString() {
 		return "MomentorMemberVO [memberId=" + memberId + ", memberPassword="
 				+ memberPassword + ", memberName=" + memberName
-				+ ", birtyhYear=" + birthYear + ", birthMonth=" + birthMonth
+				+ ", birthYear=" + birthYear + ", birthMonth=" + birthMonth
 				+ ", birthDay=" + birthDay + ", nickName=" + nickName
 				+ ", memberEmail=" + memberEmail + ", gender=" + gender
-				+ ", memberAddress=" + memberAddress + ", auth=" + auth + "]";
+				+ ", memberAddress=" + memberAddress + ", auth=" + auth
+				+ ", infoPublic=" + infoPublic + "]";
 	}
-
-
+	
 	
 }

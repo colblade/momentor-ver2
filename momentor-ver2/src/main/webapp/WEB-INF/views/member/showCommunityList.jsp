@@ -27,10 +27,14 @@
          		    	  									" BMI : " + data.bmi + "<br>" +
          		    	  									" 나이 : " + data.age + "<br>" +
          		    	  									" 닉네임 : " + memInfoComp.nickName + "<br>";
+         		    	  if(memInfoComp.infoPublic==1){
          		    	 $("#detailedView").html(memInfoView);
-         		    	 $("#memberInfoView").html(memInfoComp.nickName + "님 회원정보");
+         		   	 $("#memberInfoView").html(memInfoComp.nickName + "님 회원정보");
+         		    	  }else if(memInfoComp.infoPublic==2){
+         		    		 $("#detailedView").html("이 회원은 정보가 비공개 처리되었습니다.");
+         		    		 $("#memberInfoView").html(memInfoComp.nickName + "님 회원정보");
+         		    	  }		    
          		      }
-         		      
             	 });
             	 $("#detailedModalView").modal(); 
              });

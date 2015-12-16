@@ -16,6 +16,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="momentorMemberVO.birthMonth" column="birthMonth"/>
 		<result property="momentorMemberVO.birthDay" column="birthDay"/>
 	    <result property="momentorMemberVO.nickName" column="nickName" />   
+	     <result property="momentorMemberVO.infoPublic" column="infoPublic"/>
 	    <result property="momentorMemberVO.auth" column="auth"/>
 	    <result property="momentorMemberVO.memberEmail" column="memberEmail"/>
 		<result property="momentorMemberVO.gender" column="gender"/>
@@ -24,7 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    
 	<select id="login" parameterType="mvo" resultMap="physicalRM">
 		select m.memberId, m.memberPassword, m.memberName, m.birthYear, m.birthMonth, m.birthDay, m.nickName, m.memberEmail, m.gender, m.memberAddress, m.auth, 
-		p.MEMBERWEIGHT, p.MEMBERHEIGHT, p.age, p.bmi
+		p.MEMBERWEIGHT, p.MEMBERHEIGHT, p.age, p.bmi,m.info_public
 		from momentor_member m, MOMEMTOR_MEMBER_PHYSICAL p
 		where m.memberId=p.memberId and m.memberId=#{memberId} and m.memberPassword=#{memberPassword} and m.auth!=8
 	</select>
@@ -51,8 +52,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<insert id="registerMember" parameterType="mvo" >
 		INSERT INTO MOMENTOR_MEMBER 
-		(MEMBERID, MEMBERPASSWORD, MEMBERNAME, BIRTHYEAR,BIRTHMONTH, BIRTHDAY, NICKNAME, MEMBEREMAIL, GENDER, MEMBERADDRESS)
-		VALUES (#{memberId},#{memberPassword},#{memberName},#{birthYear},#{birthMonth},#{birthDay},#{nickName},#{memberEmail},#{gender},#{memberAddress})
+		(MEMBERID, MEMBERPASSWORD, MEMBERNAME, BIRTHYEAR,BIRTHMONTH, BIRTHDAY, NICKNAME, MEMBEREMAIL, GENDER, MEMBERADDRESS,info_public)
+		VALUES (#{memberId},#{memberPassword},#{memberName},#{birthYear},#{birthMonth},#{birthDay},#{nickName},#{memberEmail},#{gender},#{memberAddress},#{infoPublic})
 	</insert>
 
 	<insert id="registerPhysicalMember" parameterType="pnvo">
@@ -147,9 +148,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where memberId=#{momentorMemberVO.memberId}
 	</update>
 	
-	<select id="getMemberInfoByNickName" resultMap="physicalRM">
-		SELECT  M.MEMBERID, M.MEMBERNAME, P.MEMBERHEIGHT, P.MEMBERWEIGHT, P.BMI , P.AGE , M.NICKNAME
+	 <select id="getMemberInfoByNickName" resultMap="physicalRM">
+      	SELECT  M.MEMBERID, M.MEMBERNAME, P.MEMBERHEIGHT, P.MEMBERWEIGHT, P.BMI , P.AGE , M.NICKNAME,M.info_public as infoPublic
   		FROM MOMENTOR_MEMBER M , MOMEMTOR_MEMBER_PHYSICAL P
-		WHERE M.MEMBERID=P.MEMBERID AND M.NICKNAME=#{value}
-	</select>
+  		WHERE M.MEMBERID=P.MEMBERID AND M.NICKNAME=#{value}
+      </select>
 </mapper>

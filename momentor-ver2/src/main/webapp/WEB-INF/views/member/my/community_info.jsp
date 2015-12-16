@@ -214,7 +214,8 @@ function showReplyList(result){
 		  mess+="<td align='right'>작성일시 : "+replyList.replyDate+"</h5>&nbsp;&nbsp;&nbsp;";//일시
 		  var pnvo="${sessionScope.pnvo.momentorMemberVO.memberId}"
 		  var pnvo2=replyList.momentorMemberVO.memberId
-		  if(pnvo==pnvo2){//본인 유무
+		  var pnvo3=${sessionScope.pnvo.momentorMemberVO.auth==1}
+		  if(pnvo==pnvo2||pnvo3){//본인 유무
 			  mess+="<input type='button' class='btn btn-default' value='수정' onclick='updateReply("+replyList.replyNo+")'>";//수정버튼
 			  mess+="&nbsp;&nbsp;<input type='button' class='btn btn-default' value='삭제' onclick='deleteReply("+replyList.replyNo+")'></td></tr>";//삭제버튼
 		  }       
@@ -300,7 +301,8 @@ function showReplyList(result){
 	           <div class="row marketing">
 	           <input type="hidden" value="${sessionScope.pnvo.momentorMemberVO.memberPassword}"  id="memberPassword">
                <p align="left">
-               <c:if   test="${sessionScope.pnvo.momentorMemberVO.memberId==info.momentorMemberVO.memberId }">               
+               <c:set var="adminCheck" value="${sessionScope.pnvo.momentorMemberVO.auth==1}"></c:set>
+               <c:if   test="${sessionScope.pnvo.momentorMemberVO.memberId==info.momentorMemberVO.memberId || adminCheck}">               
                   <input class="btn btn-default" type="button" value="삭제하기" id="deleteBtn">
                   <input class="btn btn-default" type="button" value="수정하기" id="modifyBtn">               
                </c:if>

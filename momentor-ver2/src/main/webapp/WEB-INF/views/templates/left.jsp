@@ -323,11 +323,14 @@
     	      $("#join_email2").focus();
     	      return false;
     	   }
-    	   if($("#gender").val()==""){
-    	      alert("성별을 입력해주세요");
-    	      $("#gender").focus();
-    	      return false;
-    	   }
+    	   if($("input[name='gender']:checked").length == 0){
+     	      alert("성별을 선택해주세요");
+     	      return false;
+     	   }
+     	   if( $("input[name='info_public']:checked").length==0){
+      	      alert("정보 공개 여부를 선택해주세요");
+      	      return false;
+      	   }
     	   /* if($("#registerForm :radio[name=gender]:checked").length==0){
     	      alert("성별을 입력해주세요");
     	      return false;
@@ -552,12 +555,9 @@
             <input type="button" value="이메일중복검사" class="btn btn-primary" id="emailOverlapping" >   
          <span id="emailCheckView"></span>
          </div>
-           <label for="">성별</label>
-    <select name="gender"class="form-control"id="gender">
-      <option value="" >선택해주세요</option>
-      <option value="남자" >남자</option>
-     <option value="여자" >여자</option>
-    </select>
+              <label for="">『성별』</label>
+   		<label for="">남자</label><input type="radio" value="남자" name="gender">
+  	  <label for="">여자</label><input type="radio" value="여자" name="gender">
           <div class="form-group">
             <label for="">주소</label>
          <input type="text" name="memberAddress" id="address"  size="35"class="form-control"placeholder="주소">
@@ -569,6 +569,11 @@
             <div class="form-group">
             <label for="">몸무게</label>
          <input type="text" name="memberWeight"  id="weight" size="1"class="form-control"placeholder="몸무게">   <label for="">kg</label>
+         </div>
+             <div class="form-group">
+            <label for="">『정보 공개 여부』</label>
+      		<label for="">공개</label><input type="radio" value="1" name="info_public">
+      		<label for="">비공개</label><input type="radio" value="2" name="info_public">
          </div>
           <span id="showRegister"></span>
       </div>
