@@ -100,27 +100,25 @@ $("#getExerciseByNo").click(function(){
 <c:choose>
 <c:when test="${urlPath.URLPATH!='empty'}">
 		<div class="form-group">
-				  <label for="urlPath" class="col-sm-2 control-label"> URL : </label>
-								<div class="col-sm-10">
-										<input
-										type="text" id="urlPath" name="urlPath"
-										placeholder="운동 영상 주소를 넣어주세요(있을시만)"  size="40" class="form-control" value="${urlPath.URLPATH }">
-							</div>
-					</div>
-					</c:when>
-					<c:otherwise>
-						<div class="form-group">
-				  <label for="urlPath" class="col-sm-2 control-label"> URL : </label>
-								<div class="col-sm-10">
-										<input
-										type="text" id="urlPath" name="urlPath"
-										placeholder="운동 영상 주소를 넣어주세요(있을시만)"  size="40" class="form-control" >
-							</div>
-					</div>
-					</c:otherwise>
-					</c:choose>
+		  <label for="urlPath" class="col-sm-2 control-label"> URL : </label>
+			<div class="col-sm-10">
+				<input type="text" id="urlPath" name="urlPath"
+				placeholder="운동 영상 주소를 넣어주세요(있을시만)"  size="40" class="form-control" value="${urlPath.URLPATH }">
+			</div>
+		</div>
+</c:when>
+<c:otherwise>
 	<div class="form-group">
-		<label for="exerciseContent" class="col-sm-2 control-label"></label>
+	  <label for="urlPath" class="col-sm-2 control-label"> URL : </label>
+		<div class="col-sm-10">
+			<input type="text" id="urlPath" name="urlPath"
+			placeholder="운동 영상 주소를 넣어주세요(있을시만)"  size="40" class="form-control" >
+		</div>
+	</div>
+</c:otherwise>
+</c:choose>
+<div class="form-group">
+	<label for="exerciseContent" class="col-sm-2 control-label"></label>
 		<div class="col-sm-10">
 			<select name="exerciseBody" id="exerciseBody" class="form-control">
 				<option value="">--운동부위를 선택하세요--</option>
@@ -128,56 +126,43 @@ $("#getExerciseByNo").click(function(){
 				<option value="하체">하체</option>
 				<option value="전신">전신</option>
 			</select>
-
-
-			<c:choose>
-				<c:when test="${empty requestScope.nameList }">
-
-					<c:forEach begin="0" end="4" varStatus="cvs">
-						<input type="file" name="file[${cvs.index }]">
-					</c:forEach>
-
-
-				</c:when>
-				<c:otherwise>
-
-					<span id="imgList"> <c:forEach
-							items="${requestScope.nameList }" var="fileName" varStatus="vs">
-
-							<img id="image_${vs.index }"
-								src="${initParam.root}exerciseimg/${fileName.EXERCISENAME}_${fileName.IMGNAME}"
-								title=" ${fileName.IMGNAME }">
-
-						</c:forEach> <c:if test="${fn:length(requestScope.nameList)<5 }">
-							<c:forEach begin="0" end="${4-fn:length(requestScope.nameList)}"
-								varStatus="cvs">
-								<input type="file" name="file[${cvs.index }]">
-
-							</c:forEach>
-						</c:if>
-					</span>
-				</c:otherwise>
-			</c:choose>
-		</div>
+			<br>
+	<c:choose>
+		<c:when test="${empty requestScope.nameList }">
+			<c:forEach begin="0" end="4" varStatus="cvs">
+				<input type="file" name="file[${cvs.index }]"><br>
+			</c:forEach>
+		</c:when>
+	<c:otherwise>
+	<span id="imgList"> 
+		<c:forEach items="${requestScope.nameList}" var="fileName" varStatus="vs">
+			<img id="image_${vs.index }" src="${initParam.root}exerciseimg/${fileName.EXERCISENAME}_${fileName.IMGNAME}"
+			title=" ${fileName.IMGNAME }"><br>
+		</c:forEach>
+		<c:if test="${fn:length(requestScope.nameList)<5 }">
+			<c:forEach begin="0" end="${4-fn:length(requestScope.nameList)}" varStatus="cvs">
+				<input type="file" name="file[${cvs.index }]"><br>
+			</c:forEach>
+		</c:if>
+	</span>
+	</c:otherwise>
+	</c:choose>
 	</div>
-
-	<div class="form-group">
-		<label for="boardContent" class="col-sm-2 control-label">내용 :</label>
+</div>
+<div class="form-group">
+	<label for="boardContent" class="col-sm-2 control-label">내용 :</label>
 		<div class="col-sm-10">
 			<pre>
-				<textarea style="font-size: 15px" required="required"
-					name="boardContent" class="form-control" rows="20">${info.boardContent }</textarea>
+				<textarea style="font-size: 15px" required="required" name="boardContent" class="form-control" rows="20">${info.boardContent }</textarea>
 			</pre>
 		</div>
 	</div>
-
-	<div class="form-group">
-		<div class="col-sm-offset-2 col-sm-10">
-			<input type="submit" value="수정하기" class="btn btn-default">
-			&nbsp;&nbsp; <input type="button" value="되돌아가기" id="getExerciseByNo"
-				class="btn btn-default">
-
-		</div>
+<div class="form-group" align="right">
+	<div class="col-sm-offset-2 col-sm-10">
+		<input type="submit" value="수정하기" class="btn btn-primary">
+		&nbsp;&nbsp; 
+		<input type="button" value="되돌아가기" id="getExerciseByNo" class="btn btn-primary">
 	</div>
+</div>
 </form>
 </div>

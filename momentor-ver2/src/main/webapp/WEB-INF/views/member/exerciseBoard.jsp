@@ -5,7 +5,7 @@
 
 <h2 class="sub-header">Momentor Guide</h2>
  <div class="table-responsive">
- <table class="table table-striped">
+ <table class="table table-striped table-hover">
  <thead>
 			<tr>
 				<th>No</th>
@@ -66,11 +66,10 @@
 		</c:if>
 	  </ul>
 	</nav>
+</div><br>
+<div class="clearfix">
+    <span class="btn-group"></span>
+    <div class="pull-right">
+        <a href="${initParam.root}admin_writeView.do" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span> 글쓰기</a>   
+    </div>
 </div>
-<nav>
-  <ul class="pager">
-    <c:if test="${sessionScope.pnvo.momentorMemberVO.auth==1 }">	
-    	<li class="next"><a href="${initParam.root}admin_writeView.do">WRITE</a></li>
-	</c:if>	
-  </ul>
-</nav>

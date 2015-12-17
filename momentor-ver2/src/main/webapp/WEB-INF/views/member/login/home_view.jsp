@@ -8,6 +8,80 @@
 <!-- FullCalendar(jQuery API) -->
 <link href='${initParam.root}fullcalendar/fullcalendar.css' rel='stylesheet' />
 <script src='${initParam.root}fullcalendar/fullcalendar.js'></script>
+<center>
+<div id="carousel-example-generic" class="carousel slide" data-ride="carousel" align="center" style="width: 900px;">
+  <!-- Indicators -->
+  <ol class="carousel-indicators">
+    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+    <li data-target="#carousel-example-generic" data-slide-to="3"></li>
+    <li data-target="#carousel-example-generic" data-slide-to="4"></li>
+    <li data-target="#carousel-example-generic" data-slide-to="5"></li>
+  </ol>
+  <!-- Wrapper for slides -->
+  <div class="carousel-inner" role="listbox">
+    <div class="item active">
+      <img src="${initParam.root}image/여자.jpg" alt="여자">
+      <div class="carousel-caption">
+	    <h3>Beautiful Body</h3>
+	    <p>지금은 자기관리 시대</p>
+	  </div>
+    </div>
+    <div class="item">
+      <img src="${initParam.root}image/남자.jpg" alt="남자">
+      <div class="carousel-caption">
+	    <h3>Six Pack</h3>
+	    <p>남자들이여 자신감을 가져라</p>
+	  </div>
+    </div>
+    <div class="item">
+      <img src="${initParam.root}image/비키니수영복여자.jpg" alt="비키니여자">
+      <div class="carousel-caption">
+	    <h3>Bikini</h3>
+	    <p>여자들이여 당당해져라</p>
+	  </div>
+    </div>
+    <div class="item">
+      <img src="${initParam.root}image/남자수영복.jpg" alt="남자수영복">
+      <div class="carousel-caption">
+	    <h3>Take Off</h3>
+	    <p>바닷가에서 당당히 벗어라</p>
+	  </div>
+    </div>
+    <div class="item">
+      <img src="${initParam.root}image/남녀조깅.jpg" alt="남녀조깅">
+      <div class="carousel-caption">
+	    <h3>With You</h3>
+	    <p>연인과 즐거운 운동 데이트</p>
+	  </div>
+    </div>
+    <div class="item">
+      <img src="${initParam.root}image/단체.jpg" alt="단체">
+      <div class="carousel-caption">
+	    <h3>Together</h3>
+	    <p>함께 운동하며 공유하며</p>
+	  </div>
+    </div>
+  </div>
+
+  <!-- Controls -->
+  <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+</center>
+
+<script>
+	$(".carousel").carousel({
+		interval: 2000
+	});
+</script>
 
 <script>
    // FullCalnedar
@@ -85,8 +159,6 @@
     	  if($("#detailPlan").val() == "플래너"){
     		  if(confirm("플래너로 이동하시겠습니까?")){
 	    		  location.href="my_planner.do?memberId=${sessionScope.pnvo.momentorMemberVO.memberId}&&plannerDate=" + $("#selectDay").val();
-       		  }else{
-       			  return false;
        		  }
     	  } else if($("#detailPlan").val() == "상세보기"){
     		  if(confirm("상세보기로 넘어가시겠습니까?") == false){
@@ -105,7 +177,7 @@
 	<div class="col-md-6">
 		
 		<div class="table-responsive">
-			<table class="table">
+			<table class="table table-hover">
 				<thead>
 				<tr><td colspan="6" ><h4 >운동 게시판 조회수 TOP5!</h4></td></tr>
 					<tr>
@@ -150,7 +222,7 @@
 	<div class="col-md-6">
 		
 		<div class="table-responsive">
-			<table class="table">
+			<table class="table table-hover">
 				<thead>
 				<tr><td colspan="6" ><h4>커뮤니티 게시판 추천수 TOP5!</h4></td></tr>
 					<tr>

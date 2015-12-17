@@ -5,6 +5,9 @@
 		$("#writeBtn").click(function(){   
     		$("#writeNoticeForm").submit();
     	});
+		$("#getNoticeBoardList").click(function() {
+			location.href = "${initParam.root}member_getAllNoticeList.do?pageNo=1"
+		});//click
 	});
 </script>    
 <form action="${initParam.root}admin_writeNoticeByAdmin.do" method="post" id="writeNoticeForm" class="form-horizontal">
@@ -27,11 +30,11 @@
      		<textarea style="resize:none" cols="30" rows="7" class="form-control" name="boardContent" id="boardContent"></textarea>
       </div>
    </div>
-       <nav>
-	   <ul class="pager">
-     	
-     	<li id="writeBtn"> <a href="#" >글쓰기</a> </li>
-    
-       </ul>
-       </nav>
+   <div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<input type="submit" value="등록하기" class="btn btn-default" id="writeBtn">
+				&nbsp;&nbsp; 
+				<input type="button" value="되돌아가기"	id="getNoticeBoardList" class="btn btn-default">
+			</div>
+		</div>
   </form>

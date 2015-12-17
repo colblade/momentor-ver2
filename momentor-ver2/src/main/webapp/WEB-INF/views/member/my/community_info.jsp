@@ -5,45 +5,13 @@
 <script type="text/javascript">
 
 $(document).ready(function(){
-    $(".detailedModal") .click(function(){
-   	 $.ajax({
-   		   type:"get",
-		      url:"getMemberInfoByNickName.do",            
-		      data:"momentorMemberVO.nickName="+$(this).text().trim(),
-		      success:function(data){                  
-		    	  var memInfoComp = data.momentorMemberVO;
-		    	  var blindMemId = "";
-		    	  blindMemId = memInfoComp.memberId.replace(memInfoComp.memberId.substring(2,(memInfoComp.memberId.length+1)),"***");
-		    	  if(memInfoComp.memberName.length == 2){
-		    		 blindName = memInfoComp.memberName.replace(memInfoComp.memberName.substring(1,(memInfoComp.memberName.length+1)),"*");
-		    	  } else{
-   		    	  blindName = memInfoComp.memberName.replace(memInfoComp.memberName.substring(1,(memInfoComp.memberName.length+1)),"**");
-		    	  }
-		    	  var memInfoView = "ID : " + blindMemId + "<br>" + 
-		    	  									"이름 : " + blindName + "<br>" +
-		    	  									" 키 : " + data.memberHeight + "<br>" + 
-		    	  									" 몸무게 : " + data.memberWeight + "<br>" +
-		    	  									" BMI : " + data.bmi + "<br>" +
-		    	  									" 나이 : " + data.age + "<br>" +
-		    	  									" 닉네임 : " + memInfoComp.nickName + "<br>";
-		    	  if(memInfoComp.infoPublic==1){
-		    	 $("#detailedView").html(memInfoView);
-		   	 $("#memberInfoView").html(memInfoComp.nickName + "님 회원정보");
-		    	  }else if(memInfoComp.infoPublic==2){
-		    		 $("#detailedView").html("이 회원은 정보가 비공개 처리되었습니다.");
-		    		 $("#memberInfoView").html(memInfoComp.nickName + "님 회원정보");
-		    	  }		    
-		      }
-   	 });
-   	 $("#detailedModalView").modal(); 
-    });
     /*  게시글 삭제 버튼 클릭시 */
     $("#deleteBtn").click(function(){
-       var checkFormMess="<div class='row'><div class='col-xs-3'><input type='password' class='form-control' placeholder='비밀번호' id='passCheck'></div>";
-       checkFormMess+="<input type='submit'class='btn btn-default' value='확인'></div>";
-       checkFormMess+="<input type='hidden' value='${info.boardNo}' name='boardNo'>";
-       $("#passCheckForm").html(checkFormMess);
-       $("#passCheck").focus();
+    	if(confirm("이 운동 게시물을 삭제하시겠습니까?")){
+			location.href = "${initParam.root }my_deleteCommunity.do?boardNo=${info.boardNo}";
+		}else{
+			return;
+		}
     });
     /* 목록 버튼 클릭시 */
     $("#listBtn").click(function(){
@@ -246,8 +214,7 @@ function showReplyList(result){
 		  mess+="<td align='right'>작성일시 : "+replyList.replyDate+"</h5>&nbsp;&nbsp;&nbsp;";//일시
 		  var pnvo="${sessionScope.pnvo.momentorMemberVO.memberId}"
 		  var pnvo2=replyList.momentorMemberVO.memberId
-		  var pnvo3=${sessionScope.pnvo.momentorMemberVO.auth==1}
-		  if(pnvo==pnvo2||pnvo3){//본인 유무
+		  if(pnvo==pnvo2){//본인 유무
 			  mess+="<input type='button' class='btn btn-default' value='수정' onclick='updateReply("+replyList.replyNo+")'>";//수정버튼
 			  mess+="&nbsp;&nbsp;<input type='button' class='btn btn-default' value='삭제' onclick='deleteReply("+replyList.replyNo+")'></td></tr>";//삭제버튼
 		  }       
@@ -272,7 +239,7 @@ function showReplyList(result){
             <h2 class="blog-post-title">${info.boardTitle }</h2>
             <hr>
             <p class="blog-post-meta">${info.boardWdate }
-               by <a href="#"  class="detailedModal">${info.momentorMemberVO.nickName}</a>  
+               by <a href="#">${info.momentorMemberVO.nickName}</a>  
             </p>
 				<c:if test="${not empty requestScope.nameList }">
 			<c:forEach items="${requestScope.nameList }" var="fileName"
@@ -327,41 +294,22 @@ function showReplyList(result){
                </div>
                <hr>
                <textarea style="resize:none" rows="3" cols="40" class="form-control" name="content"></textarea>
-	                  <input type="button" class="btn btn-default" id="registReply" value="등록하기" >
+	                  <input type="button" class="btn btn-primary" id="registReply" value="등록하기" >
 	                  <hr>
 	           </div>
-	           <div class="row marketing">
-	           <input type="hidden" value="${sessionScope.pnvo.momentorMemberVO.memberPassword}"  id="memberPassword">
-               <p align="left">
-               <c:set var="adminCheck" value="${sessionScope.pnvo.momentorMemberVO.auth==1}"></c:set>
-               <c:if   test="${sessionScope.pnvo.momentorMemberVO.memberId==info.momentorMemberVO.memberId || adminCheck}">               
-                  <input class="btn btn-default" type="button" value="삭제하기" id="deleteBtn">
-                  <input class="btn btn-default" type="button" value="수정하기" id="modifyBtn">               
-               </c:if>
-               </p>
-               <p align="right"><input class="btn btn-default" type="button" value="목록으로" id="listBtn"></p>
-               <form id="passCheckForm" action="my_deleteCommunity.do"></form>
-            </div><!-- 글 삭제/수정 버튼 div -->
+	           <nav>
+					<ul class="pager">
+						<c:if   test="${sessionScope.pnvo.momentorMemberVO.memberId==info.momentorMemberVO.memberId }"> 	
+							<li id="modifyBtn"><a href="#">수정하기</a></li>
+							<li id="deleteBtn"><a href="#">삭제하기</a></li>
+						</c:if>
+						<li id="listBtn"><a href="#">목록보기</a></li>
+					</ul>
+				</nav>
          </div><!-- 전체 post div -->
       </div><!-- 전체 post div -->
       <!-- /.blog-sidebar -->
    </div>
    <!-- /.row -->
-</div>
-<!-- Modal -->
-<div class="modal fade" id="detailedModalView" tabindex="-1" role="dialog" aria-labelledby="idModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-  <div class="idFindCheck">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="idModalLabel"><span id="memberInfoView"></span></h4>
-      </div>
-      <div class="modal-body">
-		<span id="detailedView"></span>
-    </div>
-  </div>
-  </div>
-  </div>
 </div>
 <!-- /.container -->

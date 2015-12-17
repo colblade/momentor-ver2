@@ -63,37 +63,54 @@ $(function (){
 </c:otherwise>
 </c:choose>
 <br><br>	
-<p class="paging">
-	<c:set var="pb" value="${requestScope.list.pagingBean}"></c:set>
-	<c:if test="${pb.previousPageGroup}">
-	<a href="admin_my_managerFindBy.do?pageNo=${pb.startPageOfPageGroup-1}&search=${requestScope.search}&searchMenu=${requestScope.searchMenu}">
-	◀&nbsp; </a>	
-	</c:if>
-	<c:forEach var="i" begin="${pb.startPageOfPageGroup}" 
-	end="${pb.endPageOfPageGroup}">
-	<c:choose>
-	<c:when test="${pb.nowPage!=i}">
-	<a href="admin_my_managerFindBy.do?pageNo=${i}&search=${requestScope.search}&searchMenu=${requestScope.searchMenu}">${i}</a> 
-	</c:when>
-	<c:otherwise>
-	${i}
-	</c:otherwise>
-	</c:choose>
-	&nbsp;
-	</c:forEach>	 
-	<c:if test="${pb.nextPageGroup}">
-	<a href="admin_my_managerFindBy.do?pageNo=${pb.endPageOfPageGroup+1}&search=${requestScope.search}&searchMenu=${requestScope.searchMenu}">
-	▶</a>
-	</c:if>
-	</p>
-	<center>
-    <form method="get" action="admin_my_managerFindBy.do?pageNo=1" id="searchMenuForm">
-	    <select name="searchMenu"  id="command">
-               <option value="id" >아이디</option>
-               <option value="name" >이름</option>
-               <option value="nickName" >닉네임</option>
-        </select>   
-          <input type="text"  name="search" id="search" size="15" >
-      	 <input type="submit" value="검색" class="btn btn-default" > 
-               </form>
-                </center>
+<div align="center">
+<nav>
+<c:set var="pb" value="${requestScope.list.pagingBean}"></c:set>
+	  <ul class="pagination">	  
+	  <c:if test="${pb.previousPageGroup}">	
+	    <li>
+			<a href="admin_my_managerFindBy.do?pageNo=${pb.startPageOfPageGroup-1}&search=${requestScope.search}&searchMenu=${requestScope.searchMenu}"
+			aria-label="Previous"><span aria-hidden="true">&laquo;</span>
+			</a>	
+	    </li>
+	  </c:if>
+	  <c:forEach var="i" begin="${pb.startPageOfPageGroup}" end="${pb.endPageOfPageGroup}">
+			<c:choose>
+				<c:when test="${pb.nowPage!=i}">
+				<li>
+					<a href="admin_my_managerFindBy.do?pageNo=${i}&search=${requestScope.search}&searchMenu=${requestScope.searchMenu}">${i}</a>
+				</li> 
+				</c:when>
+				<c:otherwise>
+				<li class="active">
+      				<span>${i}</span>
+    			</li>
+				</c:otherwise>
+			</c:choose>		    
+		</c:forEach>
+    	<c:if test="${pb.nextPageGroup}">
+	    <li>
+			<a href="admin_my_managerFindBy.do?pageNo=${pb.endPageOfPageGroup+1}&search=${requestScope.search}&searchMenu=${requestScope.searchMenu}"
+			aria-label="Next">
+				<span aria-hidden="true">&raquo;</span>
+			</a>
+	      </li>
+		</c:if>
+	  </ul>
+	</nav>
+</div><br>
+<center>
+<form class="form-inline" action="admin_my_managerFindBy.do?pageNo=1" id="searchMenuForm">
+  <div class="form-group">
+      <select name="searchMenu" class="form-control input-sm" id="command">
+           <option value="id" >아이디</option>
+           <option value="name" >이름</option>
+           <option value="nickName" >닉네임</option>
+      </select> 
+  </div>
+  <div class="form-group">
+  	<input type="text" name="search" id="search" class="form-control" placeholder="검색어를 입력하세요">
+  </div>
+  <button type="submit" class="btn btn-primary">검색</button>
+</form>
+</center>

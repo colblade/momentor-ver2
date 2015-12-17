@@ -17,7 +17,6 @@ $(document).ready(function(){
 	}); 
 });
 </script>
-<body>
 <div class="container">
 <div class = "row">
 <div class = "col-sm-8 blog-main"><div class="blog-post">
@@ -40,21 +39,13 @@ $(document).ready(function(){
 
 </div>
 </div>
+
 <nav>
-<ul class = "pager">
-<c:choose>
-	<c:when test="${sessionScope.pnvo!=null&&sessionScope.pnvo.momentorMemberVO.auth==1}">
-
-<li id="noticeUpdateBtn"><a href="#">수정하기</a></li>
-<li id="noticeDeleteBtn"><a href="#">삭제하기</a></li>
-		
-
-	</c:when>
-</c:choose>
-
-
-	<li><a href="${initParam.root}login_home.do">홈으로</a></li>
-	<li><a href="${initParam.root}member_getAllNoticeList.do">목록으로</a></li>
-</ul>
+	<ul class="pager">
+		<c:if test="${sessionScope.pnvo.momentorMemberVO.auth==1 }">	
+			<li id="noticeUpdateBtn"><a href="#">수정하기</a></li>
+			<li id="noticeDeleteBtn"><a href="#">삭제하기</a></li>
+		</c:if>
+		<li><a href="${initParam.root}member_getAllNoticeList.do">목록보기</a></li>
+	</ul>
 </nav>
-</body>

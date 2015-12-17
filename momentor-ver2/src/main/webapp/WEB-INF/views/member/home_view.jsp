@@ -2,55 +2,88 @@
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<!-- DatePicker(jQuery UI) -->
-<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+<center>
+<div id="carousel-example-generic" class="carousel slide" data-ride="carousel" align="center" style="width: 900px;">
+  <!-- Indicators -->
+  <ol class="carousel-indicators">
+    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+    <li data-target="#carousel-example-generic" data-slide-to="3"></li>
+    <li data-target="#carousel-example-generic" data-slide-to="4"></li>
+    <li data-target="#carousel-example-generic" data-slide-to="5"></li>
+  </ol>
+  <!-- Wrapper for slides -->
+  <div class="carousel-inner" role="listbox">
+    <div class="item active">
+      <img src="${initParam.root}image/여자.jpg" alt="여자">
+      <div class="carousel-caption">
+	    <h3>Beautiful Body</h3>
+	    <p>지금은 자기관리 시대</p>
+	  </div>
+    </div>
+    <div class="item">
+      <img src="${initParam.root}image/남자.jpg" alt="남자">
+      <div class="carousel-caption">
+	    <h3>Six Pack</h3>
+	    <p>남자들이여 자신감을 가져라</p>
+	  </div>
+    </div>
+    <div class="item">
+      <img src="${initParam.root}image/비키니수영복여자.jpg" alt="비키니여자">
+      <div class="carousel-caption">
+	    <h3>Bikini</h3>
+	    <p>여자들이여 당당해져라</p>
+	  </div>
+    </div>
+    <div class="item">
+      <img src="${initParam.root}image/남자수영복.jpg" alt="남자수영복">
+      <div class="carousel-caption">
+	    <h3>Take Off</h3>
+	    <p>바닷가에서 당당히 벗어라</p>
+	  </div>
+    </div>
+    <div class="item">
+      <img src="${initParam.root}image/남녀조깅.jpg" alt="남녀조깅">
+      <div class="carousel-caption">
+	    <h3>With You</h3>
+	    <p>연인과 즐거운 운동 데이트</p>
+	  </div>
+    </div>
+    <div class="item">
+      <img src="${initParam.root}image/단체.jpg" alt="단체">
+      <div class="carousel-caption">
+	    <h3>Together</h3>
+	    <p>함께 운동하며 공유하며</p>
+	  </div>
+    </div>
+  </div>
 
-<!-- FullCalendar(jQuery API) -->
-<link href='${initParam.root}fullcalendar/fullcalendar.css' rel='stylesheet' />
-<script src='${initParam.root}fullcalendar/fullcalendar.js'></script>
-
+  <!-- Controls -->
+  <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+</center>
 <script>
-   // FullCalnedar
-   $(document).ready(function() {
-      $('#calendar').fullCalendar({
-    	  height: 600,
-      });
-   });
+	$(".carousel").carousel({
+		interval: 2000
+	});
 </script>
-<style type="text/css">
-#wrap{margin: 0 auto; padding: 50px;}
-.calendar_body{width: 1000px; float: center; margin-left: 0px;}
-</style>
-<body>
 
-<!--  <div id="wrap">
-  
-      <div class="calendar_body">
-         <div id="calendar"></div>
-      </div>
-      <div class="cal_input_table">
-         <form action="./CalendarAdd.cl" method="post">
-            <table border="1">
-            </table>
-         </form>
-         <form action="./CalendarDel.cl" method="post">
-            <table border="1">            
-            </table>
-         </form>
-      </div>   
-     
-   </div> -->
-   
 <div class="row marketing">
-	<div class="col-md-6">
-		
+	<div class="col-md-6">	
 		<div class="table-responsive">
-			<table class="table" >
+			<table class="table table-hover" >
 				<thead>
 				<tr><td colspan="6" ><h4 >운동 게시판 조회수 TOP5!</h4></td></tr>
 					<tr>
 						<th colspan="3" align="center">타이틀</th>
-
 						<th>작성자</th>
 						<th>작성일</th>
 						<th>조회</th>
@@ -70,27 +103,21 @@
 								${list.boardTitle}
 								</c:otherwise>
 								</c:choose>
-								
-								
-								
 								</a></td>
 							<td>${list.exerciseVO.exerciseName }</td>
 							<td>관리자</td>
 							<td>${list.boardWdate }</td>
 							<td style="text-align: center;">${list.exerciseHits }</td>
 						</tr>
-
 					</c:forEach>
 				</tbody>
 			</table>
 		</div>
-		
-
 	</div>
-	<div class="col-md-6">
+<div class="col-md-6">
 		
 		<div class="table-responsive">
-			<table class="table">
+			<table class="table table-hover">
 				<thead>
 				<tr><td colspan="6" ><h4 >커뮤니티 게시판 추천수 TOP5!</h4></td></tr>
 					<tr>

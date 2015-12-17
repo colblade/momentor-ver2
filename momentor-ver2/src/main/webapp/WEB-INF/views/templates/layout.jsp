@@ -18,7 +18,7 @@
 <link rel="stylesheet" type="text/css" href="${initParam.root}css/home.css">
 <link rel="stylesheet" type="text/css" href="${initParam.root}css/notice.css">
 <link rel="stylesheet" type="text/css" href="${initParam.root}css/myinfo.css">
-<link rel="stylesheet" type="text/css" href="${initParam.root}css/faq.css">
+<link href="${initParam.root}font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 <!-- 합쳐지고 최소화된 최신 CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 

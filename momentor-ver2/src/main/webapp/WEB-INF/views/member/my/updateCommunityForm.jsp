@@ -4,14 +4,6 @@
  <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <script type="text/javascript">
        $(document).ready(function(){
-    	   $("input[name=boardTitle]").keyup(function(){
-    	        var maxTitleLength=50;
-    	         if($("input[name=boardTitle]").val().length>=maxTitleLength){
-    	           alert("제목은 한글 기준 "+maxTitleLength+"자 까지만 가능합니다");
-    	           $("input[name=boardTitle]").val($("input[name=boardTitle]").val().substring(0,maxTitleLength));
-    	            return false;
-    	         } 
-    	       });
           $("#updateForm").submit(function(){
              if($("input[name=boardTitle]").val()==""){
                 alert("제목을 입력해주세요")
@@ -82,7 +74,7 @@
 				<c:when test="${empty requestScope.nameList }">
 
 					<c:forEach begin="0" end="4" varStatus="cvs">
-						<input type="file" name="file[${cvs.index }]">
+						<input type="file" name="file[${cvs.index }]"><br>
 					</c:forEach>
 
 
@@ -94,12 +86,12 @@
 
 							<img id="image_${vs.index }"
 								src="${initParam.root}communityimg/${fileName.BOARDNO}_${fileName.IMGNAME}"
-								title=" ${fileName.IMGNAME }">
+								title=" ${fileName.IMGNAME }"><br>
 
 						</c:forEach> <c:if test="${fn:length(requestScope.nameList)<5 }">
 							<c:forEach begin="0" end="${4-fn:length(requestScope.nameList)}"
 								varStatus="cvs">
-								<input type="file" name="file[${cvs.index }]">
+								<input type="file" name="file[${cvs.index }]"><br>
 
 							</c:forEach>
 						</c:if>
@@ -120,7 +112,9 @@
    </div>
    <div class="form-group" align="right">
       <div class="col-sm-offset-2 col-sm-10">
-         <button type="submit" class="btn btn-default">수정하기</button>
+         <input type="submit" value="수정하기" class="btn btn-primary">
+         &nbsp;&nbsp; 
+		<input type="button" value="되돌아가기" id="getExerciseByNo" class="btn btn-primary">
       </div>
    </div>
 </form>

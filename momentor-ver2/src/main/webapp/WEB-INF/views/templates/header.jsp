@@ -8,7 +8,6 @@
 .block li a {display:block; height:30px; line-height:30px; color:#555; text-decoration:none;}
 .block li span {padding:8px 5px; background:#1D356D; color:#fff; font-size:15px; margin-right:4px;  border-radius: .25em;} 
 </style>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script type="text/javascript">
     	$(document).ready(function(){
   		$.ajax({

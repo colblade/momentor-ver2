@@ -135,25 +135,30 @@
       </c:if>
      </ul>
    </nav>
+</div><br>
+<c:if test="${sessionScope.pnvo != null}"> 
+<div class="clearfix">
+    <span class="btn-group"></span>
+    <div class="pull-right">
+        <a href="${initParam.root}my_writeForm.do" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span> 글쓰기</a>   
+    </div>
 </div>
+</c:if>
 <hr>
 <center>
-<form action="member_searchByCommunityBoard.do" id="cbSeachForm">
-	<select name="searchType">
+<form class="form-inline" action="member_searchByCommunityBoard.do" id="cbSeachForm">
+  <div class="form-group">
+        <select name="searchType" class="form-control input-sm">
 		<option value="cbTitle">제목</option>
 		<option value="mNickName">닉네임</option>
 	</select>
-	<input type="text" name="searchWord">
-	<input type="submit" value="검색">
+  </div>
+  <div class="form-group">
+  	<input type="text" name="searchWord" class="form-control" placeholder="검색어를 입력하세요">
+  </div>
+  <button type="submit" class="btn btn-primary">검색</button>
 </form>
 </center>
-<nav>
-  <ul class="pager">
-    <c:if test="${sessionScope.pnvo != null}">   
-       <li class="next"><a href="${initParam.root}my_writeForm.do">WRITE</a></li>
-   </c:if>   
-  </ul>
-</nav>
 <!-- Modal -->
 <div class="modal fade" id="detailedModalView" tabindex="-1" role="dialog" aria-labelledby="idModalLabel" aria-hidden="true">
   <div class="modal-dialog">
