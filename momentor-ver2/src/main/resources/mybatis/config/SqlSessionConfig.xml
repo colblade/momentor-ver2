@@ -14,22 +14,19 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<typeAlias type="org.kosta.momentor.contents.model.NoticeBoardVO" alias="nvo"/>
 		<typeAlias type="org.kosta.momentor.contents.model.QNABoardVO" alias="qvo"/>
 		<typeAlias type="org.kosta.momentor.contents.model.FAQBoardVO" alias="fvo"/>
-		
-		 	<!-- - - - - - - - - - - - -2015-11-28- - - - - - - - - - -->
 		<typeAlias type="org.kosta.momentor.contents.model.ExerciseBoardVO" alias="ebvo"/>
 		<typeAlias type="org.kosta.momentor.cart.model.ExerciseVO" alias="evo"/>
-
-
 		<typeAlias type="org.kosta.momentor.planner.model.PlannerVO" alias="planvo"/>
 		<typeAlias type="org.kosta.momentor.cart.model.CartVO" alias="cartvo"/>
+		<typeAlias type="org.kosta.momentor.aop.model.ReportVO" alias="reportvo"/>
 	</typeAliases>	
     <!-- mybatis sql 정의 xml을 mapping  -->
 	<mappers>
-		<mapper resource="mybatis/config/momentormember.xml"></mapper>
-		<mapper resource="mybatis/config/momentorcontent.xml"></mapper>
-		
-		<mapper resource="mybatis/config/momentorplan.xml"></mapper>
-		<mapper resource="mybatis/config/momentorcart.xml"></mapper>
+		<mapper resource="mybatis/config/momentormember.xml"/>
+		<mapper resource="mybatis/config/momentorcontent.xml"/>
+		<mapper resource="mybatis/config/momentorplan.xml"/>
+		<mapper resource="mybatis/config/momentorcart.xml"/>
+		<mapper resource="mybatis/config/momentorreport.xml"/>
 	</mappers>
 </configuration>
 

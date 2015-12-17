@@ -85,6 +85,8 @@
     	  if($("#detailPlan").val() == "플래너"){
     		  if(confirm("플래너로 이동하시겠습니까?")){
 	    		  location.href="my_planner.do?memberId=${sessionScope.pnvo.momentorMemberVO.memberId}&&plannerDate=" + $("#selectDay").val();
+       		  }else{
+       			  return false;
        		  }
     	  } else if($("#detailPlan").val() == "상세보기"){
     		  if(confirm("상세보기로 넘어가시겠습니까?") == false){

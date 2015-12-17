@@ -14,7 +14,7 @@
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 	</context:component-scan>
 	<!-- AOP -->
-	<!-- <aop:aspectj-autoproxy></aop:aspectj-autoproxy> -->
+	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
 	<!-- dataSource -->
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName">

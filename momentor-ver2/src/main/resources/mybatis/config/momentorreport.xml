@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="report">   
+
+<!--검색어 등록  -->
+<insert id="registerKeyword" parameterType="string">
+INSERT INTO KEYWORD_STATS (KEYWORD,COUNT) VALUES (#{value},1)
+</insert>
+
+<!--검색 횟수 증가  -->
+<update id="updateKeyword" parameterType="string">
+UPDATE KEYWORD_STATS SET COUNT = COUNT +1 WHERE KEYWORD = #{value}
+</update>
+
+<!-- 검색어 랭킹 가져오기 -->
+<select id="getKeywordStats" resultType="reportvo">
+<![CDATA[
+SELECT KEYWORD,COUNT, RANKING FROM (
+SELECT KEYWORD,COUNT, RANK() OVER(ORDER BY COUNT DESC) AS RANKING FROM KEYWORD_STATS
+) WHERE RANKING <=5
+]]> 
+</select>
+</mapper>

@@ -1,8 +1,35 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-    <script type="text/javascript">
+<style>
+.block {border:1px solid #ebebeb; padding:0; height:30px; overflow:hidden; background:#fff; width:130px;  font-size:14px; border-radius: .25em;}
+.block ul,
+.block li {margin:0; padding:0; list-style:none;}
+.block li a {display:block; height:30px; line-height:30px; color:#555; text-decoration:none;}
+.block li span {padding:8px 5px; background:#1D356D; color:#fff; font-size:15px; margin-right:4px;  border-radius: .25em;} 
+</style>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript">
     	$(document).ready(function(){
+  		$.ajax({
+    			type:"get",
+    			url :"${initParam.root}member_getKeywordStats.do",
+    			success:function(data){
+    				var txt = "";
+    				$.each(data, function(i, list){
+    					var keyword = list.keyword;
+    					if(keyword.length>8){
+    						keyword = keyword.substring(0,8)+"..";
+    					}
+    					txt+="<li><a href='member_findResult.do?word="+list.keyword+"'><span>"+(i+1)+"</span>"+keyword+"</a></li>";
+    				});//each
+    				
+    				//alert(txt);
+    				$("#ticker").html(txt);
+    			
+    			}//success
+    		});//ajax
+    		
     		$("#findForm").submit(function(){
     			if($("#searchBox").val() == ""){
     				alert("검색어를 입력하세요!");
@@ -11,6 +38,22 @@
     		});
     	});
     </script>
+ <script type="text/javascript">
+ $(function(){
+		
+	    var ticker = function()
+	    {
+	        setTimeout(function(){
+	            $('#ticker li:first').animate( {marginTop: '-20px'}, 400, function()
+	            {
+	                $(this).detach().appendTo('ul#ticker').removeAttr('style');
+	            });
+	            ticker();
+	        }, 3000);
+	    };
+	    ticker();
+	});
+ </script>
     <nav class="navbar navbar-default navbar-fixed-top">
      <div class="container">
         <div class="navbar-header col-md-3">
@@ -56,6 +99,13 @@
               <input type="text" class="form-control" placeholder="Search" id="searchBox" name="word">
             </div>
             <button type="submit" class="btn btn-default">검색</button>
+          		&nbsp;&nbsp;&nbsp;
+            	<div class="form-group">
+            	<div class='block'>
+            	<ul id='ticker'>
+            	</ul>
+            	</div>
+				</div>
           </form>
         </div><!--/.nav-collapse -->
         </div>
