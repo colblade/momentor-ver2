@@ -401,40 +401,43 @@
 </script>
 <img src="${initParam.root}image/능균등.PNG"><br><br>
 <c:choose>
-   <c:when test="${not empty sessionScope.pnvo}">      
+<c:when test="${not empty sessionScope.pnvo}">      
     <font style="font-weight: bold;">${sessionScope.pnvo.momentorMemberVO.nickName} 님
-    |<a href="#" id="logout">로그아웃</a></font><br><br><br>
-    <font style="font-weight: bold; font-size: large;">
-    	** Member Info **
-    </font><hr>
-<font color="gray" style="font-weight: bold; font-size: medium; font-style: italic;">
-       + ${sessionScope.pnvo.momentorMemberVO.memberName} 님 +<br>
-       ${sessionScope.pnvo.age}세 <br>
-      키 : ${sessionScope.pnvo.memberHeight}cm <br>
-      몸무게 : ${sessionScope.pnvo.memberWeight}kg  <br>
-      <c:choose>
-         <c:when test="${sessionScope.pnvo.bmi < 18.5}">
-            <a href="#" data-html="true" data-title="저체중" data-placement="bottom">
-            <font color="red" style="background-color: black;">bmi : ${sessionScope.pnvo.bmi}</font><br></a>
-         </c:when>
-         <c:when test="${sessionScope.pnvo.bmi >= 18.5 && sessionScope.pnvo.bmi < 23}">
-            <a href="#" data-html="true" data-title="정상" data-placement="bottom">
-            <font color="greenyellow" style="background-color: black;">bmi : ${sessionScope.pnvo.bmi}</font><br></a>
-         </c:when>
-         <c:when test="${sessionScope.pnvo.bmi >= 23 && sessionScope.pnvo.bmi < 25}">
-            <a href="#" data-html="true" data-title="과체중" data-placement="bottom">
-            <font color="yellow" style="background-color: black;">bmi : ${sessionScope.pnvo.bmi}</font><br></a>
-         </c:when>
-         <c:when test="${sessionScope.pnvo.bmi >= 25 && sessionScope.pnvo.bmi < 30}">
-            <a href="#" data-html="true" data-title="비만" data-placement="bottom">
-            <font color="orange" style="background-color: black;">bmi : ${sessionScope.pnvo.bmi}</font><br></a>
-         </c:when>
-         <c:when test="${sessionScope.pnvo.bmi >= 30}">
-            <a href="#" data-html="true" data-title="고도비만" data-placement="bottom">
-            <font color="red" style="background-color: black;">bmi : ${sessionScope.pnvo.bmi}</font><br></a>
-         </c:when>
-      </c:choose>
-    </font><hr>
+    &nbsp;&nbsp;| &nbsp;&nbsp;<a href="#" id="logout">로그아웃</a></font><br><br><br>
+    <div class="panel panel-default">
+    <div class="panel-heading">
+    <font style="font-weight: bold; font-size: large;"><center><li class="glyphicon glyphicon-user"></li> Member Info</center></font></div>
+    <div class="panel-body">
+	<font color="gray" style="font-weight: bold; font-size: 15px; font-style: italic;">
+		<center><p style="color: #337ab7">${sessionScope.pnvo.momentorMemberVO.memberName} 님</p></center>
+		<p>&nbsp;&nbsp;&nbsp;나이&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${sessionScope.pnvo.age}세</p>
+		<p>&nbsp;&nbsp;&nbsp;키&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${sessionScope.pnvo.memberHeight}cm</p>
+		<p>&nbsp;&nbsp;&nbsp;몸무게&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${sessionScope.pnvo.memberWeight}kg</p>
+		&nbsp;&nbsp;&nbsp;BMI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<c:choose>
+			<c:when test="${sessionScope.pnvo.bmi < 18.5}">
+				<a href="#" data-html="true" data-title="저체중" data-placement="bottom">
+				<font color="red" style="background-color: black;">${sessionScope.pnvo.bmi}</font><br></a>
+			</c:when>
+			<c:when test="${sessionScope.pnvo.bmi >= 18.5 && sessionScope.pnvo.bmi < 23}">
+				<a href="#" data-html="true" data-title="정상" data-placement="bottom">
+				<font color="greenyellow" style="background-color: black;">${sessionScope.pnvo.bmi}</font><br></a>
+			</c:when>
+			<c:when test="${sessionScope.pnvo.bmi >= 23 && sessionScope.pnvo.bmi < 25}">
+				<a href="#" data-html="true" data-title="과체중" data-placement="bottom">
+				<font color="yellow" style="background-color: black;">${sessionScope.pnvo.bmi}</font><br></a>
+			</c:when>
+			<c:when test="${sessionScope.pnvo.bmi >= 25 && sessionScope.pnvo.bmi < 30}">
+				<a href="#" data-html="true" data-title="비만" data-placement="bottom">
+				<font color="orange" style="background-color: black;">${sessionScope.pnvo.bmi}</font><br></a>
+			</c:when>
+			<c:when test="${sessionScope.pnvo.bmi >= 30}">
+				<a href="#" data-html="true" data-title="고도비만" data-placement="bottom">
+				<font color="red" style="background-color: black;">${sessionScope.pnvo.bmi}</font><br></a>
+			</c:when>
+		</c:choose>
+    </font></div></div>
+    <hr>
 </c:when>
 <c:otherwise>
 <div class="loginForm">

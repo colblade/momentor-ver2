@@ -147,9 +147,11 @@
 													"<div class='panel-body'>찜 된 운동이 없습니다.</div></div>";
 					if(cartListResult.cartList.length != 0){
 						cartTableFrame = "<div class='panel panel-primary'>" + 
-												"<div class='panel-heading'><h4>찜 바구니</h4></div>" + 
+												"<div class='panel-heading'><h4>찜 바구니&nbsp;&nbsp;" + 
+												"<a id='collapseBtn' data-toggle='collapse' href='#collapse1'><i class='glyphicon glyphicon-chevron-down' style='color: white'></i></a></h4></div>" + 
+												"<div id='collapse1' class='panel-collapse collapse'>" + 
 												"<div class='panel-body'>" +
-												"<table class='table table-hover'>" + 
+												"<table class='table table-hover cartTable'>" + 
 												"<thead><tr><th>선택</th><th>번호</th><th colspan='2'>운동명</th><th>삭제</th></tr></thead>" + 
 												"<tbody id='cartListBody'>";	
 						 $.each(cartListResult.cartList, function(index1, list){
@@ -172,9 +174,9 @@
 																"<td>" + exName + "</td>" + 
 																"<td><input type='button' class='deleteInCartBtn' value='삭제'></td></tr>";
 						});
-						cartTableFrame += "<tr><td colspan='5'>목표 set <input type='text' name='tempTargetSet' id='tempTargetSet' style='text-align: right'>" + 
+						cartTableFrame += "<tr><td colspan='5'>목표 세트 <input type='text' name='tempTargetSet' id='tempTargetSet' style='text-align: right'>" + 
 													" <input type='button' id='selectExerciseBtn' value='선택'></td></tr>" + 
-													"</tbody></table></div></div>";
+													"</tbody></table></div></div></div>";
 					}
 					$("#cartListTable").html(cartTableFrame);
 				}
@@ -303,6 +305,16 @@
 			});
 			$("#exView").modal();
 		});
+		
+		// 
+        $("#cartListTable").on("click", "#collapseBtn", function(){
+			if($(this).parent().parent().next().children().is(":visible")){
+				$('i', $(this)).removeClass("glyphicon-chevron-up").addClass("glyphicon-chevron-down");
+			}else{
+				$('i', $(this)).removeClass("glyphicon-chevron-down").addClass("glyphicon-chevron-up");
+			}
+		});
+		
 	});
 		
 	// 임시등록 되어있는 운동이 있는데 페이지를 벗어나려 할 때 사용자에게 알림
@@ -370,6 +382,7 @@
 		
 		// Easy pie charts
         $('.chart').easyPieChart({animate: 1000});
+		
 	}
 	
 </script>
@@ -470,9 +483,10 @@
 <c:choose>
 	<c:when test="${requestScope.cartList.size() != 0}">
 	<div class="panel panel-primary">
-	<div class="panel-heading"><h4>찜 바구니</h4></div>
+	<div class="panel-heading"><h4>찜 바구니&nbsp;&nbsp;<a id="collapseBtn" data-toggle="collapse" href="#collapse1"><i class="glyphicon glyphicon-chevron-down" style="color: white"></i></a></h4></div>
+	<div id="collapse1" class="panel-collapse collapse">
 	<div class="panel-body">
-		<table class="table table-hover">
+		<table class="table table-hover cartTable">
 			<thead>
 				<tr>
 					<th>선택</th><th>번호</th><th colspan="2">운동명</th><th>삭제</th>
@@ -497,11 +511,11 @@
 				</tr>	
 				</c:forEach>
 				<tr>
-					<td colspan='5'>목표 set <input type="text" name="tempTargetSet" id="tempTargetSet" style="text-align: right">
+					<td colspan="5">목표 세트 <input type="text" name="tempTargetSet" id="tempTargetSet" style="text-align: right">
 					<input type="button" id="selectExerciseBtn" value="선택"></td>
 				</tr>
 			</tbody>
-		</table></div></div>
+		</table></div></div></div>
 	</c:when>
 	<c:otherwise>
 		<div class="panel panel-primary">

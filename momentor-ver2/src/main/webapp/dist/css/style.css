@@ -23,7 +23,7 @@
 	white-space:nowrap;
 }
 [data-title]:hover:after{
-	left:5px;
+	margin-left:85px;
 	opacity:1;
 }
 
@@ -43,6 +43,9 @@ p.paging{
 		text-align: center;
 	} 
 	
-.plannerTable, .plannerTable th{
+.plannerTable, .plannerTable th, .cartTable, .cartTable th{
 	text-align: center;
+}
+#listBody td, #cartListBody td{
+	vertical-align: middle;
 }
