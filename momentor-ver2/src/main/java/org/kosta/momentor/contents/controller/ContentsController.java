@@ -674,14 +674,10 @@ public class ContentsController {
 		/* FAQ 글쓰기 DB 저장 */
 		@RequestMapping(value="admin_postingFAQ.do",method=RequestMethod.POST)
 		public ModelAndView postingFAQ(FAQBoardVO fvo){
-			int boardNo=noticeBoardService.postingFAQ(fvo);
-			return new ModelAndView("redirect:/getFAQByNo.do","boardNo",boardNo);
+			noticeBoardService.postingFAQ(fvo);
+			return new ModelAndView("redirect:/showFAQList.do");
 		}
-		/* FAQ 게시물 상세보기 */
-		@RequestMapping("getFAQByNo.do")
-		public ModelAndView getFAQByNo(int boardNo){
-			return new ModelAndView("member_FAQ_info","fvo",noticeBoardService.getFAQByNo(boardNo));
-		}
+
 		/* FAQ 게시물 삭제 */
 		@RequestMapping("admin_deleteFAQByNo.do")
 		public ModelAndView deleteFAQByNo(int boardNo){
@@ -698,6 +694,6 @@ public class ContentsController {
 		@RequestMapping(value="admin_updateFAQ.do",method=RequestMethod.POST)
 		public ModelAndView updateFAQ(FAQBoardVO fvo){
 			noticeBoardService.updateFAQ(fvo);
-			return new ModelAndView("redirect:/getFAQByNo.do","boardNo",fvo.getBoardNo());			
+			return new ModelAndView("redirect:/showFAQList.do");			
 		}
 }

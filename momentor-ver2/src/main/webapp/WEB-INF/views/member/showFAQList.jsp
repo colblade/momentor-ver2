@@ -3,22 +3,38 @@
     <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <h2 class="sub-header">FAQ</h2>
 <div class="table-responsive">
-	<table class="table table-striped">
-		<thead>
-			<tr>
-				<th>글번호</th>
-				<th>제목</th>			
-			</tr>
-		</thead>
-		<tbody>
+	<script type="text/javascript">
+	function updateFAQ(boardNo){
+		if(confirm("수정 하시겠습니까?")){
+			location.href="admin_updateFAQForm.do?boardNo="+boardNo;
+		}
+	};
+	function deleteFAQ(boardNo){
+		if(confirm("삭제 하시겠습니까?")){
+			location.href="admin_deleteFAQByNo.do?boardNo="+boardNo;
+		}
+	}
+		    $(document).ready(function(){
+		    	$("#accordion").accordion({
+		    		 active: false,
+		    		collapsible: true
+		    	});
+		    	$("#modifyBtn").click(function(){    			
+	    			if(confirm("수정 하시겠습니까?")){
+	    				location.href="admin_updateFAQForm.do?boardNo="+$("#");
+	    			}
+	    	});
+		    });
+			</script>
+	<div id="accordion"class="ui-accordion-content">
 			<c:forEach items="${requestScope.FAQList.list}" var="posting">
-				<tr>
-					<td>${posting.boardNo }</td>
-					<td><a href="getFAQByNo.do?boardNo=${posting.boardNo}">${posting.boardTitle}</a></td>
-				</tr>
+			<h3 class="ui-accordion-header" >${posting.boardTitle}</h3>
+			<p>${posting.boardContent}<c:if test="${sessionScope.pnvo.momentorMemberVO.auth==1 }">
+			<input type="button"  id=" modifyBtn"  value="수정"  onclick="updateFAQ(${posting.boardNo})">
+			<input type="button"  id="deleteBtn"  value="삭제" onclick="deleteFAQ(${posting.boardNo})"></c:if>
+			</p>
 			</c:forEach>
-		</tbody>
-	</table>
+</div>
 </div>
 <div align="center">
 <nav>

@@ -18,6 +18,7 @@
 <link rel="stylesheet" type="text/css" href="${initParam.root}css/home.css">
 <link rel="stylesheet" type="text/css" href="${initParam.root}css/notice.css">
 <link rel="stylesheet" type="text/css" href="${initParam.root}css/myinfo.css">
+<link rel="stylesheet" type="text/css" href="${initParam.root}css/faq.css">
 <!-- 합쳐지고 최소화된 최신 CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 

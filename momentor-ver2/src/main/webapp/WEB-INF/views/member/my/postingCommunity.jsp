@@ -2,6 +2,14 @@
    pageEncoding="UTF-8"%>
 <script type="text/javascript">
    $(document).ready(function() {
+	   $("input[name=boardTitle]").keyup(function(){
+	        var maxTitleLength=50;
+	         if($("input[name=boardTitle]").val().length>=maxTitleLength){
+	           alert("제목은 한글 기준 "+maxTitleLength+"자 까지만 가능합니다");
+	           $("input[name=boardTitle]").val($("input[name=boardTitle]").val().substring(0,maxTitleLength));
+	            return false;
+	         } 
+	       });
       $("#writeForm").submit(function() {
          if ($("input[name=boardTitle]").val() == "") {
             alert("제목을 입력해주세요")
