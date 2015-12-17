@@ -35,7 +35,7 @@
 	</div>
    <div class="form-group" align="right">
       <div class="col-sm-offset-2 col-sm-10">
-     <input type="button" value="수정하기" id="updateBtn" class="btn btn-default">
+     <input type="button" value="수정하기" id="updateBtn">
       </div>
    </div>
 </form>

@@ -621,10 +621,7 @@ public class ContentsController {
 		
 		/*로그인한 유저가 QNA 글작성*/
 		@RequestMapping("my_writeQNA.do")
-		public ModelAndView writeQNA(HttpServletRequest request, QNABoardVO qvo){
-			HttpSession session = request.getSession(false);
-			MomentorMemberPhysicalVO pnvo =  (MomentorMemberPhysicalVO) session.getAttribute("pnvo");
-			qvo.setMomentorMemberVO(pnvo.getMomentorMemberVO());
+		public ModelAndView writeQNA(QNABoardVO qvo){
 			qnaBoardService.writeQNA(qvo);
 			return new ModelAndView("my_writeQNAResult","qvo",qvo);
 		}

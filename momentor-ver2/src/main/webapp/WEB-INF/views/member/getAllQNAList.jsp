@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <body>
+<h2 class="sub-header">Q&A</h2>
 <div class="table-responsive">
  <table class="table table-striped, table-hover">
  <thead>
@@ -18,7 +19,7 @@
  <c:forEach items="${requestScope.QNAList.list }" var="QNAList" varStatus="vs">
 	<tr>
 		<td class="text-left">${QNAList.boardNo }</td>
-<%-- 		<td class="text-left">
+		<td class="text-left">
 			<c:if test="${QNAList.relevel!=0 }">
 			<c:forEach begin="0" end="${QNAList.relevel }" step="1">
 				&nbsp;&nbsp;
@@ -26,41 +27,24 @@
 				<img src="${initParam.root }image/reply.jpg">
 			</c:if>
  			<c:choose>
-				<c:when test="${sessionScope.pnvo.momentorMemberVO.auth==1 or QNAList.momentorMemberVO.auth==1 or QNAList.momentorMemberVO.memberId==sessionScope.pnvo.momentorMemberVO.memberId }">
-					<a href="${initParam.root}member_getQNAByNo.do?boardNo=${QNAList.boardNo}">${QNAList.boardTitle }</a>					
-				</c:when>
-				<c:otherwise>
-					${QNAList.boardTitle }
-				</c:otherwise>
-			</c:choose>
-			
-		</td> --%>
-		<td class="text-left">
-			<c:if test="${QNAList.relevel!=0 }">
-			<c:forEach begin="0" end="${QNAList.relevel }" step="1">
-				&nbsp;&nbsp;
-			</c:forEach>
-				<img src="${initParam.root }image/reply.jpg">
-			</c:if><!-- ${QNAList.momentorMemberVO.memberId eq sessionScope.pnvo.momentorMemberVO.memberId } -->
- 			<c:choose>
 				<c:when test="${QNAList.ref eq QNAList.boardNo }">
 				<c:choose>
-				<c:when test="${QNAList.momentorMemberVO.memberId eq sessionScope.pnvo.momentorMemberVO.memberId}">
+				<c:when test="${QNAList.momentorMemberVO.memberId eq sessionScope.pnvo.momentorMemberVO.memberId }">			
 				<c:if test="${sessionScope.pnvo.momentorMemberVO.auth != 1 }">
-					<a href="${initParam.root}member_getQNAByNo.do?boardNo=${QNAList.boardNo}">${QNAList.boardTitle }</a>
-				</c:if>0
-				<c:set var = "boardNo" value="${QNAList.boardNo }"/>
-				</c:when>
+               		<a href="${initParam.root}member_getQNAByNo.do?boardNo=${QNAList.boardNo}">${QNAList.boardTitle }</a>
+            	</c:if>
+            	</c:when>
 				<c:otherwise>
 					<c:if test="${sessionScope.pnvo.momentorMemberVO.auth!=1 }">
 							${QNAList.boardTitle }
 					</c:if>
 				</c:otherwise>
 				</c:choose>
+				
 				</c:when>
 				<c:when test="${QNAList.ref != QNAList.boardNo }">
 				<c:choose>
-				<c:when test="${boardNo eq QNAList.ref }">
+				<c:when test="${QNAList.refMemberId eq sessionScope.pnvo.momentorMemberVO.memberId}">
 				<a href="${initParam.root}member_getQNAByNo.do?boardNo=${QNAList.boardNo}">${QNAList.boardTitle }</a>
 				</c:when>
 				<c:otherwise>
@@ -72,9 +56,9 @@
 				</c:when>
 			</c:choose>
 
- 			<c:if test="${sessionScope.pnvo.momentorMemberVO.auth==1 }">
+			<c:if test="${sessionScope.pnvo.momentorMemberVO.auth==1 }">
 				<a href="${initParam.root}member_getQNAByNo.do?boardNo=${QNAList.boardNo}">${QNAList.boardTitle }</a>
-			</c:if> 
+			</c:if>
 
 			
 		</td>

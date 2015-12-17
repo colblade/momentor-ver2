@@ -503,14 +503,15 @@ UPDATE EXERCISE_URL SET URLPATH =#{urlPath} WHERE EXERCISENAME =#{exerciseName}
 		<result column="qna_Date" property="boardWdate" />
 		<result column="memberId" property="momentorMemberVO.memberId" />	
 		<result column="content" property="boardContent" />			
-		<result column="qna_Hits" property="qnaHits" />			
+		<result column="qna_Hits" property="qnaHits" />
+		<result column="ref_memberId"  property="refMemberId"/>			
 	</resultMap>
 	
 	<!-- QNA 목록 -->
 	<select id="getAllQNAList" resultType="qvo" resultMap="qvoMap"> 
-       	SELECT qna_No ,MEMBERID,title,qna_Date, CONTENT,QNA_HITS, ref, restep, relevel
-		FROM (SELECT qna_No ,MEMBERID,title,qna_Date, CONTENT,QNA_HITS,CEIL(ROWNUM/5) AS PAGE, ref, restep, relevel
-		FROM (SELECT qna_No ,MEMBERID,title,TO_CHAR(qna_Date,'YYYY.MM.DD HH24:MI:SS') AS qna_Date, CONTENT,QNA_HITS, ref, restep, relevel
+       	SELECT qna_No ,MEMBERID,title,qna_Date, CONTENT,QNA_HITS, ref, restep, relevel,ref_memberId
+		FROM (SELECT qna_No ,MEMBERID,title,qna_Date, CONTENT,QNA_HITS,CEIL(ROWNUM/5) AS PAGE, ref, restep, relevel,ref_memberId
+		FROM (SELECT qna_No ,MEMBERID,title,TO_CHAR(qna_Date,'YYYY.MM.DD HH24:MI:SS') AS qna_Date, CONTENT,QNA_HITS, ref, restep, relevel,ref_memberId
 		FROM QNA_BOARD
 		ORDER BY ref desc,restep asc
 			<!-- ref desc, restep asc, qna_No desc -->
@@ -527,7 +528,7 @@ UPDATE EXERCISE_URL SET URLPATH =#{urlPath} WHERE EXERCISENAME =#{exerciseName}
 	
 	<!-- QNA 상세 글 보기 -->
 	<select id="getQNAByNo" resultType="qvo" resultMap="qvoMap">
-		select qna_No, title, qna_Date,memberId,qna_Hits, Content, ref, restep, relevel 
+		select qna_No, title, qna_Date,memberId,qna_Hits, Content, ref, restep, relevel ,ref_memberId
 		from QNA_BOARD
 		where qna_No = #{value}
 	</select>
@@ -537,8 +538,8 @@ UPDATE EXERCISE_URL SET URLPATH =#{urlPath} WHERE EXERCISENAME =#{exerciseName}
 		<selectKey keyProperty="boardNo" resultType="int" order="BEFORE">
 			select QNA_SEQ.nextVal from dual
 		</selectKey>
-		insert into QNA_BOARD(QNA_NO, MEMBERID, TITLE, QNA_DATE, CONTENT, ref, restep, relevel)
-		values(#{boardNo}, #{momentorMemberVO.memberId}, #{boardTitle},sysdate,#{boardContent},#{boardNo},0,0)
+		insert into QNA_BOARD(QNA_NO, MEMBERID, TITLE, QNA_DATE, CONTENT, ref, restep, relevel,ref_memberId)
+		values(#{boardNo}, #{momentorMemberVO.memberId}, #{boardTitle},sysdate,#{boardContent},#{boardNo},0,0,#{momentorMemberVO.memberId})
 	</insert>
 	
 	<!-- 유저가 QNA 글 수정, 관리자가 답글 글 수정 -->
@@ -571,8 +572,8 @@ UPDATE EXERCISE_URL SET URLPATH =#{urlPath} WHERE EXERCISENAME =#{exerciseName}
 	 	<selectKey keyProperty="boardNo" resultType="int" order="BEFORE">
 			select QNA_SEQ.nextVal from dual
 		</selectKey>
-	 	insert into QNA_BOARD(QNA_NO, MEMBERID, TITLE, QNA_DATE, CONTENT, ref, restep, relevel)
-		values(#{boardNo}, #{momentorMemberVO.memberId}, #{boardTitle},sysdate,#{boardContent},#{ref},#{restep},#{relevel})
+	 	insert into QNA_BOARD(QNA_NO, MEMBERID, TITLE, QNA_DATE, CONTENT, ref, restep, relevel,ref_memberId)
+		values(#{boardNo}, #{momentorMemberVO.memberId}, #{boardTitle},sysdate,#{boardContent},#{ref},#{restep},#{relevel},#{refMemberId})
 	 </insert>
 	 
 		<resultMap type="fvo" id="fvoMap">

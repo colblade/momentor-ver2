@@ -8,6 +8,7 @@
 	});
 </script>    
 <form action="${initParam.root}my_writeQNA.do" method="post" id="writeQNAForm" class="form-horizontal">
+<input type="hidden" name = "momentorMemberVO.memberId"  value = "${sessionScope.pnvo.momentorMemberVO.memberId }">
    <div class="form-group">
    <label for="boardTitle" class="col-sm-2 control-label">제목 : </label>
 	<div class="col-sm-10">

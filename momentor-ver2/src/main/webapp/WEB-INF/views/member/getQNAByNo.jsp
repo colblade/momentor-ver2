@@ -37,11 +37,18 @@ $(document).ready(function(){
 	<nav>
 	   <ul class="pager">
 	   		<c:if test="${sessionScope.pnvo!=null&&sessionScope.pnvo.momentorMemberVO.auth==1 }">
-	   			<li><a href="admin_replyView.do?boardNo=${requestScope.qvo.boardNo}">답글</a></li>
+	   			<li><a href="admin_replyView.do?boardNo=${requestScope.qvo.boardNo}">답글</a>&nbsp;&nbsp;&nbsp;</li>
 	   		</c:if>
 	   		<li><a id="updateQNABtn">수정하기</a>&nbsp;&nbsp;&nbsp;</li>
-	   		<li><a id="deleteQNABtn">삭제하기</a></li>
+	   		<li><a id="deleteQNABtn">삭제하기</a>&nbsp;&nbsp;&nbsp;</li>
+			<li><a href="${initParam.root} member_getAllQNAList.do?pageNo=1">목록으로</a></li>
 	   </ul>
     </nav>
+	</c:if>
+	<br>
+	<c:if test="${sessionScope.pnvo!=null&&sessionScope.pnvo.momentorMemberVO.memberId!=requestScope.qvo.momentorMemberVO.memberId&&sessionScope.pnvo.momentorMemberVO.auth!=1}">
+		<ul class="pager">
+			<li><a href="${initParam.root} member_getAllQNAList.do?pageNo=1">목록으로</a></li>
+		</ul>
 	</c:if>
 </body>
