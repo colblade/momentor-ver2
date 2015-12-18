@@ -69,7 +69,7 @@ public class CustomerCenterController {
 			MomentorMemberPhysicalVO pnvo =  (MomentorMemberPhysicalVO) session.getAttribute("pnvo");
 			nvo.setMomentorMemberVO(pnvo.getMomentorMemberVO());
 			noticeBoardService.postingNotice(nvo);
-			return new ModelAndView("admin_noticemgr_writeNoticeResult","nvo",nvo);
+			return new ModelAndView("redirect:member_getNoticeByNo.do?boardNo="+nvo.getBoardNo(),"nvo",nvo);
 		}
 		
 		/*관리자가 공지사항 글 수정 form*/
@@ -83,14 +83,15 @@ public class CustomerCenterController {
 		@RequestMapping(value="admin_noticeUpdate.do", method=RequestMethod.POST)
 		public ModelAndView noticeUpdate(HttpServletRequest request, NoticeBoardVO nvo){
 			noticeBoardService.updateNotice(nvo);
-			return new ModelAndView("admin_noticemgr_noticeUpdateResult","nvo",nvo);
+			return new ModelAndView("redirect:/member_getNoticeByNo.do?boardNo="+nvo.getBoardNo(),"nvo",nvo);
 		}
+		
 		
 		/*관리자가 공지사항 글 삭제*/
 		@RequestMapping(value="admin_noticeDelete.do")
 		public ModelAndView noticeDelete(HttpServletRequest request, int noticeNo){			
 			noticeBoardService.deleteNoticeByNo(noticeNo);
-			return new ModelAndView("admin_noticemgr_noticeDeleteResult");
+			return new ModelAndView("redirect:member_getAllNoticeList.do");
 		}
 		
 		/*qna part */
@@ -135,7 +136,7 @@ public class CustomerCenterController {
 		@RequestMapping(value="my_writeQNA.do")
 		public ModelAndView writeQNA(QNABoardVO qvo){
 			qnaBoardService.writeQNA(qvo);
-			return new ModelAndView("my_writeQNAResult","qvo",qvo);
+			return new ModelAndView("redirect:member_getQNAByNo.do?boardNo="+qvo.getBoardNo(),"qvo",qvo);
 		}
 		
 		/*유저가 QNA글 수정 폼*/
@@ -149,14 +150,14 @@ public class CustomerCenterController {
 		@RequestMapping(value="my_updateQNA.do", method=RequestMethod.POST)
 		public ModelAndView updateQNA(HttpServletRequest request, QNABoardVO qvo){
 			qnaBoardService.updateQNA(qvo);
-			return new ModelAndView("my_updateQNAResult","qvo",qvo);
+			return new ModelAndView("redirect:member_getQNAByNo.do?boardNo="+qvo.getBoardNo(),"qvo",qvo);
 		}
 		
 		/*유저가 QNA 글 삭제, 관리자가 QNA 답변 글 삭제*/
 		@RequestMapping(value="my_deleteQNA.do")
 		public ModelAndView deleteQNA(HttpServletRequest request, int qnaNo){
 			qnaBoardService.deleteQNA(qnaNo);
-			return new ModelAndView("my_DeleteQNAResult");
+			return new ModelAndView("redirect:member_getAllQNAList.do");
 		}
 		
 		/*관리자가 QNA 답변쓰기 폼*/

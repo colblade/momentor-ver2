@@ -528,9 +528,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<insert id="postingNotice" parameterType="nvo">
+		<selectKey keyProperty="boardNo" resultType="int" order="BEFORE">
+			select NOTICE_SEQ.nextVal from dual
+		</selectKey>
 		insert into
 		NOTICE_BOARD(NOTICE_NO, MEMBERID, TITLE, NOTICE_DATE,CONTENT)
-		values(NOTICE_SEQ.nextVal, #{momentorMemberVO.memberId},
+		values(#{boardNo}, #{momentorMemberVO.memberId},
 		#{boardTitle},sysdate,#{boardContent})
 	</insert>
 	

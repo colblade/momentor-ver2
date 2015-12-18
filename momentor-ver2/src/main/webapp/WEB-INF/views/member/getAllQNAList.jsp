@@ -44,7 +44,9 @@
 				<c:when test="${QNAList.ref != QNAList.boardNo }">
 				<c:choose>
 				<c:when test="${QNAList.refMemberId eq sessionScope.pnvo.momentorMemberVO.memberId}">
-				<a href="${initParam.root}member_getQNAByNo.do?boardNo=${QNAList.boardNo}">${QNAList.boardTitle }</a>
+				<c:if test="${sessionScope.pnvo.momentorMemberVO.auth != 1 }">
+					<a href="${initParam.root}member_getQNAByNo.do?boardNo=${QNAList.boardNo}">${QNAList.boardTitle }</a>
+				</c:if>
 				</c:when>
 				<c:otherwise>
 					<c:if test="${sessionScope.pnvo.momentorMemberVO.auth!=1 }">
