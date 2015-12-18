@@ -44,7 +44,9 @@
         		});//ajax
         		}//confirm
         	});//on
-
+        	$("#getCommunityByNo").click(function(){
+        		location.href = "my_getCommunityByNo.do?boardNo="+$("#boardNo").val();
+        	});//click
         	
        
        
@@ -114,7 +116,7 @@
       <div class="col-sm-offset-2 col-sm-10">
          <input type="submit" value="수정하기" class="btn btn-primary">
          &nbsp;&nbsp; 
-		<input type="button" value="되돌아가기" id="getExerciseByNo" class="btn btn-primary">
+		<input type="button" value="되돌아가기" id="getCommunityByNo" class="btn btn-primary">
       </div>
    </div>
 </form>

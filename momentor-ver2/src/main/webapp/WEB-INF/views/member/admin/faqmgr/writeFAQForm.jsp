@@ -22,13 +22,17 @@ $(document).ready(function() {
           return false;
        }
     });
+    $("#getFAQBoardList").click(function(){
+    	location.href="showFAQList.do?pageNo=1";
+    });
  });
 </script>
 <form class="form-horizontal" action="admin_postingFAQ.do" method="post" id="writeForm">
    <div class="form-group">
       <label for="boardTitle" class="col-sm-2 control-label">제목 : </label>
       <div class="col-sm-10">
-         <input type="text" class="form-control" name="boardTitle" placeholder="제목">
+         <input type="text" class="form-control" name="boardTitle" placeholder="제목을 입력하세요."
+					required="required">
       </div>
    </div>
    <div class="form-group">
@@ -42,12 +46,19 @@ $(document).ready(function() {
       <label for="boardContent" class="col-sm-2 control-label">내용 :
       </label>
       <div class="col-sm-10">
-         <textarea rows="7" cols="30" class="form-control" name="boardContent"></textarea>
+         <textarea rows="7" cols="30" class="form-control" name="boardContent"
+         placeholder="내용을 입력하세요." required="required"></textarea>
       </div>
    </div>
    <div class="form-group">
-      <div class="col-sm-offset-2 col-sm-10">
-         <button type="submit" class="btn btn-default">글쓰기</button>
-      </div>
-   </div>
+		<div class="col-sm-offset-2 col-sm-10">
+			<div class="clearfix">
+			    <span class="btn-group"></span>
+			    <div class="pull-right">
+			    	<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span>글쓰기</button>
+					<input type="button" value="되돌아가기" id="getFAQBoardList" class="btn btn-primary">
+			    </div>
+			</div>
+		</div>
+	</div>
 </form>

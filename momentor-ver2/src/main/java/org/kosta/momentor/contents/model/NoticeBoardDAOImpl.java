@@ -45,7 +45,6 @@ public class NoticeBoardDAOImpl implements NoticeBoardDAO {
 	}
 	@Override  //전체 FAQ 리스트 출력
 	public List<BoardVO> getAllFAQList(String pageNo) {
-		System.out.println("페이지 no = "+pageNo);
 		List<BoardVO> list=sqlSessionTemplate.selectList("content.getAllFAQList",pageNo);//resultMap 으로 받아옵시다
 		return list;
 	}

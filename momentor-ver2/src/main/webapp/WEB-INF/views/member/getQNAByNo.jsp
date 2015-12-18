@@ -17,7 +17,7 @@ $(document).ready(function(){
 	}); 
 });
 </script>
-<body>
+
 <div class="table-responsive" class="text-center" align="center">
 <form method="post" name="qnaInfo" action="#" >
 <table class="table table-striped" style="width: 50%" >
@@ -33,22 +33,15 @@ $(document).ready(function(){
 <input type="hidden" name="memberName" value="${requestScope.qvo.momentorMemberVO.memberName }">
 </form>
 </div>
-	<c:if test="${sessionScope.pnvo!=null&&sessionScope.pnvo.momentorMemberVO.memberId==requestScope.qvo.momentorMemberVO.memberId||sessionScope.pnvo.momentorMemberVO.auth==1}">
-	<nav>
-	   <ul class="pager">
-	   		<c:if test="${sessionScope.pnvo!=null&&sessionScope.pnvo.momentorMemberVO.auth==1 }">
-	   			<li><a href="admin_replyView.do?boardNo=${requestScope.qvo.boardNo}">답글</a>&nbsp;&nbsp;&nbsp;</li>
-	   		</c:if>
-	   		<li><a id="updateQNABtn">수정하기</a>&nbsp;&nbsp;&nbsp;</li>
-	   		<li><a id="deleteQNABtn">삭제하기</a>&nbsp;&nbsp;&nbsp;</li>
-			<li><a href="${initParam.root} member_getAllQNAList.do?pageNo=1">목록으로</a></li>
-	   </ul>
-    </nav>
+<c:if test="${sessionScope.pnvo!=null&&sessionScope.pnvo.momentorMemberVO.memberId==requestScope.qvo.momentorMemberVO.memberId||sessionScope.pnvo.momentorMemberVO.auth==1}">
+<nav>
+   <ul class="pager">
+	<c:if test="${sessionScope.pnvo!=null&&sessionScope.pnvo.momentorMemberVO.auth==1 }">
+		<li><a href="admin_replyView.do?boardNo=${requestScope.qvo.boardNo}">답글</a>&nbsp;&nbsp;&nbsp;</li>
 	</c:if>
-	<br>
-	<c:if test="${sessionScope.pnvo!=null&&sessionScope.pnvo.momentorMemberVO.memberId!=requestScope.qvo.momentorMemberVO.memberId&&sessionScope.pnvo.momentorMemberVO.auth!=1}">
-		<ul class="pager">
-			<li><a href="${initParam.root} member_getAllQNAList.do?pageNo=1">목록으로</a></li>
-		</ul>
-	</c:if>
-</body>
+	<li><a id="updateQNABtn" href="#">수정하기</a>&nbsp;&nbsp;&nbsp;</li>
+	<li><a id="deleteQNABtn" href="#">삭제하기</a>&nbsp;&nbsp;&nbsp;</li>
+	<li><a href="${initParam.root} member_getAllQNAList.do?pageNo=1">목록으로</a></li>
+	</ul>
+</nav>
+</c:if>

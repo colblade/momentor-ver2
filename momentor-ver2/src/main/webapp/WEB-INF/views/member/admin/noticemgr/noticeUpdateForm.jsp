@@ -13,11 +13,14 @@
 			}
 			$("#noticeUpdateForm").submit();
 		});
+		$("#getNoticeByNo").click(function(){
+    		location.href = "${initParam.root}member_getNoticeByNo.do?boardNo="+$("#boardNo").val();
+    	});//click
 	});
 </script>
 <form method="post" name="noticeUpdateForm" id="noticeUpdateForm" action="${initParam.root} admin_noticeUpdate.do" class="form-horizontal">
 	<input type="hidden" name="memberId" value="${sessionScope.mvo.memberId}">
-	<input type="hidden" name="boardNo" value="${requestScope.nvo.boardNo }">
+	<input type="hidden" id="boardNo" name="boardNo" value="${requestScope.nvo.boardNo }">
 <div class="form-group">
 <label for="boardTitle" class="col-sm-2 control-label">제목 : </label>
 	<div class="col-sm-10">
@@ -32,9 +35,11 @@
          <pre><textarea style="resize:none" rows="7" cols="30" class="form-control" name="boardContent" id="boardContent" >${requestScope.nvo.boardContent }</textarea></pre>
     </div>
 	</div>
-   <div class="form-group" align="right">
+	<div class="form-group" align="right">
       <div class="col-sm-offset-2 col-sm-10">
-     <input type="button" value="수정하기" id="updateBtn" class="btn btn-default">
+         <input type="submit" value="수정하기" class="btn btn-primary">
+         &nbsp;&nbsp; 
+		<input type="button" value="되돌아가기" id="getNoticeByNo" class="btn btn-primary">
       </div>
    </div>
 </form>

@@ -36,11 +36,8 @@
 					});//ajax
 
 				})//keyup
-		$("#exerciseForm").submit(
-				function() {
-					if ($("#exerciseBody").val == null
-							|| $("#exerciseBody").val() == "") {
-
+		$("#exerciseForm").submit(function() {
+					if ($("#exerciseBody").val == null|| $("#exerciseBody").val() == "") {
 						alert("운동 부위를 선택하세요!");
 						$(this).focus();
 						return false;
@@ -51,7 +48,6 @@
 				})//submit
 
 		$("#getExerciseBoardList").click(function() {
-
 			location.href = "${initParam.root}member_exerciseBoard.do?pageNo=1"
 		});//click
 		var count = 1;
@@ -131,9 +127,13 @@
 		</div>
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
-				<input type="submit" value="등록하기" class="btn btn-default">
-				&nbsp;&nbsp; <input type="button" value="되돌아가기"
-					id="getExerciseBoardList" class="btn btn-default">
+				<div class="clearfix">
+				    <span class="btn-group"></span>
+				    <div class="pull-right">
+				    	<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span>글쓰기</button>
+						<input type="button" value="되돌아가기" id="getExerciseBoardList" class="btn btn-primary">
+				    </div>
+				</div>
 			</div>
 		</div>
 	</form>

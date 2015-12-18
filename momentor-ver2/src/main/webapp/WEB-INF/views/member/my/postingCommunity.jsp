@@ -14,6 +14,9 @@
             return false;
          }
       });
+      $("#getCommunityBoardList").click(function() {
+			location.href = "${initParam.root}showCommunityList.do?pageNo=1"
+		});//click
       var count =1;
       
       $("#addFileBtn").click(function(){
@@ -25,7 +28,7 @@
     	  }
     	  $("#fileSpan").append("<input type = 'file' name = 'file["+count+"]'>");
     	  count++;
-      });
+      })
       
    
    });
@@ -66,7 +69,13 @@
    </div>
    <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
-         <button type="submit" class="btn btn-default">글쓰기</button>
+	   <div class="clearfix">
+		    <span class="btn-group"></span>
+		    <div class="pull-right">
+         		<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span>글쓰기</button>
+         		<input type="button" value="되돌아가기" id="getCommunityBoardList" class="btn btn-primary">   
+		    </div>
+		</div>
       </div>
    </div>
 </form>

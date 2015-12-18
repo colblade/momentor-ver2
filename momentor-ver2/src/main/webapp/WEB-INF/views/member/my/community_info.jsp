@@ -255,7 +255,7 @@ function showReplyList(result){
             <br><br><br>
             <hr>
             <p>
-            <input class="btn btn-default" type="button" value="댓글보기▼" id="replyBtn">
+            <input class="btn btn-primary" type="button" value="댓글보기▼" id="replyBtn">
                <c:set value="${requestScope.recommendInfo }" var = "recInfo"/>
            
              	조회수 : ${info.memberHits}&nbsp; | 추천수 : <span id="recommendCount">${info.recommend }</span>&nbsp;
@@ -293,7 +293,7 @@ function showReplyList(result){
                <div id="replyView" >
                </div>
                <hr>
-               <textarea style="resize:none" rows="3" cols="40" class="form-control" name="content"></textarea>
+               <textarea style="resize:none" rows="3" cols="40" class="form-control" name="content"></textarea><br>
 	                  <input type="button" class="btn btn-primary" id="registReply" value="등록하기" >
 	                  <hr>
 	           </div>

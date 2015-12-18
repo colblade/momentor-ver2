@@ -13,11 +13,14 @@
 			}
 			$("#updateQNAForm").submit();
 		});
+		$("#getQNAByNo").click(function(){
+    		location.href = "${initParam.root}member_getQNAByNo.do?boardNo="+$("#boardNo").val();
+    	});//click
 	});
 </script>
 <form method="post" name="updateQNAForm" id="updateQNAForm" action="${initParam.root} my_updateQNA.do" class="form-horizontal">
 	<input type="hidden" name="memberId" value="${sessionScope.mvo.memberId}">
-	<input type="hidden" name="boardNo" value="${requestScope.qvo.boardNo }">
+	<input type="hidden" name="boardNo" id="boardNo" value="${requestScope.qvo.boardNo }">
 	<input type="hidden" name="qnaHits" value="${requestScope.qvo.qnaHits }">
 <div class="form-group">
 <label for="boardTitle" class="col-sm-2 control-label">제목 : </label>
@@ -33,9 +36,11 @@
          <pre><textarea style="resize:none" rows="7" cols="30" class="form-control" name="boardContent" id="boardContent" >${requestScope.qvo.boardContent }</textarea></pre>
     </div>
 	</div>
-   <div class="form-group" align="right">
+	<div class="form-group" align="right">
       <div class="col-sm-offset-2 col-sm-10">
-     <input type="button" value="수정하기" id="updateBtn">
+         <input type="submit" value="수정하기" class="btn btn-primary">
+         &nbsp;&nbsp; 
+		<input type="button" value="되돌아가기" id="getQNAByNo" class="btn btn-primary">
       </div>
    </div>
 </form>
