@@ -51,6 +51,10 @@ $(document).ready(function(){
 	<p class="text-center">bmi : ${requestScope.pnvo.bmi}</p>
 	<hr>
 <br>
+<div align="center">
+	<input type="button" value="회원정보수정하기" id="memberInfoUpdateBtn" class="btn btn-primary">&nbsp;
+	<input type="button" value="탈퇴하기" id="memberInfoDeleteBtn" class="btn btn-primary">
+	</div>
 </form>
 </div>			
 	</c:when>
@@ -63,8 +67,5 @@ $(document).ready(function(){
 	</c:otherwise>	 
 </c:choose>
  
-	<div align="center">
-	<input type="button" value="회원정보수정하기" id="memberInfoUpdateBtn" class="btn btn-default">&nbsp;&nbsp;&nbsp;
-	<input type="button" value="탈퇴하기" id="memberInfoDeleteBtn" class="btn btn-default">
-	</div>
+	
 

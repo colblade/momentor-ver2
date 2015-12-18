@@ -5,6 +5,38 @@
 <script type="text/javascript">
 
 $(document).ready(function(){
+	  $(".detailedModal") .click(function(){
+     	 $.ajax({
+     		   type:"get",
+  		      url:"getMemberInfoByNickName.do",            
+  		      data:"momentorMemberVO.nickName="+$(this).text().trim(),
+  		      success:function(data){                  
+  		    	  var memInfoComp = data.momentorMemberVO;
+  		    	  var blindMemId = "";
+  		    	  blindMemId = memInfoComp.memberId.replace(memInfoComp.memberId.substring(2,(memInfoComp.memberId.length+1)),"***");
+  		    	  if(memInfoComp.memberName.length == 2){
+  		    		 blindName = memInfoComp.memberName.replace(memInfoComp.memberName.substring(1,(memInfoComp.memberName.length+1)),"*");
+  		    	  } else{
+     		    	  blindName = memInfoComp.memberName.replace(memInfoComp.memberName.substring(1,(memInfoComp.memberName.length+1)),"**");
+  		    	  }
+  		    	  var memInfoView = "ID : " + blindMemId + "<br>" + 
+  		    	  									"이름 : " + blindName + "<br>" +
+  		    	  									" 키 : " + data.memberHeight + "<br>" + 
+  		    	  									" 몸무게 : " + data.memberWeight + "<br>" +
+  		    	  									" BMI : " + data.bmi + "<br>" +
+  		    	  									" 나이 : " + data.age + "<br>" +
+  		    	  									" 닉네임 : " + memInfoComp.nickName + "<br>";
+  		    	  if(memInfoComp.infoPublic==1){
+  		    	 $("#detailedView").html(memInfoView);
+  		   	 $("#memberInfoView").html(memInfoComp.nickName + "님 회원정보");
+  		    	  }else if(memInfoComp.infoPublic==2){
+  		    		 $("#detailedView").html("이 회원은 정보가 비공개 처리되었습니다.");
+  		    		 $("#memberInfoView").html(memInfoComp.nickName + "님 회원정보");
+  		    	  }		    
+  		      }
+     	 });
+     	 $("#detailedModalView").modal(); 
+      });
     /*  게시글 삭제 버튼 클릭시 */
     $("#deleteBtn").click(function(){
     	if(confirm("이 운동 게시물을 삭제하시겠습니까?")){
@@ -239,7 +271,14 @@ function showReplyList(result){
             <h2 class="blog-post-title">${info.boardTitle }</h2>
             <hr>
             <p class="blog-post-meta">${info.boardWdate }
-               by <a href="#">${info.momentorMemberVO.nickName}</a>  
+ 		<c:choose>
+ 			<c:when test="${info.momentorMemberVO.auth==1}">
+ 			  by ${info.momentorMemberVO.nickName}
+ 			</c:when>
+ 			<c:otherwise>
+ 			  by <a href="#"  class="detailedModal">${info.momentorMemberVO.nickName}</a>  
+ 			</c:otherwise>
+ 		</c:choose>
             </p>
 				<c:if test="${not empty requestScope.nameList }">
 			<c:forEach items="${requestScope.nameList }" var="fileName"
@@ -311,5 +350,21 @@ function showReplyList(result){
       <!-- /.blog-sidebar -->
    </div>
    <!-- /.row -->
+</div>
+<!-- Modal -->
+<div class="modal fade" id="detailedModalView" tabindex="-1" role="dialog" aria-labelledby="idModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+  <div class="idFindCheck">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="idModalLabel"><span id="memberInfoView"></span></h4>
+      </div>
+      <div class="modal-body">
+		<span id="detailedView"></span>
+    </div>
+  </div>
+  </div>
+  </div>
 </div>
 <!-- /.container -->

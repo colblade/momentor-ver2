@@ -27,5 +27,4 @@
 </table>
 </div>
 <br><br>
-<a href="login_home.do">홈으로</a>
 

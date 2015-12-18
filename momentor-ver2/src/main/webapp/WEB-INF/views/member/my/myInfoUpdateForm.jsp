@@ -137,6 +137,9 @@ $(document).ready(function(){
 		}
 		$("#myInfo").submit();
 	});
+	$("#getUpdateInfo").click(function(){
+		location.href = "my_myInfo.do";
+	});
 
 });
 </script>
@@ -192,6 +195,7 @@ $(document).ready(function(){
 	<hr>
 	<p class="blog-post-meta">정보 공개 : <select name="infoPublic" ><option value ="1" selected="selected"> 공개</option><option value ="2" > 비공개</option></select>	
 	<hr>
-	<div align="center"><input class="btn btn-default" type="button" value="수정완료" id="myInfoUpdate"></div>
+	<div align="center"><input class="btn btn-primary" type="button" value="수정완료" id="myInfoUpdate">
+	<input type="button" value="되돌아가기" id="getUpdateInfo" class="btn btn-primary"></div>
 </form>
 </div>

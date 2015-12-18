@@ -88,7 +88,6 @@
          </c:when>
          <c:otherwise><td><a href="#"  class="detailedModal">${posting.momentorMemberVO.nickName}</a></td>
          <input type="hidden" id = "count" value = "${vs.count }"> 
-         
          </c:otherwise>
       </c:choose>
       <td>${posting.boardWdate}</td>
