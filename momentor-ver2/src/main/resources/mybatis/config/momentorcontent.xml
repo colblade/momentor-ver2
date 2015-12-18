@@ -489,7 +489,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<!-- exerciseURL 등록 -->
-	<insert id="registerExerciseURL" parameterType="map">
+	<insert id="registerVideoURL" parameterType="map">
 		INSERT INTO EXERCISE_URL (EXERCISENAME,URLPATH)
 		VALUES (#{exerciseName},#{urlPath})
 	</insert>
