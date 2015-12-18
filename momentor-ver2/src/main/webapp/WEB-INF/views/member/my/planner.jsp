@@ -34,12 +34,13 @@
 		var targetSetVal = "";
 		$("#plannerListTable").on("click", ".updateBtn", function(){
 			// 버튼이 '수정' 일때 클릭하면, 목표세트를 text 상자로 만들어 준 후 버튼을 '저장'으로 바꿔준다.
-			if($(this).val() == "수정"){
+			if($(this).text() == "수정"){
 				targetSetVal = $(this).parent().prev().text().trim();
 				var updateInput = "<input type='text' class='updateTargetVal' size='2' style='text-align: right' value=" + targetSetVal + ">";
 				$(this).parent().prev().html(updateInput);
-				$(this).val("저장");
-			} else if($(this).val() == "저장") {
+				$(this).removeClass("btn-default").addClass("btn-primary");
+				$(this).html("<font style='font-weight: bold;''>저장</font>");
+			} else if($(this).text() == "저장") {
 				// 버튼이 '저장' 일때 클릭하면, text 상자의 값으로 update 해준 후 버튼을 '수정'으로 바꿔준다.
 				var updateTargetVal = $(this).parent().prev().find(".updateTargetVal").val();
 				var updateTargetEx = $(this).parent().siblings().eq(1).text().trim();
@@ -63,12 +64,17 @@
 				} else {
 					$(this).parent().prev().html(targetSetVal);
 				}
-				$(this).val("수정");
+				$(this).removeClass("btn-primary").addClass("btn-default");
+				$(this).html("<font style='font-weight: bold;''>수정</font>");
 			}
 		});
 		// 목표세트 수정에서 숫자외의 문자를 입력시 공백으로 초기화
 		$("#plannerListTable").on("keyup", ".updateTargetVal", function(){
 			$(this).val($(this).val().replace(/[^0-9]/gi, ""));
+			// 목표 set 입력이 0 으로 시작되지 못하도록
+			if($(this).val().substring(0, 1) == 0){
+				$(this).val($(this).val().replace(0, ""));
+			}
 		});
 		
 		//---------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -104,9 +110,13 @@
 		// 임시 목표 set에 숫자외의 문자를 입력시 공백으로 초기화
 		$("#cartListTable").on("keyup", "#tempTargetSet", function(){
 				$(this).val($(this).val().replace(/[^0-9]/gi, ""));
+				// 임시 목표 set 입력이 0 으로 시작되지 못하도록
+				if($(this).val().substring(0, 1) == 0){
+					$(this).val($(this).val().replace(0, ""));
+				}
 		});
 		// 선택 열(tr) 클릭시 radio checked
-		$("#cartListBody").children().click(function(){
+		$("#cartListTable").on("click", "#cartListBody tr", function(){
 			var selectExName = $(this).children().eq(3).text();
 			$("input:radio[name=tempExerciseName]:radio[value='" + selectExName + "']").prop("checked", true);
 		});
@@ -148,8 +158,8 @@
 					if(cartListResult.cartList.length != 0){
 						cartTableFrame = "<div class='panel panel-primary'>" + 
 												"<div class='panel-heading'><h4>찜 바구니&nbsp;&nbsp;" + 
-												"<a id='collapseBtn' data-toggle='collapse' href='#collapse1'><i class='glyphicon glyphicon-chevron-down' style='color: white'></i></a></h4></div>" + 
-												"<div id='collapse1' class='panel-collapse collapse'>" + 
+												"<a id='collapseBtn' data-toggle='collapse' href='#collapse1'><i class='glyphicon glyphicon-chevron-up' style='color: white'></i></a></h4></div>" + 
+												"<div id='collapse1' class='panel-collapse collapse in'>" + 
 												"<div class='panel-body'>" +
 												"<table class='table table-hover cartTable'>" + 
 												"<thead><tr><th>선택</th><th>번호</th><th colspan='2'>운동명</th><th>삭제</th></tr></thead>" + 
@@ -160,9 +170,6 @@
 							$.each(cartListResult.imgCartList, function(index2, imgMap){
 								$.map(imgMap, function(value, key){
 									if(key == exName){
-										/* $.each(value, function(i, imgList){
-											exImg += "<img src = '${initParam.root}exerciseimg/" + imgList.EXERCISENAME + "_" + imgList.IMGNAME + "' style='width: 50px; height: 50px;'>";
-										}); */
 										// 운동 이미지를 한장만 불러오기 위해 0번째 index의 이미지만 지정
 										exImg += "<img src = '${initParam.root}exerciseimg/" + value[0].EXERCISENAME + "_" + value[0].IMGNAME + "' style='width: 50px; height: 50px;'>";
 									}
@@ -172,7 +179,7 @@
 																"<td>" + (index1+1) + "</td>" + 
 																"<td>" + exImg + "</td>" + 
 																"<td>" + exName + "</td>" + 
-																"<td><input type='button' class='deleteInCartBtn' value='삭제'></td></tr>";
+																"<td><button type='button' class='deleteInCartBtn btn btn-warning btn-sm'><i class='glyphicon glyphicon-trash' aria-hidden='true'></i><font style='font-weight: bold;'> 삭제</font></button></td></tr>";
 						});
 						cartTableFrame += "<tr><td colspan='5'>목표 세트 <input type='text' name='tempTargetSet' id='tempTargetSet' style='text-align: right'>" + 
 													" <input type='button' id='selectExerciseBtn' value='선택'></td></tr>" + 
@@ -187,6 +194,10 @@
 		// 목표 set에 숫자외의 문자를 입력시 공백으로 초기화
 		$("#targetSet").keyup(function(){
 			$(this).val($(this).val().replace(/[^0-9]/gi, ""));
+			// 목표 set 입력이 0 으로 시작되지 못하도록
+			if($(this).val().substring(0, 1) == 0){
+				$(this).val($(this).val().replace(0, ""));
+			}
 		});
 		// 임시등록란에서 플래너로 등록하기
 		// 플래너에 이미 등록되어 있는지 여부는 DB를 거치지 않고 jQuery로 판단.
@@ -239,7 +250,7 @@
 		$("#commentBtn").click(function(){
 			$("#commentView").toggle(function(){
 				if(($("#commentView").css("display")=="none")){ // textarea가 보이지 않을때(닫힐때)
-					$("#commentBtn").val("코멘트");
+					$("#commentBtn").html("<font style='font-weight: bold;'>코멘트 </font><i class='glyphicon glyphicon-resize-full' aria-hidden='true'></i>");
 					$("#commentIcon").html("<i class='glyphicon glyphicon-resize-full' aria-hidden='true'></i>");
 					// 특수문자도 입력이 가능하도록 encoding 한다.
 					var commentComp = encodeURIComponent($("#commentArea").val());
@@ -257,8 +268,7 @@
 						}
 					});
 				} else { // textarea가 보일때(열릴때)
-					$("#commentBtn").val("저장");
-					$("#commentIcon").html("<i class='glyphicon glyphicon-resize-small' aria-hidden='true'></i>");
+					$("#commentBtn").html("<font style='font-weight: bold;'>저장</font> <i class='glyphicon glyphicon-resize-small' aria-hidden='true'></i>");
 					// 코멘트버튼 클릭시 등록되어있는 코멘트 보여주기
 					$.ajax({
 						type:"post",
@@ -306,7 +316,7 @@
 			$("#exView").modal();
 		});
 		
-		// 
+		// 찜 바구니 접기/펴기 시 아이콘 변경
         $("#cartListTable").on("click", "#collapseBtn", function(){
 			if($(this).parent().parent().next().children().is(":visible")){
 				$('i', $(this)).removeClass("glyphicon-chevron-up").addClass("glyphicon-chevron-down");
@@ -356,7 +366,8 @@
 							for(var i=1; i<list.targetSet+1; i++){
 								selectTable += "<option value=" + i + ">" + i + "</option>";
 							}
-							listTableFrame += "<td><select class='exSelect'>" + selectTable + "</select> <input type='button' class='achiveBtn' value='달성'></td>";
+							listTableFrame += "<td><select class='exSelect'>" + selectTable + "</select> " + 
+														"<button type='button' class='achiveBtn btn btn-primary btn-xs'><font style='font-weight: bold;'>달성</font></button></td>";
 						} else {
 							listTableFrame += "<td>" + list.achievement + "</td>";
 						}
@@ -364,7 +375,7 @@
 					// 선택한 날짜와 오늘을 비교하여 오늘보다 이후일때만 수정버튼 활성화
 					// 기존 yyyy-MM-dd 형태의 날짜에서 '-' 를 제거한 후 숫자형으로 변환
 					if(parseInt(list.plannerDate.replace(/-/g, "")) > parseInt(todayVal.replace(/-/g, ""))){
-						listTableFrame += "<td>" + list.targetSet + "</td><td><input type='button' class='updateBtn' value='수정'></td>";
+						listTableFrame += "<td>" + list.targetSet + "</td><td><button type='button' class='updateBtn btn btn-default btn-xs'><font style='font-weight: bold;'>수정</font></button></td>";
 					} else {
 						listTableFrame += "<td colspan='2'>" + list.targetSet + "</td>";
 					}
@@ -376,7 +387,7 @@
 					listTableFrame += "</tr>";
 				});
 				listTableFrame += "</tbody></table></div></div>" + 
-											"<input type='button' id='deleteBtn' value='선택 삭제'>";
+											"<button type='button' id='deleteBtn' class='btn btn-warning btn-sm'><i class='glyphicon glyphicon-trash' aria-hidden='true'></i><font style='font-weight: bold;'> 선택 삭제</font></button>";
 		}
 		$("#plannerListTable").html(listTableFrame);
 		
@@ -420,7 +431,7 @@
 											<option value="${status2.count}">${status2.count}</option>
 										</c:forEach>
 									</select>
-									<input type="button" class="achiveBtn" value="달성">
+									<button type="button" class="achiveBtn btn btn-primary btn-xs"><font style="font-weight: bold;">달성</font></button>
 								</c:when>
 								<c:otherwise>
 									${plist.achievement}
@@ -431,7 +442,7 @@
 					</td>
 					<c:choose>
 						<c:when test="${requestScope.intTypeSelectDate > requestScope.intTypeToday}">
-							<td>${plist.targetSet}</td><td><input type="button" class="updateBtn" value="수정"></td>
+							<td>${plist.targetSet}</td><td><button type="button" class="updateBtn btn btn-default btn-xs"><font style="font-weight: bold;">수정</font></button></td>
 						</c:when>
 						<c:otherwise>
 							<td colspan="2">${plist.targetSet}</td>
@@ -446,7 +457,7 @@
 			</c:forEach>
 			</tbody>
 		</table></div></div>
-		<input type="button" id="deleteBtn" value="선택 삭제">
+		<button type="button" id="deleteBtn" class="btn btn-warning btn-sm"><i class="glyphicon glyphicon-trash" aria-hidden="true"></i><font style="font-weight: bold;"> 선택 삭제</font></button>
 	</c:when>
 	<c:otherwise>
 	<div class="panel panel-primary">
@@ -458,13 +469,12 @@
 </c:choose>
 </span>
 
-<input type="button" id="commentBtn" value="코멘트 ">
-<span id="commentIcon"><i class="glyphicon glyphicon-resize-full" aria-hidden="true"></i></span>
+<button type="button" id="commentBtn" class="btn btn-success btn-sm"><font style="font-weight: bold;">코멘트 </font><i class="glyphicon glyphicon-resize-full" aria-hidden="true"></i></button>
 <br>
 <span id="commentView">
 	<textarea cols='100' rows='10' name='commentArea' id='commentArea'></textarea>
 </span>
-<br><hr><br>
+<hr>
 
 
 <!-- 임시등록란 -->
@@ -473,9 +483,9 @@
 <div class="panel-body">
 	목표운동 <input type="text" name="exerciseVO.exerciseName" id="exerciseName" style="text-align: right" size="22" readonly ><br>
 	목표세트 <input type="text" name="targetSet" id="targetSet" style="text-align: right" size="12"> set
-	<input type="button" id="regPlannerBtn" value="등록">
+	<button type="button" id="regPlannerBtn" class="btn btn-primary btn-sm">등록</button>
 </div></div> 
-<br><hr><br>
+<hr>
 
 
 <!-- 찜한 운동 리스트 -->
@@ -507,15 +517,16 @@
 						</c:forEach>
 					</td>
 					<td>${clist.exerciseBoardVO.exerciseVO.exerciseName}</td>
-					<td><input type="button" class="deleteInCartBtn" value="삭제"></td>
+					<td><button type="button" class="deleteInCartBtn btn btn-warning btn-sm"><i class="glyphicon glyphicon-trash" aria-hidden="true"></i><font style="font-weight: bold;"> 삭제</font></button></td>
 				</tr>	
 				</c:forEach>
-				<tr>
-					<td colspan="5">목표 세트 <input type="text" name="tempTargetSet" id="tempTargetSet" style="text-align: right">
-					<input type="button" id="selectExerciseBtn" value="선택"></td>
-				</tr>
 			</tbody>
-		</table></div></div></div>
+		</table><hr>
+			<center>
+				<input type="text" name="tempTargetSet" id="tempTargetSet" placeholder="목표세트를 입력하세요" style="text-align: right;">
+				<input type="button" id="selectExerciseBtn" class="btn btn-primary btn-sm" value="선택">
+			</center>
+		</div></div></div>
 	</c:when>
 	<c:otherwise>
 		<div class="panel panel-primary">
