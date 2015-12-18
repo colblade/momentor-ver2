@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
       <%@taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
       <%@taglib prefix="fn"  uri="http://java.sun.com/jsp/jstl/functions"%>
-                <script>
+<script>
 $(function (){
 	   $(".sideview").tooltip("hide"); 
    $("#searchMenuForm").submit(function(){
@@ -11,6 +11,11 @@ $(function (){
 			  return false;
 		  }
 	   });
+   $("#deleteMemberForm").submit(function(){
+	   if(confirm("해당 회원을 강퇴하시겠습니까?") == false){
+		   return false;
+	   }
+   });
 });
 </script>
 
@@ -51,7 +56,7 @@ $(function (){
       <td>${memberList.momentorMemberVO.nickName}</td>
       <td>${memberList.momentorMemberVO.gender }</td>
       <td>${memberList.momentorMemberVO. memberAddress}</td>
-    	 <td><form method="post" action="deleteMemberByAdmin.do?memberId=${memberList.momentorMemberVO.memberId}" id="">
+   	  <td><form id="deleteMemberForm" method="post" action="deleteMemberByAdmin.do?memberId=${memberList.momentorMemberVO.memberId}" id="">
 		<input type="submit" value="회원강퇴" class="btn btn-primary" >   
 		<input type="hidden"  name="searchMenu" value="${requestScope.searchMenu }">
 		<input type="hidden"  name="search" value="${requestScope.search }">

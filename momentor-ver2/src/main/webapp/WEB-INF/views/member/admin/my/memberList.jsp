@@ -1,7 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
      <%@taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
-          <script>
+<script>
+       	function deleteMember(memberId){
+    		if(confirm("회원 강퇴 하시겠습니까?")){
+    			  location.href="deleteMemberByAdmin.do?memberId="+memberId;
+    		}
+    	};
 $(function (){
 		   $(".sideview").tooltip("hide"); 
    $("#searchMenuForm").submit(function(){
@@ -44,9 +49,7 @@ $(function (){
       <td>${memberList.momentorMemberVO.nickName}</td>
       <td>${memberList.momentorMemberVO.gender }</td>
       <td>${memberList.momentorMemberVO. memberAddress}</td>
-            <td><form method="post" action="deleteMemberByAdmin.do?memberId=${memberList.momentorMemberVO.memberId}" id="">
-	<input type="submit" value="회원강퇴" class="btn btn-primary" >   
-	</form>
+           <td><input type="button"  id="deleteBtn" value="회원강퇴" class="btn btn-primary"  onclick="deleteMember('${memberList.momentorMemberVO.memberId}')"></td>  
    </tr>
 </c:forEach>
 </tbody>
