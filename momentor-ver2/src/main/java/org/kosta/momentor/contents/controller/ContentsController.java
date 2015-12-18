@@ -20,6 +20,7 @@ import org.kosta.momentor.contents.model.CommunityBoardService;
 import org.kosta.momentor.contents.model.CommunityBoardVO;
 import org.kosta.momentor.contents.model.ExerciseBoardService;
 import org.kosta.momentor.contents.model.ExerciseBoardVO;
+import org.kosta.momentor.contents.model.FAQBoardService;
 import org.kosta.momentor.contents.model.FAQBoardVO;
 import org.kosta.momentor.contents.model.FileVO;
 import org.kosta.momentor.contents.model.ListVO;
@@ -42,6 +43,8 @@ import org.springframework.web.servlet.ModelAndView;
 public class ContentsController {
 	@Resource
 	private NoticeBoardService noticeBoardService;
+	@Resource
+	private FAQBoardService faqBoardService;
 	@Resource
 	private ExerciseBoardService exerciseBoardService;
 	@Resource
@@ -619,7 +622,7 @@ public class ContentsController {
 		/* FAQ 게시판 글 전체 목록 받아오기 */
 		@RequestMapping("showFAQList.do")
 		public ModelAndView showFAQList(String pageNo){
-			return new ModelAndView("member_showFAQList","FAQList",noticeBoardService.getAllFAQList(pageNo));
+			return new ModelAndView("member_showFAQList","FAQList",faqBoardService.getAllFAQList(pageNo));
 		}
 		/* FAQ 글쓰기 페이지로 이동하기 */
 		@RequestMapping("admin_writeFAQForm.do")
@@ -629,26 +632,26 @@ public class ContentsController {
 		/* FAQ 글쓰기 DB 저장 */
 		@RequestMapping(value="admin_postingFAQ.do",method=RequestMethod.POST)
 		public ModelAndView postingFAQ(FAQBoardVO fvo){
-			noticeBoardService.postingFAQ(fvo);
+			faqBoardService.postingFAQ(fvo);
 			return new ModelAndView("redirect:/showFAQList.do");
 		}
 
 		/* FAQ 게시물 삭제 */
 		@RequestMapping("admin_deleteFAQByNo.do")
 		public ModelAndView deleteFAQByNo(int boardNo){
-			noticeBoardService.deleteFAQByNo(boardNo);
+			faqBoardService.deleteFAQByNo(boardNo);
 			return new ModelAndView("redirect:/showFAQList.do","pageNo","1");
 		}
 		/* FAQ 수정 페이지로 이동 */
 		@RequestMapping("admin_updateFAQForm.do")
 		public ModelAndView updateFAQForm(int boardNo){
-			return new ModelAndView("admin_faqmgr_updateFAQForm","fvo",noticeBoardService.getFAQByNo(boardNo));
+			return new ModelAndView("admin_faqmgr_updateFAQForm","fvo",faqBoardService.getFAQByNo(boardNo));
 		}
 		
 		/* FAQ 수정 DB 등록 후 상세보기 반환 */
 		@RequestMapping(value="admin_updateFAQ.do",method=RequestMethod.POST)
 		public ModelAndView updateFAQ(FAQBoardVO fvo){
-			noticeBoardService.updateFAQ(fvo);
+			faqBoardService.updateFAQ(fvo);
 			return new ModelAndView("redirect:/showFAQList.do");			
 		}
 }
