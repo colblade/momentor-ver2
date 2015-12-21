@@ -3,7 +3,7 @@ package org.kosta.momentor.contents.model;
 import org.kosta.momentor.member.model.MomentorMemberVO;
 
 public class QNABoardVO extends BoardVO{
-	private int qnaHits;
+	private int qnaHits;//조회수
 	private int ref;// 원 게시물 번호 , 글묶음 
 	private int restep;// ref 글묶음내의 글순서 
 	private int relevel;// 답변의 단계 
@@ -15,8 +15,7 @@ public class QNABoardVO extends BoardVO{
 	public QNABoardVO(int boardNo, MomentorMemberVO momentorMemberVO,
 			String boardTitle, String boardWdate, String boardContent,
 			int ranking, int qnaHits, int ref, int restep, int relevel,String refMemberId) {
-		super(boardNo, momentorMemberVO, boardTitle, boardWdate, boardContent,
-				ranking);
+		super(boardNo, momentorMemberVO, boardTitle, boardWdate, boardContent, ranking);
 		this.qnaHits = qnaHits;
 		this.ref = ref;
 		this.restep = restep;
@@ -76,7 +75,4 @@ public class QNABoardVO extends BoardVO{
 				+ "]";
 	}
 
-
-	
-	
 }

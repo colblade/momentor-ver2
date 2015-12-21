@@ -196,10 +196,7 @@ public class MomentorMemberController {
 		MomentorMemberPhysicalVO pnvo = momentorMemberService.myPageMemberInfo(memberId);
 		return new ModelAndView("my_myInfoUpdateForm", "pnvo", pnvo);
 	}
-	/**
-	 * 뷰에서 값을 받아와 실제 업데이트 하는 메소드
-	 * @throws Exception 
-	 */
+
 	// 회원정보 수정
 	@RequestMapping("my_myInfoUpdate.do")
 	public ModelAndView myPageMemberInfoUpdate(HttpServletRequest request, String myBirthDate, MomentorMemberVO mvo, MomentorMemberPhysicalVO pnvo) throws Exception{

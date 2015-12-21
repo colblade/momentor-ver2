@@ -28,34 +28,20 @@ public class CustomerCenterController {
 	@Resource
 	private QNABoardService qnaBoardService;
 	
-	  //공지사항 리스트
-	  @RequestMapping(value="member_getAllNoticeList.do")
+		//공지사항 리스트
+	  	@RequestMapping(value="member_getAllNoticeList.do")
 		public ModelAndView MygetAllNoticeList(HttpServletRequest request,String pageNo){
-			MomentorMemberVO mvo = (MomentorMemberVO) request.getSession().getAttribute("mvo");
-			//ListVO list = noticeBoardService.getAllNoticeList(pageNo);
 			return new ModelAndView("member_getAllNoticeList","noticeList",noticeBoardService.getAllNoticeList(pageNo));
 		}
 	  
-	  /*관리자 tails 적용하여 관리자가 공지글 목록리스트를 보기 위해*/
-	  	@RequestMapping(value="admin_getAllNoticeList.do")
-	  	public ModelAndView AdmingetAllNoticeList(HttpServletRequest request,String pageNo){
-		  	return new ModelAndView("admin_getAllNoticeList","noticeList",noticeBoardService.getAllNoticeList(pageNo));
-	  	}
-	  	
+	  	/*공지사항 상세보기*/
 		@RequestMapping(value="member_getNoticeByNo.do")
 		public ModelAndView MygetNoticeByNo(int boardNo){
 			NoticeBoardVO nvo = noticeBoardService.getNoticeByNo(boardNo);
 			return new ModelAndView("member_getNoticeByNo","nvo",nvo);
 		}
 		
-		/*관리자 tails 적용하여 관리자가 상세내용 불러오기 위해*/
-		@RequestMapping(value="admin_getNoticeByNo.do")
-		public ModelAndView AdmingetNoticeByNo(int boardNo){
-			NoticeBoardVO nvo = noticeBoardService.getNoticeByNo(boardNo);
-			return new ModelAndView("admin_getNoticeByNo","nvo",nvo);
-		}
-		
-		/*관리자가 공지사항 글작성 하는 form*/
+		/*관리자가 공지사항 글작성 form*/
 		@RequestMapping(value="admin_writeNoticeByAdminForm.do")
 		public ModelAndView writeNoticeByAdminForm(HttpServletRequest request){
 			MomentorMemberPhysicalVO pnvo = (MomentorMemberPhysicalVO) request.getSession().getAttribute("pnvo");
@@ -85,7 +71,6 @@ public class CustomerCenterController {
 			noticeBoardService.updateNotice(nvo);
 			return new ModelAndView("redirect:/member_getNoticeByNo.do?boardNo="+nvo.getBoardNo(),"nvo",nvo);
 		}
-		
 		
 		/*관리자가 공지사항 글 삭제*/
 		@RequestMapping(value="admin_noticeDelete.do")

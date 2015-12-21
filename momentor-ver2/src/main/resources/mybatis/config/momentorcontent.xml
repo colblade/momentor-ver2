@@ -494,7 +494,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		VALUES (#{exerciseName},#{urlPath})
 	</insert>
 	
-	<!-- notice -->
+	<!-- notice resultMap -->
 	<resultMap type="nvo" id="nvoMap">
 		<result column="notice_No" property="boardNo" />
 		<result column="title" property="boardTitle" />
@@ -502,7 +502,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="memberId" property="momentorMemberVO.memberId" />
 		<result column="content" property="boardContent" />
 	</resultMap>
-
+	<!-- 공지사항 리스트 -->
 	<select id="getAllNoticeList" resultType="nvo" resultMap="nvoMap">
 		select notice_No, title,notice_Date,memberId from (
 		select
@@ -514,19 +514,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		) where page=#{value}
 
 	</select>
-	
+	<!-- 공지사항 글 수 -->
 	<select id="totalNotice" resultType="int">
 		select count(*) from
 		NOTICE_BOARD
 	</select>
-	
+	<!-- 공지사항 글 상세 보기 -->
 	<select id="getNoticeByNo" resultType="nvo" resultMap="nvoMap">
 		select
 		notice_No, title, notice_Date, memberId, content
 		from NOTICE_BOARD
 		where notice_No = #{value}
 	</select>
-	
+	<!-- 관리자가 공지사항 글 쓰기 -->
 	<insert id="postingNotice" parameterType="nvo">
 		<selectKey keyProperty="boardNo" resultType="int" order="BEFORE">
 			select NOTICE_SEQ.nextVal from dual
@@ -629,55 +629,55 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		values(#{boardNo}, #{momentorMemberVO.memberId}, #{boardTitle},sysdate,#{boardContent},#{ref},#{restep},#{relevel},#{refMemberId})
 	 </insert>
 	 
-		<resultMap type="fvo" id="fvoMap">
-			<result column="FAQ_NO" property="boardNo" />
-			<result column="TITLE" property="boardTitle" />
-			<result column="CONTENT" property="boardContent" />
-		</resultMap>
+	<resultMap type="fvo" id="fvoMap">
+		<result column="FAQ_NO" property="boardNo" />
+		<result column="TITLE" property="boardTitle" />
+		<result column="CONTENT" property="boardContent" />
+	</resultMap>
 
-<!-- 페이징에 사용될 FAQ의 모든 글의 갯수 -->
-<select id="totalFAQContent" resultType="int">
-	SELECT COUNT(*) FROM FAQ_BOARD
-</select>
+	<!-- 페이징에 사용될 FAQ의 모든 글의 갯수 -->
+	<select id="totalFAQContent" resultType="int">
+		SELECT COUNT(*) FROM FAQ_BOARD
+	</select>
 
-<!-- FAQ 모든 게시글 출력 -->
-<select id="getAllFAQList" resultType="nvo" resultMap="fvoMap">
-	SELECT FAQ_NO,TITLE,CONTENT FROM(
-		SELECT FAQ_NO, TITLE, CONTENT, CEIL(rownum/5) AS page FROM(
-			SELECT FAQ_NO, TITLE, CONTENT FROM FAQ_BOARD ORDER BY FAQ_NO DESC
-		)
-	) WHERE page=#{value}
-</select>
+	<!-- FAQ 모든 게시글 출력 -->
+	<select id="getAllFAQList" resultType="nvo" resultMap="fvoMap">
+		SELECT FAQ_NO,TITLE,CONTENT FROM(
+			SELECT FAQ_NO, TITLE, CONTENT, CEIL(rownum/5) AS page FROM(
+				SELECT FAQ_NO, TITLE, CONTENT FROM FAQ_BOARD ORDER BY FAQ_NO DESC
+			)
+		) WHERE page=#{value}
+	</select>
 
-<!-- 글 번호로 FAQ 상세보기 -->
-<select id="getFAQByNo" parameterType="int" resultMap="fvoMap">
-	SELECT FAQ_NO,TITLE,CONTENT FROM FAQ_BOARD WHERE FAQ_NO=#{value}
-</select>	
+	<!-- 글 번호로 FAQ 상세보기 -->
+	<select id="getFAQByNo" parameterType="int" resultMap="fvoMap">
+		SELECT FAQ_NO,TITLE,CONTENT FROM FAQ_BOARD WHERE FAQ_NO=#{value}
+	</select>	
 
-<!-- FAQ 글 작성하기 -->
-<insert id="postingFAQ" parameterType="fvo">
-	INSERT INTO FAQ_BOARD (FAQ_NO,TITLE,CONTENT) VALUES (FAQ_BOARD_SEQ.NEXTVAL,#{boardTitle},#{boardContent})
-</insert>
+	<!-- FAQ 글 작성하기 -->
+	<insert id="postingFAQ" parameterType="fvo">
+		INSERT INTO FAQ_BOARD (FAQ_NO,TITLE,CONTENT) VALUES (FAQ_BOARD_SEQ.NEXTVAL,#{boardTitle},#{boardContent})
+	</insert>
 
-<!-- 작성한 FAQ의 글번호를 가져온다 -->
-<select id="getFAQPostingNumber" resultType="int">
-	SELECT FAQ_BOARD_SEQ.CURRVAL FROM DUAL
-</select>
+	<!-- 작성한 FAQ의 글번호를 가져온다 -->
+	<select id="getFAQPostingNumber" resultType="int">
+		SELECT FAQ_BOARD_SEQ.CURRVAL FROM DUAL
+	</select>
 
-<!-- FAQ 글 삭제 -->
-<delete id="deleteFAQByNo" parameterType="int">
-	DELETE FROM FAQ_BOARD WHERE FAQ_NO=#{value}
-</delete>
+	<!-- FAQ 글 삭제 -->
+	<delete id="deleteFAQByNo" parameterType="int">
+		DELETE FROM FAQ_BOARD WHERE FAQ_NO=#{value}
+	</delete>
 
-<!-- FAQ 글 수정 -->
-<update id="updateFAQ" parameterType="fvo">
-	UPDATE FAQ_BOARD set TITLE=#{boardTitle},CONTENT=#{boardContent}
-	WHERE FAQ_NO=#{boardNo}
-</update>
+	<!-- FAQ 글 수정 -->
+	<update id="updateFAQ" parameterType="fvo">
+		UPDATE FAQ_BOARD set TITLE=#{boardTitle},CONTENT=#{boardContent}
+		WHERE FAQ_NO=#{boardNo}
+	</update>
 
 	<!-- 각 커뮤니티 게시물 마다 댓글수  -->
-<select id="getReplyCountList" resultType="map">
-		SELECT A.MEMBER_NO as boardNo, (SELECT COUNT(*) FROM MEMBER_REPLY B WHERE B.Member_no=A.MEMBER_NO)  as replyCount
-		FROM MEMBER_BOARD A
-</select>
+	<select id="getReplyCountList" resultType="map">
+			SELECT A.MEMBER_NO as boardNo, (SELECT COUNT(*) FROM MEMBER_REPLY B WHERE B.Member_no=A.MEMBER_NO)  as replyCount
+			FROM MEMBER_BOARD A
+	</select>
 </mapper>

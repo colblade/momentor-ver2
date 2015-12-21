@@ -11,8 +11,8 @@ public class MomentorMemberVO {
 	private String memberEmail;		//이메일
 	private String gender;		//성별
 	private String memberAddress;	//주소
-	private int auth;			//관리자와 일반회원 비교
-	private int infoPublic;
+	private int auth;			//관리자, 일반회원, 탈퇴한 회원 비교
+	private int infoPublic;		//개인정보 공개/비공개 
 	public MomentorMemberVO() {
 		super();
 	}

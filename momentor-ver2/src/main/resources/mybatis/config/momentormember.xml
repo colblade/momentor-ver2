@@ -8,6 +8,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select memberId, memberPassword, memberName, birthYear, birthMonth, birthDay, nickName, memberEmail, gender, memberAddress
 		from  MOMENTOR_MEMBER 
 	</sql>
+	<!-- physical resultMap -->
 	<resultMap type="pnvo" id="physicalRM">
 		<result property="momentorMemberVO.memberId" column="memberId" />
 		<result property="momentorMemberVO.memberPassword" column="memberPassword" />
@@ -64,39 +65,39 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		(MEMBERWEIGHT,MEMBERHEIGHT,AGE,BMI,MEMBERID)
 		VALUES(#{memberWeight},#{memberHeight},#{age},#{bmi},#{momentorMemberVO.memberId})
 	</insert>
-
+	<!-- 마이페이지 회원정보 보기 -->
 	<select id="myPageMemberInfo" resultMap="physicalRM">
 		select m.memberId, m.memberPassword, m.memberName, m.birthYear, m.birthMonth, m.birthDay, m.nickName, m.memberEmail, m.gender, m.memberAddress, m.info_Public, mf.memberWeight, mf.memberHeight, mf.age, mf.bmi
 		from MOMENTOR_MEMBER m, MOMEMTOR_MEMBER_PHYSICAL mf
 		where m.memberId=mf.memberId and m.memberId=#{memberId}
 	</select>
-	
+	<!-- 마이페이지 회원정보 수정  -->
 	<update id="myPageMemberInfoUpdate" parameterType="mvo">
 		update MOMENTOR_MEMBER
 		set memberPassword=#{memberPassword}, memberName=#{memberName}, birthYear=#{birthYear}, birthMonth=#{birthMonth}, birthDay=#{birthDay}, nickName=#{nickName}, memberEmail=#{memberEmail}, gender=#{gender}, memberAddress=#{memberAddress}, INFO_PUBLIC=#{infoPublic}
 		where memberId=#{memberId}  
 	</update>
-	
+	<!-- 마이페이지 회원 신체정보 수정 -->
 	<update id="myPageMemberPhysicalInfoUpdate" parameterType="pnvo">
 		update MOMEMTOR_MEMBER_PHYSICAL
 		set memberWeight=#{memberWeight}, memberHeight=#{memberHeight}, bmi=#{bmi}
 		where memberId=#{momentorMemberVO.memberId}
 	</update>
-	
+	<!-- 마이페이지 회원 탈퇴(auth 수정) -->	
 	<update id="myPageDeleteMemberInfo">
 		update MOMENTOR_MEMBER 
 		set auth = 8
 		where memberId=#{value}
 	</update>
-	
+	<!-- 마이페이지 회원 신체정보 삭제 -->	
 	<delete id="myPageDeleteMemberPhysicalInfo">
 		delete from MOMEMTOR_MEMBER_PHYSICAL where memberId=#{value}
 	</delete>
-
+	<!-- 마이페이지 수정/탈퇴 패스워드 확인 -->
 	<select id="myPasswordCheck" resultType="int">
 		select count(*) from MOMENTOR_MEMBER where memberPassword=#{memberPassword}
 	</select>
-	
+	<!-- 마이페이지 수정 닉네임 확인 -->
 	<select id="myNickNameCheck" resultType="int">
 		select count(*) from MOMENTOR_MEMBER where nickName=#{nickName}
 	</select>

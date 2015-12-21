@@ -8,5 +8,5 @@ public interface NoticeBoardDAO {
 	public void updateNotice(NoticeBoardVO nvo);//글 수정
 	public List<BoardVO> getAllNoticeList(String pageNo); //전체목록
 	public NoticeBoardVO getNoticeByNo(int boardNo);//공지사항글 상세보기
-	public int totalNotice();
+	public int totalNotice();//공지사항 글 수
 }

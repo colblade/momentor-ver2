@@ -28,7 +28,7 @@ public class MomentorMemberServiceImpl implements MomentorMemberService {
 	@Resource
 	private MomentorMemberDAO momentorMemberDAO;
 
-	
+	/*로그인*/
 	@Override
 	public MomentorMemberPhysicalVO login(MomentorMemberVO vo) {
 		return momentorMemberDAO.login(vo);
@@ -65,23 +65,26 @@ public class MomentorMemberServiceImpl implements MomentorMemberService {
         }
 	}
 	
-	
+	/*회원 가입시 아이디 중복 검사*/
 	@Override
 	public String idOverlappingCheck(String id) {
 		int count=momentorMemberDAO.idOverlappingCheck(id);
 		return (count==0) ? "ok":"fail"; 
 	}
+	/*회원 가입시 닉네임 중복 검사*/
 	@Override
 	public String nickNameOverlappingCheck(String nickName) {
 		int count=momentorMemberDAO.nickNameOverlappingCheck(nickName);
 		return (count==0) ? "ok":"fail"; 
 	}
+	/*회원가입시 이메일 중복 검사*/
 	@Override
 	public String emailOverlappingCheck(String memberEmail, String memberEmail2) {
 		System.out.println("서비스 : "+memberEmail+"@"+memberEmail2);
 		int count=momentorMemberDAO.emailOverlappingCheck(memberEmail+"@"+memberEmail2);
 		return (count==0) ? "ok":"fail";
 	}
+	/*회원 가입*/
 	@Override
 	public void registerMember(MomentorMemberVO vo, String date, String memberEmail, String memberEmail2,String memberWeight,String memberHeight,String infoPublic) {
 		MomentorMemberPhysicalVO pnvo=new MomentorMemberPhysicalVO();
@@ -114,7 +117,7 @@ public class MomentorMemberServiceImpl implements MomentorMemberService {
 		momentorMemberDAO.registerPhysicalMember(pnvo);
 	}
 	
-	
+	/*마이페이지 회원정보 보기*/
 	@Override
 	public MomentorMemberPhysicalVO myPageMemberInfo(String memberId) {
 		return momentorMemberDAO.myPageMemberInfo(memberId);
@@ -143,6 +146,7 @@ public class MomentorMemberServiceImpl implements MomentorMemberService {
         momentorMemberDAO.updateMemberPhysical(pnvo);
 		return "myInfoUpdate";
 	}
+	/*마이페이지 회원 탈퇴 신체정보 삭제, 회원정보 수정(auth) */
 	@Transactional
 	@Override
 	public String deleteMemeber(String memberId) throws Exception {
@@ -150,6 +154,7 @@ public class MomentorMemberServiceImpl implements MomentorMemberService {
 		momentorMemberDAO.myPageDeleteMemberInfo(memberId);
 		return "myInfoDelete";
 	}
+	/*마이페이지 회원 수정/탈퇴 할때 비밀번호 체크*/
 	@Override
 	public String myPasswordCheck(String password, String memberId) {
 		MomentorMemberPhysicalVO mpvo = momentorMemberDAO.myPageMemberInfo(memberId);
@@ -157,6 +162,7 @@ public class MomentorMemberServiceImpl implements MomentorMemberService {
 		//패스워드는 고유값이 아니기 때문에 멤버의 패스워드와 비교하는 것을 추가함
 		return (passwordCheck!=0&&password.equals(mpvo.getMomentorMemberVO().getMemberPassword())) ? "ok":"fail"; 
 	}
+	/*내가 쓴 커뮤니티 게시글 리스트*/
 	@Override
 	public ListVO getCommnunityListByMemberId(String memberId, String pageNo) {
 		if(pageNo==null||pageNo.equals("")){
@@ -170,6 +176,7 @@ public class MomentorMemberServiceImpl implements MomentorMemberService {
 		lvo.setPagingBean(new PagingBean(momentorMemberDAO.totalCommnunityByMemberId(memberId), Integer.parseInt(pageNo)));
 		return lvo;
 	}
+	/*내가 쓴 댓글 리스트*/
 	@Override
 	public ReListVO getReplyListByMemberId(String memberId, String pageNo) {
 		if(pageNo==null||pageNo.equals("")){
@@ -184,7 +191,7 @@ public class MomentorMemberServiceImpl implements MomentorMemberService {
 		return rvo;
 	}
 	
-	
+	/*관리자가 회원 목록 보기*/
 	@Override
 	public MemberListVO managerGetAllMember(String pageNo) {
 		if(pageNo==null||pageNo=="") 
@@ -195,6 +202,7 @@ public class MomentorMemberServiceImpl implements MomentorMemberService {
 		MemberListVO lvo = new MemberListVO(list, paging);
 		return lvo;
 	}
+	/*관리자가 아이디로 회원 검색*/
 	@Override
 	public MemberListVO managerFindMemberById(String search, String pageNo) {
 		if(pageNo==null||pageNo=="") 
@@ -209,6 +217,7 @@ public class MomentorMemberServiceImpl implements MomentorMemberService {
 		MemberListVO lvo = new MemberListVO(list, paging);
 		return lvo;
 	}
+	/*관리자가 이름으로 회원 검색*/
 	@Override
 	public MemberListVO managerFindMemberByName(String search, String pageNo) {
 		if(pageNo==null||pageNo=="") 
@@ -223,6 +232,7 @@ public class MomentorMemberServiceImpl implements MomentorMemberService {
 		MemberListVO lvo = new MemberListVO(list,paging);
 		return lvo;
 	}
+	/*관리자가 닉네임으로 회원 검색*/
 	@Override
 	public MemberListVO managerFindMemberByNickName(String search, String pageNo) {
 		if(pageNo==null||pageNo=="") 
@@ -237,12 +247,13 @@ public class MomentorMemberServiceImpl implements MomentorMemberService {
 		MemberListVO lvo = new MemberListVO(list,paging);
 		return lvo;
 	}
+	/*관리자가 회원 강퇴*/
 	@Override
 	public int deleteMemberByAdmin(String id) {
 		return momentorMemberDAO.deleteMemberByAdmin(id);
 	}
 
-	
+	/*커뮤니티 게시판에서 닉네임으로 회원 정보 보기*/
 	@Override
 	public MomentorMemberPhysicalVO getMemberInfoByNickName(String nickName) {
 		return momentorMemberDAO.getMemberInfoByNickName(nickName);

@@ -18,8 +18,6 @@ $(document).ready(function(){
 	}); 
 });
 </script>
-<c:choose>
-	<c:when test="${requestScope.pnvo.momentorMemberVO.infoPublic == 1}">
 <div style="width: 70%; padding-left: 400px">
 <form method="post" name="myInfo" action="#">
 	<p class="text-center">아이디 : ${requestScope.pnvo.momentorMemberVO.memberId}</p>
@@ -57,15 +55,7 @@ $(document).ready(function(){
 	</div>
 </form>
 </div>			
-	</c:when>
-	<c:otherwise>
-		<div style="width: 60%; padding-left: 450px">
-			<form method="post" name="myInfo" action="#">
-				<p class="text-center">회원정보 비공개입니다.</p>
-			</form>
-		</div>
-	</c:otherwise>	 
-</c:choose>
+
  
 	
 

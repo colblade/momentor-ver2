@@ -12,22 +12,22 @@ public class NoticeBoardServiceImpl implements NoticeBoardService {
 	@Resource
 	private NoticeBoardDAO noticeBoardDAO;
 
+	/*공지사항 글 작성*/
 	@Override
 	public NoticeBoardVO postingNotice(NoticeBoardVO nvo) {
 		return noticeBoardDAO.postingNotice(nvo);
 	}
-
+	/*공지사항 글 삭제*/
 	@Override
 	public void deleteNoticeByNo(int noticeNo) {
 		noticeBoardDAO.deleteNoticeByNo(noticeNo);
-		
 	}
-
+	/*공지사항 글 수정*/
 	@Override
 	public void updateNotice(NoticeBoardVO nvo) {
 		noticeBoardDAO.updateNotice(nvo);
 	}
-
+	/*공지사항 글 리스트*/
 	@Override
 	public ListVO getAllNoticeList(String pageNo) {
 		if(pageNo==null||pageNo==""){ 
@@ -39,7 +39,7 @@ public class NoticeBoardServiceImpl implements NoticeBoardService {
 		ListVO lvo = new ListVO((ArrayList<BoardVO>) noticeList,paging);
 		return lvo;
 	}
-
+	/*공지사항 글 상세 보기*/
 	@Override
 	public NoticeBoardVO getNoticeByNo(int boardNo) {
 		return noticeBoardDAO.getNoticeByNo(boardNo);
