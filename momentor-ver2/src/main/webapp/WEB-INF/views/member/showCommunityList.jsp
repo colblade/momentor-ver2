@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
     <%@taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
     <script type="text/javascript">
-       $(document).ready(function(){
+       $(document).ready(function(){//글쓰기 버튼 클릭 시
              $("#writeBtn").click(function(){
                 location.href="my_writeForm.do";
              });

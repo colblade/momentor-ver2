@@ -5,23 +5,23 @@ import java.util.List;
 import java.util.Map;
 public interface CommunityBoardService {
 	public ListVO getAllCommunityList(String pageNo);//전체 목록
-	public CommunityBoardVO postingCommunity(CommunityBoardVO cvo);//글 업로드.
+	public CommunityBoardVO postingCommunity(CommunityBoardVO cvo);//jsp에서 cvo형식으로 받아와 글 업로드
 	//커뮤니티에서 이미지 등록
 	public void registerCommunityImg(int boardNo,String imgName, String imgPath);
 	//해당 게시글 커뮤니티 이미지 불러오기
 	public List<HashMap<String, String>> getCommunityImgListByNo(int boardNo);
-	public void deleteCommunity(int cboardNo);//글 삭제.
+	public void deleteCommunity(int cboardNo);////글 번호로 커뮤니티 게시판 글 삭제
 	//해당 커뮤니티 게시글 img 개별 삭제 boardNo, imgName을 가지고 옵니다.
 	public void deleteCommunityImgByImgName(int boardNo, String imgName);
-	public void updateCommunity(CommunityBoardVO cvo);//글 수정.
-	public CommunityBoardVO getCommunityByNo(int boardNo);//커뮤니티글 상세보기.
-	public List<ReplyVO> getReplyListByNo(int boardNo);//커뮤니티 글 상세 보기 + 댓글 보기
+	public void updateCommunity(CommunityBoardVO cvo);//수정 폼에서 cvo 형식으로 받아와 DB에 수정
+	public CommunityBoardVO getCommunityByNo(int boardNo);//커뮤니티 글 번호로 상세 글 정보 가져오기
+	public List<ReplyVO> getReplyListByNo(int boardNo);//게시글 번호로 해당 게시물에 있는 덧글 목록 가져오기
 	public void updateCommunityHits(int boardNo); //조회수 증가.
 	public List<CommunityBoardVO> getCommunityListBestTop5ByRecommend();//커뮤니티 게시판 추천수 TOP5
-	public ReplyVO postingReply(ReplyVO rvo);//댓글 등록
-	public void deleteReplyByNo(int replyNo);//댓글 삭제
-	public void updateReply(ReplyVO rvo);//댓글 수정
-	public ReplyVO getReplyByNo(int replyNo);//댓글 시퀀스로 단일 댓글 가져오기
+	public ReplyVO postingReply(ReplyVO rvo);//커뮤니티 게시판 덧글 폼에서 rvo로 받아와 덧글 등록
+	public void deleteReplyByNo(int replyNo);//덧글 고유 시퀀스로 덧글 삭제
+	public void updateReply(ReplyVO rvo);//덧글 고유 시퀀스로 덧글 수정
+	public ReplyVO getReplyByNo(int replyNo);//커뮤니티 덧글 번호로 rvo 가져오기 ( 수정하기 클릭시 )
 	//해당 커뮤니티 게시물에서 맨 처음 추천/비추천을 한다면 INSERT
 	//이미 예전에 추천 비추천을 한 경우가 있다면 UPDATE
 	//#{boardNo},#{memberId},#{recommend},#{notrecommend}

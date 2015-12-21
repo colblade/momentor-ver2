@@ -4,13 +4,13 @@
 <h2 class="sub-header">FAQ</h2>
 <div class="table-responsive">
 	<script type="text/javascript">
-	function updateFAQ(boardNo){
+	function updateFAQ(boardNo){//수정하기 버튼 클릭시 글 수정
 		if(confirm("수정 하시겠습니까?")){
 			location.href="admin_updateFAQForm.do?boardNo="+boardNo;
 		}
 	};
 	function deleteFAQ(boardNo){
-		if(confirm("삭제 하시겠습니까?")){
+		if(confirm("삭제 하시겠습니까?")){//삭제하기 버튼 클릭시 글 삭제
 			location.href="admin_deleteFAQByNo.do?boardNo="+boardNo;
 		}
 	}		//FAQ 토글 아코디언

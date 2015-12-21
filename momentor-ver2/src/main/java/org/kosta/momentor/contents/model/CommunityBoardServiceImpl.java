@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class CommunityBoardServiceImpl implements CommunityBoardService {
 	@Resource
 	private CommunityBoardDAO communityBoardDAO;
-
+	/* 해당 페이지 번호에 해당하는 커뮤니티 모든 글 가져오기 */
 	@Override
 	public ListVO getAllCommunityList(String pageNo) {
 		if(pageNo==null||pageNo=="") 
@@ -24,13 +24,18 @@ public class CommunityBoardServiceImpl implements CommunityBoardService {
 		ListVO lvo=new ListVO(list,paging);
 	    return lvo;
 	}
+	
+	/* 커뮤니티 글 번호로 상세 글 정보 가져오기  */
 	public CommunityBoardVO getCommunityByNo(int boardNo) {
 		return communityBoardDAO.getCommunityByNo(boardNo);
 	}
+	
+	/* jsp에서 cvo형식으로 받아와 글 업로드 */
 	@Override
 	public CommunityBoardVO postingCommunity(CommunityBoardVO cvo) {
 		return communityBoardDAO.postingCommunity(cvo); 
 	}
+	
 	@Override
 	public void registerCommunityImg(int boardNo,String imgName, String imgPath) {
 		HashMap<String, String> map = new HashMap<String, String>();
@@ -39,12 +44,15 @@ public class CommunityBoardServiceImpl implements CommunityBoardService {
 		map.put("imgPath", imgPath);
 		communityBoardDAO.registerCommunityImg(map);	
 	}
+	
 	@Override
 	public List<HashMap<String, String>> getCommunityImgListByNo(int boardNo) {
 		return communityBoardDAO.getCommunityImgListByNo(boardNo);
 	}
+	
+	/* 글 번호로 커뮤니티 게시판 글 삭제 */
 	@Override
-	public void deleteCommunity(int cboardNo) {//커뮤니티 게시판 글삭제
+	public void deleteCommunity(int cboardNo) {
 		communityBoardDAO.deleteAllCommunityImg(cboardNo);//해당 게시물 이미지 삭제
 		communityBoardDAO.deleteAllReplyByNo(cboardNo);//무결성에 따른 덧글 우선삭제
 		communityBoardDAO.deleteRecommendByNo(cboardNo);//무결성에 따른 추천 우선 삭제
@@ -57,23 +65,33 @@ public class CommunityBoardServiceImpl implements CommunityBoardService {
 		map.put("imgName", imgName);
 		communityBoardDAO.deleteCommunityImgByImgName(map);		
 	}
+	
+	/* 수정 폼에서 cvo 형식으로 받아와 DB에 수정 */
 	@Override
 	public void updateCommunity(CommunityBoardVO cvo) {
 		communityBoardDAO.updateCommunity(cvo);
 	}
+	
+	/* 커뮤니티 게시판 덧글 폼에서 rvo로 받아와 덧글 등록 */
 	@Override
 	public ReplyVO postingReply(ReplyVO rvo) {
 		communityBoardDAO.postingReply(rvo);
 		return null;
 	}
+	
+	/* 덧글 고유 시퀀스로 덧글 삭제 */
 	@Override
 	public void deleteReplyByNo(int replyNo) {
 		communityBoardDAO.deleteReplyByNo(replyNo);		
 	}
+	
+	/* 덧글 고유 시퀀스로 덧글 수정 */
 	@Override
 	public void updateReply(ReplyVO rvo) {
 		communityBoardDAO.updateReply(rvo);
 	}
+	
+	/* 커뮤니티 덧글 번호로 rvo 가져오기 ( 수정하기 클릭시 ) */
 	@Override
 	public ReplyVO getReplyByNo(int replyNo) {		
 		return communityBoardDAO.getReplyByNo(replyNo);
@@ -97,6 +115,8 @@ public class CommunityBoardServiceImpl implements CommunityBoardService {
 	public void updateCommunityHits(int boardNo) {
 		communityBoardDAO.updateCommunityHits(boardNo);
 	}
+	
+	/* 게시글 번호로 해당 게시물에 있는 덧글 목록 가져오기 */
 	@Override
 	public List<ReplyVO> getReplyListByNo(int boardNo) {
 		return communityBoardDAO.getReplyListByNo(boardNo);
