@@ -15,13 +15,13 @@ public class PlannerServiceImpl implements PlannerService {
 	@Resource
 	private CartDAO cartDAO;
 
-	/* 플래너의 목록을 가져온다.(달력에서 아이디로 로그인하면 해당목록을 뿌려준다.) */
+	/* 홈에서 로그인 한 회원의 각 날짜별 플래너 리스트 출력 */
 	@Override
 	public List<PlannerVO> getPlannerList(String id) {
 		return plannerDAO.getPlannerList(id);		
 	}
 	
-	/* 해당일의 플래너를 가져온다. */
+	/* 해당일의 플래너에 등록된 운동 리스트 출력 */
 	@Override
 	public List<PlannerVO> getPlannerListByDate(PlannerVO pvo) {
 		List<PlannerVO> pListByDate = plannerDAO.getPlannerListByDate(pvo);
@@ -72,26 +72,31 @@ public class PlannerServiceImpl implements PlannerService {
 		return pListByDate;
 	}
 	
+	/* 플래너에 운동 등록(오늘과 오늘 이후일에만 가능) */
 	@Override
 	public void registerExerciseInPlanner(PlannerVO pvo) {
 		plannerDAO.registerExerciseInPlanner(pvo);
 	}
 	
+	/* 플래너에서 운동 삭제(오늘과 오늘 이후일에만 가능) */
 	@Override
 	public void deleteExerciseInPlanner(PlannerVO pvo) {
 		plannerDAO.deleteExerciseInPlanner(pvo);
 	}
 	
+	/* 플래너에서 달성세트 등록(오늘만 가능) */
 	@Override
 	public void updateAchievementInPlanner(PlannerVO pvo) {
 		plannerDAO.updateAchievementInPlanner(pvo);
 	}
-
+	
+	/* 플래너의 목표세트 수정(오늘을 기준으로 이전일 경우만 가능) */
 	@Override
 	public void updateTargetSetInPlanner(PlannerVO pvo) {
 		plannerDAO.updateTargetSetInPlanner(pvo);
 	}
 	
+	/* 해당일의 플래너 코멘트 불러오기 */
 	@Override
 	public String getPlannerContentByDate(PlannerVO pvo){
 		String plannerContent = "";
@@ -105,27 +110,32 @@ public class PlannerServiceImpl implements PlannerService {
 		}
 		return plannerContent;
 	}
-
+	
+	/* 해당일의 플래너에 코멘트 등록 */
 	@Override
 	public void registerCommentInPlanner(PlannerVO pvo) {
 		plannerDAO.registerCommentInPlanner(pvo);
 	}
 	
+	/* 해당일의 플래너에 코멘트 수정 */
 	@Override
 	public int updateCommentInPlanner(PlannerVO pvo) {
 		return plannerDAO.updateCommentInPlanner(pvo);
 	}
 	
+	/* 찜바구니 리스트 출력 */
 	@Override
 	public List<CartVO> getCartList(String id) {
 		return cartDAO.getCartList(id);
 	}
 	
+	/* 찜바구니에 운동 담기 */
 	@Override
 	public void registerExerciseInCart(CartVO cvo) {
 		cartDAO.registerExerciseInCart(cvo);
 	}
 	
+	/* 찜바구니에서 운동 삭제 */
 	@Override
 	public void deleteExcerciseInCart(CartVO cvo) {
 		cartDAO.deleteExcerciseInCart(cvo);

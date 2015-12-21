@@ -16,15 +16,15 @@ $(function(){
 	// 찜하기 버튼을 클릭하면 모달창이 열림과 동시에 카트에 담긴 운동 리스트를 출력한다.
 	$("#regInCartModal").click(function(){
 		$.ajax({
-			type:"get",
+			type:"post",
 			url:"${initParam.root }my_getCartList.do",
 			data:"momentorMemberVO.memberId=${sessionScope.pnvo.momentorMemberVO.memberId}",
 			success:function(cartList){
 				var exNameInCart = "찜 된 운동이 없습니다.";
 				if(cartList.length != 0){
-					exNameInCart = "<p>[ 찜 바구니 목록 ]</p>";
+					exNameInCart = "<p><font style='font-weight: bold;'>[ 찜 바구니 목록 ]</font></p>";
 					$.each(cartList, function(index, list){
-						exNameInCart += "<p>" + list.exerciseBoardVO.exerciseVO.exerciseName + "</p>";
+						exNameInCart += "<p> - " + list.exerciseBoardVO.exerciseVO.exerciseName + "</p>";
 					});
 				}
 				$("#showCartList").html(exNameInCart);
@@ -48,15 +48,16 @@ $(function(){
 			success:function(cartList){
 				var exNameInCart = "찜 된 운동이 없습니다.";
 				if(cartList.length != 0){
-					exNameInCart = "<p>[ 찜 바구니 목록 ]</p>";
+					exNameInCart = "<p><font style='font-weight: bold;'>[ 찜 바구니 목록 ]</font></p>";
 					$.each(cartList, function(index, list){
-						exNameInCart += "<p>" + list.exerciseBoardVO.exerciseVO.exerciseName + "</p>";
+						exNameInCart += "<p> - " + list.exerciseBoardVO.exerciseVO.exerciseName + "</p>";
 					});
 				}
 				$("#showCartList").html(exNameInCart);
 			}
 		});
 	});
+	// 선택된 날짜의의 플래너로 이동
 	$("#movePlannerBtn").click(function(){
 		var now = new Date();
 		var year= now.getFullYear();
@@ -77,8 +78,7 @@ $(function(){
 	<div class="row">
 		<div class="col-sm-8 blog-main">
 			<div class="blog-post">
-				<br>
-				<br>
+				<br><br>
 				<span id="boardNo">${info.boardNo }</span>
 				<h2 class="blog-post-title">제목&nbsp;&nbsp; |
 					&nbsp;&nbsp;&nbsp;&nbsp; ${info.boardTitle }</h2>
@@ -106,12 +106,9 @@ $(function(){
 					<dl class="movs">
 						<c:set var="urlPath" value="${requestScope.URLVideo}"></c:set>
 						<c:choose>
-							<c:when test="${urlPath.URLPATH=='empty'}">
-							</c:when>
 							<c:when test="${urlPath.URLPATH!=null }">
 								<dd class="url">
-									<iframe src="${urlPath.URLPATH}"
-										type="application/x-shockwave-flash" width="750" height="468"></iframe>
+									<iframe src="${urlPath.URLPATH}" type="application/x-shockwave-flash" width="750" height="468"></iframe>
 								</dd>
 							</c:when>
 							<c:otherwise>
@@ -120,9 +117,7 @@ $(function(){
 					</dl>
 				</div>
 				<pre>${info.boardContent }</pre>
-				<br>
-				<br>
-				<br>
+				<br><br><br>
 				<hr>
 				<nav>
 					<ul class="pager">
@@ -146,15 +141,13 @@ $(function(){
 </div><!-- /.container -->
 
 
-<!-- Modal -->
-<div class="modal fade" id="regInCart" tabindex="-1" role="dialog"
-	aria-labelledby="regInCartLabel" aria-hidden="true">
+<!-- 찜하기 Modal -->
+<div class="modal fade" id="regInCart" tabindex="-1" role="dialog" aria-labelledby="regInCartLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="idFindCheck">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 					<h4 class="modal-title" id="regInCartLabel">찜하기</h4>
@@ -163,10 +156,8 @@ $(function(){
 					<span id="showCartList"></span>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-primary" id="regInCartBtn">담기</button>
-						<button type="button" class="btn btn-primary" id="movePlannerBtn">플래너로
-							이동</button>
-						<button type="button" class="btn btn-default" data-dismiss="modal"
-							id="closeBtn">닫기</button>
+						<button type="button" class="btn btn-primary" id="movePlannerBtn">플래너로 이동</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal" id="closeBtn">닫기</button>
 					</div>
 				</div>
 			</div>

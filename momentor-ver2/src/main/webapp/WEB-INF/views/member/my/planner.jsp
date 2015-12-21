@@ -3,17 +3,18 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
+<!-- 플래너 달성도에 적용되는 Easy pie charts CSS -->
 <script src="${initParam.root}dist/js/jquery.easy-pie-chart.js"></script>
 <link href="${initParam.root}dist/css/jquery.easy-pie-chart.css" rel="stylesheet" media="screen">
 
 <script type="text/javascript">
 	$(document).ready(function(){
-		// Easy pie charts
+		// 달성도 퍼센티지 애니메이션 효과(Easy pie charts) _ 처음 페이지 로딩시
         $('.chart').easyPieChart({animate: 1000});
 		
-		// 플래너에 달성치 등록하기
+		// [ ** 플래너에 달성치 등록하기 ** ]
 		// select로 선택된 value(1~targetSet)를 achievement 에 담아야 한다.
-		// 실시 button 클릭시 로그인한 사용자의 memberId, 해당 plannerDate, achievement, exerciseName를 담아 보내주어야 한다.
+		// 실시 button 클릭시 로그인한 사용자의 memberId, 해당 plannerDate, exerciseName, achievement를 담아 보내주어야 한다.
 		$("#plannerListTable").on("click", ".achiveBtn", function(){
 			var updateAchiveEx = $(this).parent().siblings().next().eq(0).text().trim();
 			var achievementValue = $(this).parent().siblings().next().next().find(".exSelect").val();
@@ -23,14 +24,15 @@
 			$.ajax({
 				type:"post",
 				url:"my_updateAchievementInPlanner.do",
-				data:"momentorMemberVO.memberId=${sessionScope.pnvo.momentorMemberVO.memberId}&plannerDate=${requestScope.selectDate}&exerciseVO.exerciseName="+updateAchiveEx+"&achievement="+achievementValue,
+				data:"momentorMemberVO.memberId=${sessionScope.pnvo.momentorMemberVO.memberId}&plannerDate=${requestScope.selectDate}" + 
+						"&exerciseVO.exerciseName="+updateAchiveEx+"&achievement="+achievementValue,
 				success:function(result){
 					plannerListFunc(result);
 				}
 			});
 		});
 		//---------------------------------------------------------------------------------------------------------------------------------------------------------------
-		// 플래너에 등록된 운동 목표세트 수정하기
+		// [ ** 플래너에 등록된 운동 목표세트 수정하기 ** ]
 		var targetSetVal = "";
 		$("#plannerListTable").on("click", ".updateBtn", function(){
 			// 버튼이 '수정' 일때 클릭하면, 목표세트를 text 상자로 만들어 준 후 버튼을 '저장'으로 바꿔준다.
@@ -55,7 +57,8 @@
 					$.ajax({
 						type:"post",
 						url:"my_updateTargetSetInPlanner.do",
-						data:"momentorMemberVO.memberId=${sessionScope.pnvo.momentorMemberVO.memberId}&plannerDate=${requestScope.selectDate}&exerciseVO.exerciseName="+updateTargetEx+"&targetSet="+updateTargetVal,
+						data:"momentorMemberVO.memberId=${sessionScope.pnvo.momentorMemberVO.memberId}&plannerDate=${requestScope.selectDate}" + 
+								"&exerciseVO.exerciseName="+updateTargetEx+"&targetSet="+updateTargetVal,
 						success:function(result){
 							plannerListFunc(result);
 						}
@@ -78,7 +81,7 @@
 		});
 		
 		//---------------------------------------------------------------------------------------------------------------------------------------------------------------
-		// 플래너에 등록된 운동 리스트에서 삭제하기
+		// [ ** 플래너에 등록된 운동 리스트에서 삭제하기 ** ]
 		$("#plannerListTable").on("click", "#deleteBtn", function(){
 			var deleteCheckComp = $("#listBody :input[name='deleteCheck']:checked");
 			if(deleteCheckComp.length == 0){
@@ -88,10 +91,12 @@
 			if(confirm("삭제하시겠습니까?") == false){
 				return;
 			}
+			// 오늘 기준으로 이미 지나간 날은 운동 삭제가 불가능 하도록
 			if(parseInt($(".panel-heading").text().substring(0, 10).replace(/-/g, "")) < parseInt(todayVal.replace(/-/g, ""))){
 				alert("지나간 날의 운동은 삭제할 수 없습니다.");
 				return;
 			}
+			// 복수선택된 체크박스를 배열로 받아 삭제할 운동명을 나열
 			var deleteCheckCompArray = "";
 			for(var i=0; i<deleteCheckComp.length; i++){
 				deleteCheckCompArray += "&exerciseVO.exerciseName="+$(deleteCheckComp[i]).val();
@@ -99,11 +104,18 @@
 			$.ajax({
 				type:"post",
 				url:"my_deleteExerciseInPlanner.do",
-				data:"momentorMemberVO.memberId=${sessionScope.pnvo.momentorMemberVO.memberId}&plannerDate=${requestScope.selectDate}"+deleteCheckCompArray,
+				data:"momentorMemberVO.memberId=${sessionScope.pnvo.momentorMemberVO.memberId}" + 
+						"&plannerDate=${requestScope.selectDate}"+deleteCheckCompArray,
 				success:function(result){
 					plannerListFunc(result);
 				}
 			});
+		});
+		
+		// 플래너 리스트의 전체선택 체크박스
+		$("#plannerListTable").on("change", ":input[name=allCheck]", function(){
+			var flag = $(this).prop("checked");
+			$(":input[name=deleteCheck]").prop("checked", flag);
 		});
 		
 		//---------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -120,7 +132,7 @@
 			var selectExName = $(this).children().eq(3).text();
 			$("input:radio[name=tempExerciseName]:radio[value='" + selectExName + "']").prop("checked", true);
 		});
-		// 찜 리스트에서 임시 등록란으로 올리기
+		// [ ** 찜 리스트에서 임시 등록란으로 올리기 ** ]
 		$("#cartListTable").on("click", "#selectExerciseBtn", function(){
 			var selectExercise = $(":input[name=tempExerciseName]:checked").val();
 			var targetSet = $("#tempTargetSet");
@@ -139,16 +151,17 @@
 		});
 		
 		//---------------------------------------------------------------------------------------------------------------------------------------------------------------
-		// 찜 카트 내 운동 삭제하기
+		// [ ** 찜 카트 내 운동 삭제하기 ** ]
 		$("#cartListTable").on("click", ".deleteInCartBtn", function(){
 			var deleteExcerciseName = $(this).parent().siblings().eq(3).text().trim();
 			if(confirm("삭제하시겠습니까?") == false){
 				return;
 			}
 			$.ajax({
-				type:"get",
+				type:"post",
 				url:"my_deleteExcerciseInCart.do",
-				data:"momentorMemberVO.memberId=${sessionScope.pnvo.momentorMemberVO.memberId}&exerciseBoardVO.exerciseVO.exerciseName="+deleteExcerciseName,
+				data:"momentorMemberVO.memberId=${sessionScope.pnvo.momentorMemberVO.memberId}" + 
+						"&exerciseBoardVO.exerciseVO.exerciseName="+deleteExcerciseName,
 				dataType:"json",
 				success:function(cartListResult){
 					// 찜 카트가 비어있지 않을때만 table의 틀 출력
@@ -158,7 +171,8 @@
 					if(cartListResult.cartList.length != 0){
 						cartTableFrame = "<div class='panel panel-primary'>" + 
 												"<div class='panel-heading'><h4>찜 바구니&nbsp;&nbsp;" + 
-												"<a id='collapseBtn' data-toggle='collapse' href='#collapse1'><i class='glyphicon glyphicon-chevron-up' style='color: white'></i></a></h4></div>" + 
+												"<a id='collapseBtn' data-toggle='collapse' href='#collapse1'>" + 
+												"<i class='glyphicon glyphicon-chevron-up' style='color: white'></i></a></h4></div>" + 
 												"<div id='collapse1' class='panel-collapse collapse in'>" + 
 												"<div class='panel-body'>" +
 												"<table class='table table-hover cartTable'>" + 
@@ -179,7 +193,8 @@
 																"<td>" + (index1+1) + "</td>" + 
 																"<td>" + exImg + "</td>" + 
 																"<td>" + exName + "</td>" + 
-																"<td><button type='button' class='deleteInCartBtn btn btn-warning btn-sm'><i class='glyphicon glyphicon-trash' aria-hidden='true'></i><font style='font-weight: bold;'> 삭제</font></button></td></tr>";
+																"<td><button type='button' class='deleteInCartBtn btn btn-warning btn-sm'>" + 
+																"<i class='glyphicon glyphicon-trash' aria-hidden='true'></i><font style='font-weight: bold;'> 삭제</font></button></td></tr>";
 						});
 						cartTableFrame += "<tr><td colspan='5'>목표 세트 <input type='text' name='tempTargetSet' id='tempTargetSet' style='text-align: right'>" + 
 													" <input type='button' id='selectExerciseBtn' value='선택'></td></tr>" + 
@@ -199,8 +214,8 @@
 				$(this).val($(this).val().replace(0, ""));
 			}
 		});
-		// 임시등록란에서 플래너로 등록하기
-		// 플래너에 이미 등록되어 있는지 여부는 DB를 거치지 않고 jQuery로 판단.
+		// [ ** 임시등록란에서 플래너로 등록하기 ** ]
+		// 플래너에 이미 등록되어 있는지 여부는 DB를 거치지 않고 jQuery로 판단
 		$("#regPlannerBtn").click(function(){
 			var regExName = $("#exerciseName").val();
 			// 임시등록란이 비어있는지 확인
@@ -233,8 +248,8 @@
 			$.ajax({
 				type:"post",
 				url:"my_registerInPlanner.do",
-				// data로 memberId, exerciseName, plannerDate, targetSet 를 보내주어야 함.
-				data:"exerciseVO.exerciseName=" + $("#exerciseName").val() + "&targetSet=" + $("#targetSet").val() + "&momentorMemberVO.memberId=${sessionScope.pnvo.momentorMemberVO.memberId}&plannerDate=${requestScope.selectDate}",
+				data:"exerciseVO.exerciseName=" + $("#exerciseName").val() + "&targetSet=" + $("#targetSet").val() + 
+						"&momentorMemberVO.memberId=${sessionScope.pnvo.momentorMemberVO.memberId}&plannerDate=${requestScope.selectDate}",
 				success:function(result){
 					$("#exerciseName").val("");
 					$("#targetSet").val("");
@@ -244,7 +259,7 @@
 		});
 		
 		//---------------------------------------------------------------------------------------------------------------------------------------------------------------
-		// 코멘트 textarea 영역 보이기/감추기 제어
+		// [ ** 코멘트 textarea 영역 보이기/감추기 제어 ** ]
 		var compareComment = "";
 		$("#commentView").hide();
 		$("#commentBtn").click(function(){
@@ -262,7 +277,8 @@
 					$.ajax({
 						type:"post",
 						url:"my_updateCommentInPlanner.do",
-						data:"momentorMemberVO.memberId=${sessionScope.pnvo.momentorMemberVO.memberId}&plannerDate=${requestScope.selectDate}&plannerContent="+commentComp,
+						data:"momentorMemberVO.memberId=${sessionScope.pnvo.momentorMemberVO.memberId}" + 
+								"&plannerDate=${requestScope.selectDate}&plannerContent="+commentComp,
 						success:function(){
 							alert("코멘트가 등록되었습니다.");
 						}
@@ -286,13 +302,7 @@
 			});
 		});
 		
-		// 플래너 리스트의 전체선택 체크박스
-		$("#plannerListTable").on("change", ":input[name=allCheck]", function(){
-			var flag = $(this).prop("checked");
-			$(":input[name=deleteCheck]").prop("checked", flag);
-		});
-		
-		// 운동 상세보기 modal
+		// [ ** 운동 상세보기 modal ** ]
 		$("#plannerListTable").on("click", ".exViewModal", function(){
 			$.ajax({
 				type:"post",
@@ -301,7 +311,8 @@
 				success:function(result){
 					var showExeciseInfoComp = "<h2>" + result.exerciseInfo.exerciseVO.exerciseName + "</h2><hr>";
 					$.each(result.nameList, function(index, fileName){
-						showExeciseInfoComp += "<img src='${initParam.root}exerciseimg/" + fileName.EXERCISENAME + "_" + fileName.IMGNAME + "' title='" + fileName.IMGNAME + "' style='width: 70%; height: 70%;'>"
+						showExeciseInfoComp += "<img src='${initParam.root}exerciseimg/" + fileName.EXERCISENAME + "_" +
+															fileName.IMGNAME + "' title='" + fileName.IMGNAME + "' style='width: 70%; height: 70%;'>"
 					});
 					if(result.URLVideo != null){
 						showExeciseInfoComp += "<br><br><dd class='url'>" + 
@@ -316,7 +327,7 @@
 			$("#exView").modal();
 		});
 		
-		// 찜 바구니 접기/펴기 시 아이콘 변경
+		// [ ** 찜 바구니 접기/펴기 시 아이콘 변경 ** ]
         $("#cartListTable").on("click", "#collapseBtn", function(){
 			if($(this).parent().parent().next().children().is(":visible")){
 				$('i', $(this)).removeClass("glyphicon-chevron-up").addClass("glyphicon-chevron-down");
@@ -327,21 +338,21 @@
 		
 	});
 		
-	// 임시등록 되어있는 운동이 있는데 페이지를 벗어나려 할 때 사용자에게 알림
+	// [ ** 임시등록 되어있는 운동이 있는데 페이지를 벗어나려 할 때 사용자에게 알림 ** ]
 	$(window).on("beforeunload", function(){
 		if($("#exerciseName").val() != ""){
 			return "임시등록 되어있는 운동이 있습니다.";
 		}
 	});
 	
-	// 오늘의 년월일 구하기
+	// [ ** 오늘의 년월일 구하기 ** ]
 	var now = new Date();
 	var year= now.getFullYear();
 	var mon = (now.getMonth()+1)>9 ? ''+(now.getMonth()+1) : '0'+(now.getMonth()+1);
 	var day = now.getDate()>9 ? ''+now.getDate() : '0'+now.getDate();
 	var todayVal = year + '-' + mon + '-' + day;
 	
-	// 플래너에 등록, 플래너에서 삭제, 달성 시 플래너 리스트를 출력하는 공통 function
+	// [ ** 플래너에 등록, 플래너에서 삭제, 달성 시 플래너 리스트를 출력하는 공통 function ** ]
 	function plannerListFunc(result){
 		var listTableFrame = "<div class='panel panel-primary'>" + 
 										"<div class='panel-heading'><h4>" + result.selectDate + "</h4></div>" + 
@@ -351,7 +362,8 @@
 									"<div class='panel-heading'><h4>" + result.selectDate + "</h4></div>" + 
 									"<div class='panel-body'>" + 
 									"<table class='table table-bordered plannerTable'>" + 
-									"<thead><tr><th><input type='checkbox' name='allCheck'></th><th>운동명</th><th>달성세트</th><th colspan='2'>목표세트</th><th>달성도</th><th>당일 달성도</th><th>당월 달성도</th>" + 
+									"<thead><tr><th><input type='checkbox' name='allCheck'></th><th>운동명</th><th>달성세트</th>" + 
+									"<th colspan='2'>목표세트</th><th>달성도</th><th>당일 달성도</th><th>당월 달성도</th>" + 
 									"</tr></thead><tbody id='listBody'>";
 				$.each(result.plannerList, function(index, list){
 					listTableFrame += "<tr>";
@@ -381,17 +393,20 @@
 					}
 					listTableFrame += "<td><center><div class='chart' data-percent='" + list.achievementPercent + "'>" + list.achievementPercent + "%</div></center></td>";
 					if(index == 0){
-						listTableFrame += "<td style='vertical-align: middle' rowspan=" + result.plannerList.length + ">" + "<center><div class='chart' data-percent='" + list.achievementPercentDay + "'>" + list.achievementPercentDay + "%</div></center></td>" + 
-													"<td style='vertical-align: middle' rowspan=" + result.plannerList.length + ">" + "<center><div class='chart' data-percent='" + list.achievementPercentMonth +  "'>" + list.achievementPercentMonth + "%</div></center></td>";
+						listTableFrame += "<td style='vertical-align: middle' rowspan=" + result.plannerList.length + ">" + 
+													"<center><div class='chart' data-percent='" + list.achievementPercentDay + "'>" + list.achievementPercentDay + "%</div></center></td>" + 
+													"<td style='vertical-align: middle' rowspan=" + result.plannerList.length + ">" + 
+													"<center><div class='chart' data-percent='" + list.achievementPercentMonth +  "'>" + list.achievementPercentMonth + "%</div></center></td>";
 					}
 					listTableFrame += "</tr>";
 				});
 				listTableFrame += "</tbody></table></div></div>" + 
-											"<button type='button' id='deleteBtn' class='btn btn-warning btn-sm'><i class='glyphicon glyphicon-trash' aria-hidden='true'></i><font style='font-weight: bold;'> 선택 삭제</font></button>";
+											"<button type='button' id='deleteBtn' class='btn btn-warning btn-sm'>" + 
+											"<i class='glyphicon glyphicon-trash' aria-hidden='true'></i><font style='font-weight: bold;'> 선택 삭제</font></button>";
 		}
 		$("#plannerListTable").html(listTableFrame);
 		
-		// Easy pie charts
+		// 달성도 퍼센티지 애니메이션 효과(Easy pie charts) _ jquery ajax 결과로 재출력시
         $('.chart').easyPieChart({animate: 1000});
 		
 	}

@@ -39,6 +39,15 @@
             	 });
             	 $("#detailedModalView").modal(); 
              });
+             
+             $("#cbSeachForm").submit(function(){
+            	if($("#searchWord").val() == ""){
+            		alert("검색어를 입력하세요.");
+            		$("#searchWord").focus();
+            		return false;
+            	} 
+             });
+             
           });
     </script>
 <h2 class="sub-header">Community</h2>
@@ -152,7 +161,7 @@
 	</select>
   </div>
   <div class="form-group">
-  	<input type="text" name="searchWord" class="form-control" placeholder="검색어를 입력하세요">
+  	<input type="text" name="searchWord" id="searchWord" class="form-control" placeholder="검색어를 입력하세요">
   </div>
   <button type="submit" class="btn btn-primary">검색</button>
 </form>
