@@ -53,23 +53,7 @@ $(document).ready(function(){
     $("#modifyBtn").click(function(){
        location.href="my_updateCommunityForm.do?boardNo="+${info.boardNo};
     });
-    /* 비밀번호 검증 */
-    $("#passCheckForm").submit(function(){
-       if($("#passCheck").val()==$("#memberPassword").val()){
-          if(confirm("정말 삭제하시겠습니까?")){
-          }else{
-             $("#passCheck").val("");
-              $("#passCheck").focus();
-             return false;
-          }
-       }else{
-          alert("비밀번호가 일치하지 않습니다");
-          $("#passCheck").val("");
-          $("#passCheck").focus();
-          return false;
-       }
-    });
-    
+
   //버튼을 통한 댓글 보여주기
     $("#replyView").hide();             
     $("#replyBtn").click(function(){

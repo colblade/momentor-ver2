@@ -259,15 +259,7 @@ public class ContentsController {
 		mv.setViewName("member_showSearchCommunity");
 		return mv;
 	}	
-	/**
-	 * 추천/비추천 ajax로 하는 부분.
-	 * 
-	 * @param memberId
-	 * @param boardNo
-	 * @param recommend
-	 * @param notRecommend
-	 * @return
-	 */
+	/*추천/비추천 ajax로 하는 부분.*/
 	@RequestMapping("my_updateRecommendInfo.do")
 	@ResponseBody
 	public Map<String, String> updateRecommendInfo(String memberId, int boardNo,String recommend, String notRecommend){

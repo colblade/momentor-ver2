@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Aspect
+//사용자가 검색을 실행했을 때 검색 결과가 있을 때만  Arround를 이용해 검색어를 저장.
 public class LoggingAspect {
 	private Log log = LogFactory.getLog(getClass());
 	@Resource
@@ -24,19 +25,7 @@ public class LoggingAspect {
 	@Around("execution(public * org.kosta.momentor..*Service.find*(..))")
 	public Object loggingAspect(ProceedingJoinPoint joinPoint) throws Throwable {		
 		Object obj= joinPoint.proceed();
- //검색결과로 저장할 때
-	/*ArrayList<BoardVO> list = (ArrayList)obj;
-	for(BoardVO vo :list){
-	String	keyword = vo.getBoardTitle();
-	String serviceName = "";
-	if(joinPoint.getTarget() instanceof ExerciseBoardService){
-		serviceName="[운동게시판]";
-	}
-	else{
-		serviceName="[커뮤니티게시판]";
-	}
-*//*}*/
-		//검색어로 저장할 때
+
 		Object[] args = joinPoint.getArgs();
 		String keyword = (String)args[0];
 		ArrayList resultVal = (ArrayList)obj;
