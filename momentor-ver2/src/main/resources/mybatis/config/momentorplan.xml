@@ -9,6 +9,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column = "PLANNER_DATE" property="plannerDate"/>
 	</resultMap>
 	
+	<!-- 플래너 목록 가져오기 -->
 	<select id="getPlannerList" resultType="planvo" parameterType="string" resultMap="plvomap">
 		SELECT MEMBERID, EXERCISENAME, TO_CHAR(PLANNER_DATE,'YYYY-MM-DD') AS PLANNER_DATE, TARGETSET, ACHIEVEMENT
 		FROM EXERCISE_PLANNER WHERE MEMBERID = #{momentorMemberVO.memberId}

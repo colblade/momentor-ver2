@@ -1,46 +1,45 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
-    <script type="text/javascript">
-       $(document).ready(function(){
-             $("#writeBtn").click(function(){
-                location.href="my_writeForm.do";
-             });
-             $(".detailedModal") .click(function(){
-            	 $.ajax({
-            		   type:"get",
-         		      url:"getMemberInfoByNickName.do",            
-         		      data:"momentorMemberVO.nickName="+$(this).text().trim(),
-         		      success:function(data){                  
-         		    	  var memInfoComp = data.momentorMemberVO;
-         		    	  var blindMemId = "";
-         		    	  blindMemId = memInfoComp.memberId.replace(memInfoComp.memberId.substring(2,(memInfoComp.memberId.length+1)),"***");
-         		    	  if(memInfoComp.memberName.length == 2){
-         		    		 blindName = memInfoComp.memberName.replace(memInfoComp.memberName.substring(1,(memInfoComp.memberName.length+1)),"*");
-         		    	  } else{
-	        		    	  blindName = memInfoComp.memberName.replace(memInfoComp.memberName.substring(1,(memInfoComp.memberName.length+1)),"**");
-         		    	  }
-         		    	  var memInfoView = "ID : " + blindMemId + "<br>" + 
-         		    	  									"이름 : " + blindName + "<br>" +
-         		    	  									" 키 : " + data.memberHeight + "<br>" + 
-         		    	  									" 몸무게 : " + data.memberWeight + "<br>" +
-         		    	  									" BMI : " + data.bmi + "<br>" +
-         		    	  									" 나이 : " + data.age + "<br>" +
-         		    	  									" 닉네임 : " + memInfoComp.nickName + "<br>";
-         		    	  if(memInfoComp.infoPublic==1){
-         		    	 $("#detailedView").html(memInfoView);
-         		   	 $("#memberInfoView").html(memInfoComp.nickName + "님 회원정보");
-         		    	  }else if(memInfoComp.infoPublic==2){
-         		    		 $("#detailedView").html("이 회원은 정보가 비공개 처리되었습니다.");
-         		    		 $("#memberInfoView").html(memInfoComp.nickName + "님 회원정보");
-         		    	  }		    
-         		      }
-            	 });
-            	 $("#detailedModalView").modal(); 
-             });
-          });
-       
-    </script>
+<%@taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
+<script type="text/javascript">
+$(document).ready(function(){
+      $("#writeBtn").click(function(){
+         location.href="my_writeForm.do";
+      });
+      $(".detailedModal") .click(function(){
+     	 $.ajax({
+     		   type:"get",
+  		      url:"getMemberInfoByNickName.do",            
+  		      data:"momentorMemberVO.nickName="+$(this).text().trim(),
+  		      success:function(data){                  
+  		    	  var memInfoComp = data.momentorMemberVO;
+  		    	  var blindMemId = "";
+  		    	  blindMemId = memInfoComp.memberId.replace(memInfoComp.memberId.substring(2,(memInfoComp.memberId.length+1)),"***");
+  		    	  if(memInfoComp.memberName.length == 2){
+  		    		 blindName = memInfoComp.memberName.replace(memInfoComp.memberName.substring(1,(memInfoComp.memberName.length+1)),"*");
+  		    	  } else{
+  		    	  blindName = memInfoComp.memberName.replace(memInfoComp.memberName.substring(1,(memInfoComp.memberName.length+1)),"**");
+  		    	  }
+  		    	  var memInfoView = "ID : " + blindMemId + "<br>" + 
+  		    	  									"이름 : " + blindName + "<br>" +
+  		    	  									" 키 : " + data.memberHeight + "<br>" + 
+  		    	  									" 몸무게 : " + data.memberWeight + "<br>" +
+  		    	  									" BMI : " + data.bmi + "<br>" +
+  		    	  									" 나이 : " + data.age + "<br>" +
+  		    	  									" 닉네임 : " + memInfoComp.nickName + "<br>";
+  		    	  if(memInfoComp.infoPublic==1){
+					$("#detailedView").html(memInfoView);
+  		   	 		$("#memberInfoView").html(memInfoComp.nickName + "님 회원정보");
+  		    	  }else if(memInfoComp.infoPublic==2){
+  		    		$("#detailedView").html("이 회원은 정보가 비공개 처리되었습니다.");
+  		    		$("#memberInfoView").html(memInfoComp.nickName + "님 회원정보");
+  		    	  }		    
+  		      }
+     	 });
+     	 $("#detailedModalView").modal(); 
+     });
+});
+</script>
 <h2 class="sub-header">Community</h2>
 <div class="table-responsive">
  <table class="table table-striped">

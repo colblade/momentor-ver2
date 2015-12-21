@@ -2,9 +2,9 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <h2 class="sub-header"><font color="blue">${requestScope.word}</font>에 대한 Momentor Guide 검색결과</h2>
- <div class="table-responsive">
- <table class="table table-striped">
- <thead>
+<div class="table-responsive">
+	<table class="table table-striped">
+		<thead>
 			<tr>
 				<th>No</th>
 				<th>타이틀</th>
@@ -14,20 +14,19 @@
 				<th>조회수</th>
 			</tr>
 		</thead>
-<tbody>
-<c:forEach items="${requestScope.list.list}" var="list">
-  <tr>
-                  <td>${list.boardNo }</td>
-                  <td><a href="${initParam.root }member_getExerciseByNo.do?boardNo=${list.boardNo}&pageNo=${param.pageNo}">${list.boardTitle }</a></td>
-                  <td>${list.exerciseVO.exerciseName }</td>
-                  <td>${list.momentorMemberVO.memberName }</td>
-                   <td>${list.boardWdate }</td>
-                   <td>${list.exerciseHits }</td>
-                </tr>
-
-</c:forEach>
-</tbody>
-</table>
+		<tbody>
+			<c:forEach items="${requestScope.list.list}" var="list">
+				<tr>
+					<td>${list.boardNo }</td>
+					<td><a href="${initParam.root }member_getExerciseByNo.do?boardNo=${list.boardNo}&pageNo=${param.pageNo}">${list.boardTitle }</a></td>
+					<td>${list.exerciseVO.exerciseName }</td>
+					<td>${list.momentorMemberVO.memberName }</td>
+					<td>${list.boardWdate }</td>
+					<td>${list.exerciseHits }</td>
+				</tr>
+			</c:forEach>
+		</tbody>
+	</table>
 </div>
 <div align="center">
 <nav>

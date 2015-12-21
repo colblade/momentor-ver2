@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<!-- 메인 케러셀(사진보기) -->
 <center>
 <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" align="center" style="width: 900px;">
   <!-- Indicators -->
@@ -70,6 +71,7 @@
   </a>
 </div>
 </center>
+<!-- 케러셀 넘어가는 시간 2초로 설정 -->
 <script>
 	$(".carousel").carousel({
 		interval: 2000

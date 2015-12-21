@@ -418,8 +418,8 @@ public class ContentsController {
 		List<Map<String, String>> list = exerciseBoardService.getExerciseImgListByExerciseName(exerciseName);
 		return list;
 	}	
-	
-	@RequestMapping("member_findResult.do") // 전체 검색하기
+	/* header.jsp에서 운동게시판 및 커뮤니티 전체 검색 */
+	@RequestMapping("member_findResult.do") 
 	public ModelAndView findByTitle(String word){
 		if(word.equals("%")){
 			word = "`" + word;
@@ -456,16 +456,16 @@ public class ContentsController {
 		mv.addObject("cbList", clist); // 화면에 보여지는 커뮤니티
 		return mv;
 	}	
-	
-	@RequestMapping("member_showSearchCommunity.do") // 커뮤니티 전체 검색 페이지로 이동
+	/* 전체 검색 후 커뮤니티에서 검색된 부분으로 이동 */
+	@RequestMapping("member_showSearchCommunity.do")
 	public ModelAndView getCommunityListByTitle(String word, String pageNo){
 		ModelAndView mv = new ModelAndView("member_showSearchCommunity");
 		mv.addObject("word", word);
 		mv.addObject("list", communityBoardService.getCommunityListByTitle(pageNo, word));
 		return mv;			
 	}
-	
-	@RequestMapping("member_showSearchExercise.do") // 운동게시판 전체 검색 페이지로 이동
+	/* 전체 검색 후 운동 게시판에서 검색된 부분으로 이동 */
+	@RequestMapping("member_showSearchExercise.do")
 	public ModelAndView getExerciseListByTitle(String word, String pageNo){
 		ModelAndView mv = new ModelAndView("member_showSearchExercise");
 		mv.addObject("word", word);

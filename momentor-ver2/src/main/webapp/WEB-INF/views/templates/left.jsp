@@ -3,45 +3,49 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
      <script type="text/javascript">
     $(document).ready(function(){
-    	  var checkIdFlag=false;
-   	   var checkNickNameFlag=false;
-   	   var checkPassFlag=false;
-   	   var checkEmailFlag=false;
-   	   var checkNameFlag=false;
-       $("#logout").click(function(){
-          if(confirm("로그아웃하시겠습니까?")){
-             location.href="${initParam.root}/logout.do";
-          }
-       });
-       $("#findId").click(function(){
-           if($("#nameId").val() == ""){
-              alert("이름을 입력하세요!");
-              return false;
-           } else if($("#mailId").val() == ""){
-              alert("E-mail을 입력하세요!");
-              return false;
-           } else{
-              $.ajax({
-            	type:"get",
-  				url:"check_idCheck.do?memberName=" + $("#nameId").val() + "&memberEmail=" + $("#mailId").val(),
-                 success:function(data){
-                	 if(data == ""){
- 						$("#showId").html("일치하는 회원정보가 없습니다!");
- 						$("#nameId").val("");
- 						$("#mailId").val("");
- 						$("#nameId").focus();
- 					} else{
- 						$("#showId").html("회원님의 아이디는 " + "<font color='red'>"+data.memberId + "</font> 입니다.");
- 					}
-                 }
-              });
-           }
-        });
+		var checkIdFlag=false;
+		var checkNickNameFlag=false;
+		var checkPassFlag=false;
+		var checkEmailFlag=false;
+		var checkNameFlag=false;
+		// 로그아웃
+		$("#logout").click(function(){
+			if(confirm("로그아웃하시겠습니까?")){
+				location.href="${initParam.root}/logout.do";
+			}
+		});
+		// 아이디 찾기(이름과 이메일로 인증)
+	    $("#findId").click(function(){
+	        if($("#nameId").val() == ""){
+	           alert("이름을 입력하세요!");
+	           return false;
+	        } else if($("#mailId").val() == ""){
+	           alert("E-mail을 입력하세요!");
+	           return false;
+	        } else{
+		    	$.ajax({
+		       		type:"get",
+		  			url:"check_idCheck.do?memberName=" + $("#nameId").val() + "&memberEmail=" + $("#mailId").val(),
+		            success:function(data){
+		            	if(data == ""){
+		 					$("#showId").html("일치하는 회원정보가 없습니다!");
+		 					$("#nameId").val("");
+		 					$("#mailId").val("");
+		 					$("#nameId").focus();
+		 				} else{
+		 					$("#showId").html("회원님의 아이디는 " + "<font color='red'>"+data.memberId + "</font> 입니다.");
+		 				}
+					}
+				});
+	        }
+		});
+		// 모달창에서 닫기 버튼을 누르면 초기화
         $("#closeId").click(function(){
            $("#nameId").val("");
            $("#mailId").val("");
            $("#showId").html("");
         });
+		// 비밀번호 찾기(아이디와 이메일로 인증 -> 해당 이메일로 비밀번호 전송)
         $("#findPass").click(function(){
            if($("#idPass").val() == ""){
               alert("아이디를 입력하세요!");
@@ -66,6 +70,7 @@
               });
            }
         });
+		// 모달창 닫기 버튼 누르면 초기화
         $("#closeId").click(function(){
            $("#idPass").val("");
            $("#mailPass").val("");
@@ -441,68 +446,61 @@
 </c:when>
 <c:otherwise>
 <div class="loginForm">
-   <form class="form-signin" action="${initParam.root}login_login.do" method="post">
-      <label for="inputID" class="sr-only">ID</label>
-      <input type="text" id="inputId" name="memberId" class="form-control" placeholder="ID" required autofocus>
-      <label for="inputPassword" class="sr-only">Password</label>
-      <input type="password" id="inputPassword" name="memberPassword" class="form-control" placeholder="Password" required>
-      <!-- <div class="checkbox">
-           <label>
-              <input type="checkbox" value="remember-me"> 아이디저장
-           </label>
-        </div> -->
-        <button class="btn btn-sm btn-primary btn-block" type="submit">Login</button>
-   </form>
-   
-   <!-- button class="btn btn-sm btn-primary btn-block" type="submit" id="register">회원가입</button>-->
-<!-- Button trigger modal -->
-<a data-toggle="modal" href="#registerModal"class="btn btn-sm btn-primary btn-block">회원가입</a>
-<div><h6><a data-toggle="modal" href="#myModal">아이디찾기</a>
-| <a data-toggle="modal" href="#passModal">비밀번호찾기</a></h6></div>
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="idModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-  <div class="idFindCheck">
-    <div class="modal-content">   
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="idModalLabel">아이디찾기</h4>
-      </div>
-      <div class="modal-body">          
-          이름 : <input type="text" class="form-control" name="memberName" id="nameId"><br>
-          mail : <input type="text" class="form-control" name="memberEmail" id="mailId"><br>
-          <span id="showId"></span>               
-      <div class="modal-footer">
-         <button type="button" class="btn btn-default" data-dismiss="modal" id="closeId">Close</button>
-         <button type="button" class="btn btn-primary" id="findId">아이디찾기</button>
-      </div>
-      </div>
-    </div>
-    </div>
-  </div>
-</div>
-<!-- Modal -->
-<div class="modal fade" id="passModal" tabindex="-1" role="dialog" aria-labelledby="idModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-  <div class="idFindCheck">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="idModalLabel">비밀번호찾기</h4>
-      </div>
-      <div class="modal-body">
-          ID : <input type="text" class="form-control"  name="memberId" id="idPass"><br>
-          mail : <input type="text" class="form-control"  name="memberEmail" id="mailPass"><br>
-          <span id="showPass"></span>
-      </div>
-      <div class="modal-footer">
-         <button type="button" class="btn btn-default" data-dismiss="modal" id="closePass">Close</button>
-         <button type="button" class="btn btn-primary" id="findPass">비밀번호찾기</button>
-      </div>
-    </div>
-  </div>
-  </div>
-</div>
+	<form class="form-signin" action="${initParam.root}login_login.do" method="post">
+		<label for="inputID" class="sr-only">ID</label>
+		<input type="text" id="inputId" name="memberId" class="form-control" placeholder="ID" required autofocus>
+		<label for="inputPassword" class="sr-only">Password</label>
+		<input type="password" id="inputPassword" name="memberPassword" class="form-control" placeholder="Password" required>
+		<button class="btn btn-sm btn-primary btn-block" type="submit">Login</button>
+	</form>   
+	<!-- Button trigger modal -->
+	<a data-toggle="modal" href="#registerModal"class="btn btn-sm btn-primary btn-block">회원가입</a>
+	<div><h6><a data-toggle="modal" href="#myModal">아이디찾기</a>
+	| <a data-toggle="modal" href="#passModal">비밀번호찾기</a></h6></div>
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="idModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	  <div class="idFindCheck">
+	    <div class="modal-content">   
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="idModalLabel">아이디찾기</h4>
+	      </div>
+	      <div class="modal-body">          
+	          이름 : <input type="text" class="form-control" name="memberName" id="nameId"><br>
+	          mail : <input type="text" class="form-control" name="memberEmail" id="mailId"><br>
+	          <span id="showId"></span>               
+	      <div class="modal-footer">
+	         <button type="button" class="btn btn-default" data-dismiss="modal" id="closeId">Close</button>
+	         <button type="button" class="btn btn-primary" id="findId">아이디찾기</button>
+	      </div>
+	      </div>
+	    </div>
+	    </div>
+	  </div>
+	</div>
+	<!-- Modal -->
+	<div class="modal fade" id="passModal" tabindex="-1" role="dialog" aria-labelledby="idModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	  <div class="idFindCheck">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="idModalLabel">비밀번호찾기</h4>
+	      </div>
+	      <div class="modal-body">
+	          ID : <input type="text" class="form-control"  name="memberId" id="idPass"><br>
+	          mail : <input type="text" class="form-control"  name="memberEmail" id="mailPass"><br>
+	          <span id="showPass"></span>
+	      </div>
+	      <div class="modal-footer">
+	         <button type="button" class="btn btn-default" data-dismiss="modal" id="closePass">Close</button>
+	         <button type="button" class="btn btn-primary" id="findPass">비밀번호찾기</button>
+	      </div>
+	    </div>
+	  </div>
+	  </div>
+	</div>
 </div>
 <!-- Modal -->
 <form method="post"  id="momentorRegister" action="register_result.do">
@@ -516,17 +514,17 @@
       </div>
       <div class="modal-body">
             <div class="form-group">
-            <label for="">아이디</label>
-            <input type="text" name="memberId" id="id" class="form-control" placeholder="아이디"><span id="idCheckView"></span>
-              </div>
+	            <label for="">아이디</label>
+	            <input type="text" name="memberId" id="id" class="form-control" placeholder="아이디"><span id="idCheckView"></span>
+            </div>
             <div class="form-group">
-      <label for="">비밀번호</label>
-   <input type="password" name="memberPassword" id="pass" class="form-control"placeholder="비밀번호">   <span id="chkpwd"></span>
-      </div>
+	      		<label for="">비밀번호</label>
+			    <input type="password" name="memberPassword" id="pass" class="form-control"placeholder="비밀번호">   <span id="chkpwd"></span>
+		    </div>
             <div class="form-group">
-         <label for="">비밀번호확인</label>
-      <input type="password" name="checkPassword" id="checkPass"class="form-control"placeholder="비밀번호확인" ><span id="checkPassword"></span>
-      </div>
+			    <label for="">비밀번호확인</label>
+			    <input type="password" name="checkPassword" id="checkPass"class="form-control"placeholder="비밀번호확인" ><span id="checkPassword"></span>
+      		</div>
             <div class="form-group">
          <label for="">이름</label>
         <input type="text" name="memberName" id="name" class="form-control"placeholder="이름"><span id="nameCheckView"></span>

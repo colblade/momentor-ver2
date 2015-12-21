@@ -63,13 +63,18 @@ public class ExerciseBoardServiceImpl implements ExerciseBoardService {
 	public List<ExerciseBoardVO> getExerciseListBestTop5ByHits() {
 		return exerciseBoardDAO.getExerciseListBestTop5ByHits();
 	}
+	/**
+	 *  header.jsp에서 전체 검색 중 운동게시판 전체 검색 부분
+	 */
 	@Override
 	public List<ExerciseBoardVO> findExerciseListByTitle(String word) {
-		// 운동게시판 전체 검색
 		return exerciseBoardDAO.findExerciseListByTitle(word);
 	}
+	/**
+	 *  전체 검색 후 커뮤니티에서 검색된 부분으로 이동
+	 */
+	@Override
 	public ListVO getExerciseListByTitle(String pageNo, String word) {
-		// 운동 게시판 검색 페이지
 		if (pageNo == null || pageNo == "")
 			pageNo = "1";
 		int total = exerciseBoardDAO.totalExerciseByTitle(word);

@@ -10,35 +10,37 @@
 	<c:otherwise>
 		<h2 class="sub-header"><font color="blue">${requestScope.word}</font>에 대한 커뮤니티 검색결과</h2>
 		<div class="table-responsive">
-		   <table class="table table-striped">
-		      <thead>
-		  <tr>
-		    <th>No</th>
-		    <th>타이틀</th>
-		    <th>글쓴이</th>
-		    <th>작성일</th>
-		    <th>조회수</th>
-		    <th>추천수</th>
-		  </tr>
-		  </thead>
-		  <tbody>
-		      <c:forEach items="${requestScope.list.list}" var="posting">
-		      <tr>
-		         <td>${posting.boardNo }</td>
-		            <c:choose>
-		               <c:when test="${sessionScope.pnvo==null }">
-		                  <td>${posting.boardTitle}</td>
-		               </c:when>
-		               <c:otherwise><td><a href="my_getCommunityByNo.do?boardNo=${posting.boardNo}">${posting.boardTitle}</a></td></c:otherwise>
-		            </c:choose>
-		            <td>${posting.momentorMemberVO.nickName}</td>
-		            <td>${posting.boardWdate}</td>
-		            <td>${posting.memberHits}</td>
-		            <td>${posting.recommend}</td>
-		         </tr>
-		   </c:forEach>
-		   </tbody>
-		   </table>
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>No</th>
+						<th>타이틀</th>
+						<th>글쓴이</th>
+						<th>작성일</th>
+						<th>조회수</th>
+						<th>추천수</th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:forEach items="${requestScope.list.list}" var="posting">
+						<tr>
+							<td>${posting.boardNo }</td>
+							<c:choose>
+								<c:when test="${sessionScope.pnvo==null }">
+									<td>${posting.boardTitle}</td>
+								</c:when>
+							<c:otherwise>
+								<td><a href="my_getCommunityByNo.do?boardNo=${posting.boardNo}">${posting.boardTitle}</a></td>
+							</c:otherwise>
+							</c:choose>
+							<td>${posting.momentorMemberVO.nickName}</td>
+							<td>${posting.boardWdate}</td>
+							<td>${posting.memberHits}</td>
+							<td>${posting.recommend}</td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
 		</div>
 	</c:otherwise>
 </c:choose>

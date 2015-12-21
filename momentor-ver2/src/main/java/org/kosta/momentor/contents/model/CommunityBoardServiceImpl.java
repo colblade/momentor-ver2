@@ -163,12 +163,16 @@ public class CommunityBoardServiceImpl implements CommunityBoardService {
 		String.valueOf(communityBoardDAO.totalNotRecommendByNo(boardNo))};
 		return res;
 	}
+	/**
+	 *  header.jsp에서 전체 검색 중 켜뮤니티 전체 검색 부분
+	 */
 	public List<CommunityBoardVO> findCommunityListByTitle(String word) {
-	   // 커뮤니티 전체 검색
 		return communityBoardDAO.findCommunityListByTitle(word);
 	}
+	/**
+	 *  전체 검색 후 커뮤니티에서 검색된 부분으로 이동
+	 */
 	public ListVO getCommunityListByTitle(String pageNo, String word) {
-	   // 커뮤니티 게시판 검색 페이지 이동
 		if(pageNo==null||pageNo=="") 
 			pageNo="1";
 		int total=communityBoardDAO.totalCommunityByTitle(word);

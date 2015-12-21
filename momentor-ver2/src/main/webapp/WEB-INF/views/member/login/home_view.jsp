@@ -86,9 +86,11 @@
 <script>
    // FullCalnedar
    $(document).ready(function() {
+	   // 달력 메인화면에 띄움
       $('#calendar').fullCalendar({
     	  height: 600,
-         dayClick: function(date) { // 날짜 클릭시 알럿.
+          dayClick: function(date) {
+        	// 해당 날짜를 클릭하면 해당날짜에 대한 모달창을 띄운다.
         	$('#planModal').modal();   
         	var calendarDay = "";				
             if(date.getDate() < 10){
@@ -98,6 +100,7 @@
             }
             $("#selectDay").val(date.getFullYear() + "-" + (date.getMonth()+1) + "-" + calendarDay);
          },
+         // 해당 날짜에 대한 상세정보(정보가 없으면 빈 정보를 모달에 띄움)를 모달로 띄움
          events: function(date){
         	$('#planModal').on('shown.bs.modal', function(){
         		$.ajax({
@@ -124,6 +127,7 @@
         			}
                	}); 
         	});   
+        	// 달력(fullcalendar)에 해당날짜에 플랜 내용이 있으면 그 내용을 달력에 보여준다.
         	$.ajax({
            		type:"get",
     			url:"my_getPlannerList.do?momentorMemberVO.memberId=${sessionScope.pnvo.momentorMemberVO.memberId}",
@@ -169,10 +173,9 @@
    });
 </script>
 <style type="text/css">
-#wrap{margin: 0 auto; padding: 20px;}
-.calendar_body{width: 700px; float: center; margin-left: 150px;}
+	#wrap{margin: 0 auto; padding: 20px;}
+	.calendar_body{width: 700px; float: center; margin-left: 150px;}
 </style>
-<body>
 <div class="row marketing">
 	<div class="col-md-6">
 		
@@ -273,27 +276,23 @@
 	
 
 </div>
-   <div id="wrap">
-      <!-- FullCalendar body -->
-      <div class="calendar_body">
-         <div id="calendar"></div>
-      </div>
-      
-      <!-- Input/Output Form -->
-      <div class="cal_input_table">
-         <form action="./CalendarAdd.cl" method="post">
-            <table border="1">
-            </table>
-
-         </form>
-         <form action="./CalendarDel.cl" method="post">
-            <table border="1">
-            
-            </table>
-         </form>
-      </div>   
+<div id="wrap">
+   <!-- FullCalendar body -->
+   <div class="calendar_body">
+      <div id="calendar"></div>
    </div>
-   <!-- Button trigger modal -->
+   <!-- Input/Output Form -->
+   <div class="cal_input_table">
+      <form action="./CalendarAdd.cl" method="post">
+         <table border="1">
+         </table>
+      </form>
+      <form action="./CalendarDel.cl" method="post">
+         <table border="1">
+         </table>
+      </form>
+   </div>   
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="planModal" tabindex="-1" role="dialog" aria-labelledby="planModalLabel" aria-hidden="true">
@@ -319,4 +318,3 @@
     </div>
   </div>
 </div>
-</body>

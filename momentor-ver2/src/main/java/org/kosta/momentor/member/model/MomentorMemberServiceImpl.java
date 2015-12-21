@@ -33,14 +33,17 @@ public class MomentorMemberServiceImpl implements MomentorMemberService {
 	public MomentorMemberPhysicalVO login(MomentorMemberVO vo) {
 		return momentorMemberDAO.login(vo);
 	}
+	/* 아이디 찾기 */
 	@Override
 	public MomentorMemberVO idCheck(MomentorMemberVO vo) {
 		return momentorMemberDAO.idCheck(vo);
 	}
+	/* 비밀번호 찾기 */
 	@Override
 	public MomentorMemberVO passwordCheck(MomentorMemberVO vo){
 		return momentorMemberDAO.passwordCheck(vo);
 	}
+	/* 비밀번호를 찾은 후 해당 이메일로 전송 */
 	@Autowired
     protected JavaMailSender  mailSender;
 	@Override

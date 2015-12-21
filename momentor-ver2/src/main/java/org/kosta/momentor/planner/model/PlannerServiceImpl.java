@@ -15,11 +15,13 @@ public class PlannerServiceImpl implements PlannerService {
 	@Resource
 	private CartDAO cartDAO;
 
+	/* 플래너의 목록을 가져온다.(달력에서 아이디로 로그인하면 해당목록을 뿌려준다.) */
 	@Override
 	public List<PlannerVO> getPlannerList(String id) {
 		return plannerDAO.getPlannerList(id);		
 	}
 	
+	/* 해당일의 플래너를 가져온다. */
 	@Override
 	public List<PlannerVO> getPlannerListByDate(PlannerVO pvo) {
 		List<PlannerVO> pListByDate = plannerDAO.getPlannerListByDate(pvo);
