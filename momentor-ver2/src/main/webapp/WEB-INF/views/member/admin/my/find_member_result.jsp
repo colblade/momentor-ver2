@@ -2,7 +2,9 @@
     pageEncoding="UTF-8"%>
       <%@taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
       <%@taglib prefix="fn"  uri="http://java.sun.com/jsp/jstl/functions"%>
+      <!-- 관리자가 회원 검색 페이지 -->
 <script>
+//툴팁과 유효성 검사
 $(function (){
 	   $(".sideview").tooltip("hide"); 
    $("#searchMenuForm").submit(function(){
@@ -11,6 +13,7 @@ $(function (){
 			  return false;
 		  }
 	   });
+   //회원강퇴 컨펌
    $("#deleteMemberForm").submit(function(){
 	   if(confirm("해당 회원을 강퇴하시겠습니까?") == false){
 		   return false;
@@ -18,7 +21,6 @@ $(function (){
    });
 });
 </script>
-
      <h3>검색 회원 목록</h3>
      <hr>
      <c:choose>
@@ -97,7 +99,7 @@ $(function (){
 	    <li>
 			<a href="admin_my_managerFindBy.do?pageNo=${pb.endPageOfPageGroup+1}&search=${requestScope.search}&searchMenu=${requestScope.searchMenu}"
 			aria-label="Next">
-				<span aria-hidden="true">&raquo;</span>
+			<span aria-hidden="true">&raquo;</span>
 			</a>
 	      </li>
 		</c:if>

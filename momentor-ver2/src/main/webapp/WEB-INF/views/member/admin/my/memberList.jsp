@@ -1,12 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
      <%@taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
+     <!-- 관리자가 회원 리스트 보는 페이지 -->
 <script>
+		//회원 강퇴 버튼 컨펌
        	function deleteMember(memberId){
     		if(confirm("회원 강퇴 하시겠습니까?")){
     			  location.href="deleteMemberByAdmin.do?memberId="+memberId;
     		}
     	};
+    	//툴팁과 검색창 유효성 검사
 $(function (){
 		   $(".sideview").tooltip("hide"); 
    $("#searchMenuForm").submit(function(){
@@ -49,6 +52,7 @@ $(function (){
       <td>${memberList.momentorMemberVO.nickName}</td>
       <td>${memberList.momentorMemberVO.gender }</td>
       <td>${memberList.momentorMemberVO. memberAddress}</td>
+    		  <!-- 회원 강퇴 버튼 -->
            <td><input type="button"  id="deleteBtn" value="회원강퇴" class="btn btn-primary"  onclick="deleteMember('${memberList.momentorMemberVO.memberId}')"></td>  
    </tr>
 </c:forEach>
@@ -86,7 +90,7 @@ $(function (){
 	    <li>
 			<a href="admin_my_meberList.do?pageNo=${pb.endPageOfPageGroup+1}"
 			aria-label="Next">
-				<span aria-hidden="true">&raquo;</span>
+			<span aria-hidden="true">&raquo;</span>
 			</a>
 	      </li>
 		</c:if>
@@ -104,7 +108,7 @@ $(function (){
   </div>
   <div class="form-group">
   	<input type="text" name="search" id="search" class="form-control" placeholder="검색어를 입력하세요">
-  </div>
+	  </div>
   <button type="submit" class="btn btn-primary">검색</button>
-</form>
+	</form>
 </center>

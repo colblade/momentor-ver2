@@ -23,7 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="momentorMemberVO.memberAddress" column="memberAddress"/>
 		<result property="momentorMemberVO.infoPublic" column="info_Public"/>
 	</resultMap>
-   
+   <!-- 로그인 -->
 	<select id="login" parameterType="mvo" resultMap="physicalRM">
 		select m.memberId, m.memberPassword, m.memberName, m.birthYear, m.birthMonth, m.birthDay, m.nickName, m.memberEmail, m.gender, m.memberAddress, m.auth, 
 		p.MEMBERWEIGHT, p.MEMBERHEIGHT, p.age, p.bmi,m.info_public
@@ -40,25 +40,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="passCheck" resultType="mvo">
 		select memberId, memberEmail, memberPassword from momentor_member where memberId=#{memberId} and memberEmail=#{memberEmail}
 	</select>
-	
+	<!-- 아이디 중복검사 -->
 	<select id="idOverlappingCheck" resultType="int">
 		select count(*) from MOMENTOR_MEMBER where memberId=#{value}
 	</select>
-	
+	<!-- 닉네임 중복검사 -->
 	<select id="nickNameOverlappingCheck" resultType="int">
 		select count(*) from MOMENTOR_MEMBER where nickName=#{value}
 	</select>
-	
+	<!-- 이메일 중복검사 -->
 	<select id="emailOverlappingCheck" resultType="int">
 		select count(*) from MOMENTOR_MEMBER where memberEmail=#{value}
 	</select> 
-	
+	<!-- 회원가입 -->
 	<insert id="registerMember" parameterType="mvo" >
 		INSERT INTO MOMENTOR_MEMBER 
 		(MEMBERID, MEMBERPASSWORD, MEMBERNAME, BIRTHYEAR,BIRTHMONTH, BIRTHDAY, NICKNAME, MEMBEREMAIL, GENDER, MEMBERADDRESS,info_public)
 		VALUES (#{memberId},#{memberPassword},#{memberName},#{birthYear},#{birthMonth},#{birthDay},#{nickName},#{memberEmail},#{gender},#{memberAddress},#{infoPublic})
 	</insert>
-
+	<!-- 회원가입 신체정보 -->
 	<insert id="registerPhysicalMember" parameterType="pnvo">
 		INSERT INTO MOMEMTOR_MEMBER_PHYSICAL
 		(MEMBERWEIGHT,MEMBERHEIGHT,AGE,BMI,MEMBERID)
@@ -100,7 +100,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="myNickNameCheck" resultType="int">
 		select count(*) from MOMENTOR_MEMBER where nickName=#{nickName}
 	</select>
-		
+		<!-- 관리자가 전체 회원 리스트 보기 -->
 	<select id="managerGetAllMember" resultMap="physicalRM">
 		select M.MEMBERID,M.MEMBERPASSWORD,M.MEMBERNAME,M.BIRTHYEAR,M.BIRTHMONTH,M.BIRTHDAY,P.MEMBERHEIGHT,P.MEMBERWEIGHT,P.AGE,M.NICKNAME,M.MEMBEREMAIL,M.GENDER,M.MEMBERADDRESS,P.BMI from (
 			select MEMBERID,MEMBERPASSWORD,MEMBERNAME,BIRTHYEAR,BIRTHMONTH,BIRTHDAY,NICKNAME,memberEmail,GENDER,MEMBERADDRESS,AUTH,ceil(rownum/5) as page from (
@@ -121,6 +121,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			)
 		) M,MOMEMTOR_MEMBER_PHYSICAL P where  page=#{pageNo} AND M.MEMBERID=P.MEMBERID   
 	</select>
+	<!-- 아이디로 검색결과 인원 수 -->
 	<select id="totalMemberFindByIdCount" resultType="int">
 		select count(*) from MOMENTOR_MEMBER where auth=2 and memberId like '%'||#{value}||'%'
 	</select>
@@ -133,6 +134,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			)
 		) M,MOMEMTOR_MEMBER_PHYSICAL P where  page=#{pageNo} AND M.MEMBERID=P.MEMBERID   
 	</select>
+	<!-- 이름으로 검색결과 인원 수 -->
 	<select id="totalMemberFindByNameCount" resultType="int">
 	 	select count(*) from MOMENTOR_MEMBER where auth=2 and memberName like '%'||#{value}||'%'
 	</select>
@@ -145,16 +147,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			)
 		) M,MOMEMTOR_MEMBER_PHYSICAL P where  page=#{pageNo}  AND M.MEMBERID=P.MEMBERID   
 	</select>
+	<!-- 닉네임으로 검색결과 인원 수 -->
 	<select id="totalMemberFindByNickNameCount" resultType="int">
 		select count(*) from MOMENTOR_MEMBER where auth=2 and nickName like '%'||#{value}||'%'
 	</select>
-	
+	<!-- 회원 강퇴 -->
 	<update id="deleteMemberByAdmin" parameterType="mvo">
 		update MOMENTOR_MEMBER
 		set auth=8
 		where memberId=#{momentorMemberVO.memberId}
 	</update>
-	
+	<!-- 커뮤니티 게시판에서 회원들이 회원정보 보기 -->
 	 <select id="getMemberInfoByNickName" resultMap="physicalRM">
       	SELECT  M.MEMBERID, M.MEMBERNAME, P.MEMBERHEIGHT, P.MEMBERWEIGHT, P.BMI , P.AGE , M.NICKNAME,M.info_public as infoPublic
   		FROM MOMENTOR_MEMBER M , MOMEMTOR_MEMBER_PHYSICAL P

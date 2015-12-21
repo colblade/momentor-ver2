@@ -76,6 +76,7 @@
            $("#mailPass").val("");
            $("#showPass").html("");
         });
+		//회원가입 달력 폼
         $(".datepicker").datepicker({
            dateFormat: 'yy-mm-dd' ,
             changeYear: true ,
@@ -88,6 +89,7 @@
      $("#back").click(function(){
         location.href="${initParam.root}home.do";
      });
+     //아이디 한글 불가
      function chkId(str)
      {
       var reg_Id = /^[a-zA-Z0-9]+$/;
@@ -97,6 +99,7 @@
       }
       return true;
      }
+     //아이디 중복검사
      $("#id").keyup(function(){
     	   var id=$("#id").val().trim();
     	   $('#id').val($('#id').val().trim()); 
@@ -128,6 +131,7 @@
     	      }      
     	   });
     	});
+     	//닉네임 중복검사
     	$("#nick").keyup(function(){
     	   var nick=$("#nick").val().trim();
     	   $('#nick').val($('#nick').val().trim()); 
@@ -159,6 +163,7 @@
     	      }      
     	   });
     	});
+     	//이메일 중복검사
     	$("#emailOverlapping").click(function(){
     		  var memberEmail=$("#email1").val().trim();
     		   var memberEmail2=$("#join_email2").val().trim();
@@ -199,6 +204,7 @@
     		      }      
     		   });
      });
+     //패스워드 영문 숫자 조합
      function chkPwd(str)
      {
       var reg_pwd = /^.*(?=.{6,12})(?=.*[0-9])(?=.*[a-zA-Z]).*$/;
@@ -245,6 +251,7 @@
     		      
     		   }
     		});  
+    		//이름 한글 or 영어만 되도록 설정
     		 function chkName(str)
     	     {
     	      var reg_Name =/^[가-힣a-zA-Z]+$/;
@@ -266,12 +273,15 @@
     			 checkNameFlag=true;
     		 }
     	});
+    	//이메일 공백 불가
     	$("#email1").keyup(function(){
     		$("#email1").val($("#email1").val().trim());
     	});
+    	//이메일 공백 불가
     	$("#join_email2").keyup(function(){
     		$("#join_email2").val($("#join_email2").val().trim());
     	});
+    	//키 3자제한,공백,한글 불가
     	$("#height").keyup(function(){
     		$("#height").val($("#height").val().trim());
     		if($("#height").val().length > 3){
@@ -280,6 +290,7 @@
     			return false;
     		}
     	});
+    	//몸무게 3자제한,공백,한글 불가
     	$("#weight").keyup(function(){
     		$("#weight").val($("#weight").val().trim());
     		if($("#weight").val().length > 3){
@@ -288,6 +299,7 @@
     			return false;
     		}
     	});
+    	//회원가입 유효성 검사
      $("#momentorRegister").submit(function(){
     	   if($("#id").val()==""){
     	      alert("아이디를 입력하세요.");
@@ -332,10 +344,6 @@
       	      alert("정보 공개 여부를 선택해주세요");
       	      return false;
       	   }
-    	   /* if($("#registerForm :radio[name=gender]:checked").length==0){
-    	      alert("성별을 입력해주세요");
-    	      return false;
-    	   } */
     	   if($("#address").val()==""){
     	      alert("주소를 입력해주세요");
     	      $("#address").focus();
