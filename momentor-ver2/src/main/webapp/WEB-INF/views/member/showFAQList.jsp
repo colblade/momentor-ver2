@@ -31,8 +31,7 @@
 			<h3 class="ui-accordion-header" >${posting.boardTitle}</h3>
 			<pre>${posting.boardContent}<br>
 				<c:if test="${sessionScope.pnvo.momentorMemberVO.auth==1 }">
-				<input type="button"  id=" modifyBtn"  value="수정"  onclick="updateFAQ(${posting.boardNo})" class="btn btn-primary pull-right">
-				<input type="button"  id="deleteBtn"  value="삭제" onclick="deleteFAQ(${posting.boardNo})" class="btn btn-primary pull-right">
+				<input type="button"  id=" modifyBtn"  value="수정"  onclick="updateFAQ(${posting.boardNo})" class="btn btn-primary pull-right"><input type="button"  id="deleteBtn"  value="삭제" onclick="deleteFAQ(${posting.boardNo})" class="btn btn-primary pull-right">
 				</c:if>
 			</pre>		
 			</c:forEach>

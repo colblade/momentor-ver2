@@ -111,7 +111,7 @@ $(function(){
 							<c:when test="${urlPath.URLPATH!=null }">
 								<dd class="url">
 									<iframe src="${urlPath.URLPATH}"
-										type="application/x-shockwave-flash" width="800" height="450"></iframe>
+										type="application/x-shockwave-flash" width="750" height="468"></iframe>
 								</dd>
 							</c:when>
 							<c:otherwise>
