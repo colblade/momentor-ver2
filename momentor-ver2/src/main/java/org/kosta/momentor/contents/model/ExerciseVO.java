@@ -1,4 +1,4 @@
-package org.kosta.momentor.cart.model;
+package org.kosta.momentor.contents.model;
 
 public class ExerciseVO {
 	private String exerciseName;

@@ -6,7 +6,6 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.kosta.momentor.cart.model.ExerciseVO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 @Repository

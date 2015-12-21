@@ -1,6 +1,6 @@
 package org.kosta.momentor.planner.model;
 
-import org.kosta.momentor.cart.model.ExerciseVO;
+import org.kosta.momentor.contents.model.ExerciseVO;
 import org.kosta.momentor.member.model.MomentorMemberVO;
 
 public class PlannerVO {

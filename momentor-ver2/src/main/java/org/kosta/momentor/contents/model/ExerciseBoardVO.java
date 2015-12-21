@@ -1,6 +1,5 @@
 package org.kosta.momentor.contents.model;
 
-import org.kosta.momentor.cart.model.ExerciseVO;
 import org.kosta.momentor.member.model.MomentorMemberVO;
 
 public class ExerciseBoardVO extends BoardVO{

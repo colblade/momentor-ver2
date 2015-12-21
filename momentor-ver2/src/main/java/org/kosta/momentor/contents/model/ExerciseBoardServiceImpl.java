@@ -7,7 +7,6 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.kosta.momentor.cart.model.ExerciseVO;
 import org.springframework.stereotype.Service;
 
 @Service

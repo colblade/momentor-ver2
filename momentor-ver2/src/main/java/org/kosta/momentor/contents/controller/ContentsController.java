@@ -12,12 +12,12 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.kosta.momentor.cart.model.ExerciseVO;
 import org.kosta.momentor.contents.model.BoardVO;
 import org.kosta.momentor.contents.model.CommunityBoardService;
 import org.kosta.momentor.contents.model.CommunityBoardVO;
 import org.kosta.momentor.contents.model.ExerciseBoardService;
 import org.kosta.momentor.contents.model.ExerciseBoardVO;
+import org.kosta.momentor.contents.model.ExerciseVO;
 import org.kosta.momentor.contents.model.FileVO;
 import org.kosta.momentor.contents.model.ListVO;
 import org.kosta.momentor.contents.model.PagingBean;

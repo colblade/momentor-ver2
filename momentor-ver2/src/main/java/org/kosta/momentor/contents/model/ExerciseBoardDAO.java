@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.kosta.momentor.cart.model.ExerciseVO;
-
 public interface ExerciseBoardDAO {
 	// 전체 페이지 수 계산
 	public int totalExercise();

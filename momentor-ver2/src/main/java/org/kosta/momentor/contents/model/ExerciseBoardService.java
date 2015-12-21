@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.kosta.momentor.cart.model.ExerciseVO;
-
 public interface ExerciseBoardService {
 	public void postingExercise(ExerciseBoardVO evo);//운동 업로드
 	public void deleteExerciseByAdmin(int eboardNo,String exerciseName);//글 삭제
