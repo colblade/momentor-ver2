@@ -110,7 +110,7 @@ $("#addFileBtn").click(function() {
 		<div class="form-group">
 			<label for="boardContent" class="col-sm-2 control-label">내용 :</label>
 			<div class="col-sm-10">
-				<textarea style="width: 500px; font-size: 15px" rows="20" wrap="hard" placeholder="내용을 입력하세요." required="required" name="boardContent" class="form-control"></textarea>
+				<textarea style="width: 500px; font-size: 15px; resize:none" rows="20" wrap="hard" placeholder="내용을 입력하세요." required="required" name="boardContent" class="form-control"></textarea>
 			</div>
 		</div>
 		

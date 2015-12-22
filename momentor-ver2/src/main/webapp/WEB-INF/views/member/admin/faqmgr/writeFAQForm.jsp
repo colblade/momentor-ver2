@@ -46,7 +46,7 @@ $(document).ready(function() {
       <label for="boardContent" class="col-sm-2 control-label">내용 :
       </label>
       <div class="col-sm-10">
-         <textarea rows="7" cols="30" class="form-control" name="boardContent"
+         <textarea rows="7" cols="30" class="form-control" name="boardContent" style="resize:none"
          placeholder="내용을 입력하세요." required="required"></textarea>
       </div>
    </div>

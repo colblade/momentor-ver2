@@ -53,7 +53,7 @@
 	 <!-- Handler Interceptor 설정 -->
 <mvc:interceptors>
 <mvc:interceptor>
-<!-- login 하고 나서 실행되는 모든 컨트롤러 requestMapping은 my_로 시작해야 한다. -->
+<!-- login 하고 나서 실행되는 모든 컨트롤러 requestMapping은 my_로 시작. admin은 admin_로 시작.-->
 <mvc:mapping path="/login_home.do"/>
 <mvc:mapping path="/my_*.do"/>
 <bean class = "org.kosta.momentor.member.controller.LoginCheckInterceptor"/>

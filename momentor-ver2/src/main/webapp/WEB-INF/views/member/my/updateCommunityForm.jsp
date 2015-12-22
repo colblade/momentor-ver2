@@ -117,7 +117,7 @@
       <label for="boardContent" class="col-sm-2 control-label">내용 :
       </label>
       <div class="col-sm-10">
-         <textarea rows="7" cols="30" class="form-control" name="boardContent">${requestScope.cvo.boardContent}</textarea>
+         <textarea rows="7" cols="30" style="resize:none" class="form-control" name="boardContent">${requestScope.cvo.boardContent}</textarea>
       </div>
    </div>
    <div class="form-group" align="right">

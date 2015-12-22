@@ -659,11 +659,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		INSERT INTO FAQ_BOARD (FAQ_NO,TITLE,CONTENT) VALUES (FAQ_BOARD_SEQ.NEXTVAL,#{boardTitle},#{boardContent})
 	</insert>
 
-	<!-- 작성한 FAQ의 글번호를 가져온다 -->
-	<select id="getFAQPostingNumber" resultType="int">
-		SELECT FAQ_BOARD_SEQ.CURRVAL FROM DUAL
-	</select>
-
 	<!-- FAQ 글 삭제 -->
 	<delete id="deleteFAQByNo" parameterType="int">
 		DELETE FROM FAQ_BOARD WHERE FAQ_NO=#{value}

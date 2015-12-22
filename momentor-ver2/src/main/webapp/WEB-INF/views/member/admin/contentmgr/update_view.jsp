@@ -128,7 +128,7 @@ $("#imgList").on("click","img",function(){
 	<label for="boardContent" class="col-sm-2 control-label">내용 :</label>
 		<div class="col-sm-10">
 			<pre>
-				<textarea style="font-size: 15px" required="required" name="boardContent" class="form-control" rows="20">${info.boardContent }</textarea>
+				<textarea style="font-size: 15px; resize:none" required="required" name="boardContent" class="form-control" rows="20">${info.boardContent }</textarea>
 			</pre>
 		</div>
 	</div>
