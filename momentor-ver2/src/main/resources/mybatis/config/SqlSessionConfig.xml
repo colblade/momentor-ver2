@@ -15,7 +15,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<typeAlias type="org.kosta.momentor.contents.model.QNABoardVO" alias="qvo"/>
 		<typeAlias type="org.kosta.momentor.contents.model.FAQBoardVO" alias="fvo"/>
 		<typeAlias type="org.kosta.momentor.contents.model.ExerciseBoardVO" alias="ebvo"/>
-		<typeAlias type="org.kosta.momentor.cart.model.ExerciseVO" alias="evo"/>
+		<typeAlias type="org.kosta.momentor.contents.model.ExerciseVO" alias="evo"/>
 		<typeAlias type="org.kosta.momentor.planner.model.PlannerVO" alias="planvo"/>
 		<typeAlias type="org.kosta.momentor.cart.model.CartVO" alias="cartvo"/>
 		<typeAlias type="org.kosta.momentor.aop.model.ReportVO" alias="reportvo"/>
