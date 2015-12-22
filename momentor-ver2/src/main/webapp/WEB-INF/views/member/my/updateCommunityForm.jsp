@@ -4,6 +4,15 @@
  <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <script type="text/javascript">
        $(document).ready(function(){
+    	 //제목 입력 란의 글자 수가 50자 이상이면 replace를 통해 50자 까지 입력된 걸로 대체 시킨후 alert를 띄워준다
+   		$("input[name=boardTitle]").keyup(function(){
+   	        var maxTitleLength=50;
+   	        	if($("input[name=boardTitle]").val().length>=maxTitleLength){
+   	          		alert("제목은 한글 기준 "+maxTitleLength+"자 까지만 가능합니다");
+   	           $("input[name=boardTitle]").val($("input[name=boardTitle]").val().substring(0,maxTitleLength));
+   	            return false;
+   	       		} 
+   	       });
           $("#updateForm").submit(function(){
              if($("input[name=boardTitle]").val()==""){
                 alert("제목을 입력해주세요")
