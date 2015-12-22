@@ -2,7 +2,6 @@
     pageEncoding="UTF-8"%>
 <script type="text/javascript">
 	$(document).ready(function(){
-		//제목 입력 란의 글자 수가 50자 이상이면 replace를 통해 50자 까지 입력된 걸로 대체 시킨후 alert를 띄워준다
 		$("#boardTitle").keyup(function(){
 	        var maxTitleLength=50;
 	        	if($("#boardTitle").val().length>=maxTitleLength){

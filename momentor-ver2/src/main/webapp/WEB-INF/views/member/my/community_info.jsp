@@ -39,7 +39,7 @@ $(document).ready(function(){
     });
     /*  게시글 삭제 버튼 클릭시 */
     $("#deleteBtn").click(function(){
-    	if(confirm("이 운동 게시물을 삭제하시겠습니까?")){
+    	if(confirm("이 게시물을 삭제하시겠습니까?")){
 			location.href = "${initParam.root }my_deleteCommunity.do?boardNo=${info.boardNo}";
 		}else{
 			return;

@@ -51,11 +51,6 @@
          <textarea rows="7" cols="30" class="form-control" name="boardContent">${requestScope.fvo.boardContent}</textarea>
       </div>
    </div>
-<!--    <div class="form-group" align="right">
-      <div class="col-sm-offset-2 col-sm-10">
-         <button type="submit" class="btn btn-default">수정하기</button>
-      </div>
-   </div> -->
    <nav> 
 		<ul class="pager">
 			<li class="next"><a id="modifyBtn">수정하기</a></li>
