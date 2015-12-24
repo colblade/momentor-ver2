@@ -91,8 +91,8 @@
 			if(confirm("삭제하시겠습니까?") == false){
 				return;
 			}
-			// 오늘 기준으로 이미 지나간 날은 운동 삭제가 불가능 하도록
-			if(parseInt($(".panel-heading").text().substring(0, 10).replace(/-/g, "")) < parseInt(todayVal.replace(/-/g, ""))){
+			// 오늘과 이미 지나간 날은 운동 삭제가 불가능 하도록
+			if(parseInt($(".selectPlannerDate").text().substring(0, 10).replace(/-/g, "")) <= parseInt(todayVal.replace(/-/g, ""))){
 				alert("지나간 날의 운동은 삭제할 수 없습니다.");
 				return;
 			}
@@ -230,7 +230,7 @@
 				return;
 			}
 			// 선택일이 오늘보다 이전일 경우 플래너에 등록이 불가능하도록 한다.
-			if(parseInt($(".panel-heading").text().substring(0, 10).replace(/-/g, "")) < parseInt(todayVal.replace(/-/g, ""))){
+			if(parseInt($(".selectPlannerDate").text().substring(0, 10).replace(/-/g, "")) < parseInt(todayVal.replace(/-/g, ""))){
 				alert("지나간 날은 등록할 수 없습니다.");
 				$("#exerciseName").val("");
 				$("#targetSet").val("");
@@ -355,11 +355,11 @@
 	// [ ** 플래너에 등록, 플래너에서 삭제, 달성 시 플래너 리스트를 출력하는 공통 function ** ]
 	function plannerListFunc(result){
 		var listTableFrame = "<div class='panel panel-primary'>" + 
-										"<div class='panel-heading'><h4>" + result.selectDate + "</h4></div>" + 
+										"<div class='panel-heading selectPlannerDate'><h4>" + result.selectDate + "</h4></div>" + 
 										"<div class='panel-body'>등록된 운동이 없습니다.</div></div>";
 		if(result.plannerList.length != 0){
 			listTableFrame = "<div class='panel panel-primary'>" + 
-									"<div class='panel-heading'><h4>" + result.selectDate + "</h4></div>" + 
+									"<div class='panel-heading selectPlannerDate'><h4>" + result.selectDate + "</h4></div>" + 
 									"<div class='panel-body'>" + 
 									"<table class='table table-bordered plannerTable'>" + 
 									"<thead><tr><th><input type='checkbox' name='allCheck'></th><th>운동명</th><th>달성세트</th>" + 
@@ -419,7 +419,7 @@
 <c:choose>
 	<c:when test="${requestScope.plannerListByDate.size() != 0}">
 	<div class="panel panel-primary">
-	<div class="panel-heading"><h4>${requestScope.selectDate}</h4></div>
+	<div class="panel-heading selectPlannerDate"><h4>${requestScope.selectDate}</h4></div>
 	<div class="panel-body">
 		<table class="table table-bordered plannerTable">
 			<thead>
@@ -476,7 +476,7 @@
 	</c:when>
 	<c:otherwise>
 	<div class="panel panel-primary">
-	<div class="panel-heading"><h4>${requestScope.selectDate}</h4></div>
+	<div class="panel-heading selectPlannerDate"><h4>${requestScope.selectDate}</h4></div>
 	<div class="panel-body">
 		등록된 운동이 없습니다.
 	</div></div>
@@ -555,18 +555,18 @@
 
 <!-- Modal -->
 <div class="modal fade" id="exView" tabindex="-1" role="dialog" aria-labelledby="exViewModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="exViewModalLabel">상세보기</h4>
-      </div>
-      <div class="modal-body">
-          <span id="showExeciseInfo"></span>
-      </div>
-      <div class="modal-footer">
-         <button type="button" class="btn btn-default" data-dismiss="modal" id="closePass">Close</button>
-      </div>
-    </div>
-  </div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="exViewModalLabel">상세보기</h4>
+			</div>
+			<div class="modal-body">
+				<span id="showExeciseInfo"></span>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal" id="closePass">Close</button>
+			</div>
+		</div>
+	</div>
 </div>
