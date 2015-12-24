@@ -25,7 +25,6 @@
              }
           });
        
-       
           $("#imgList").on("click","img",function(){
         		if(confirm("삭제하시겠습니까? 삭제된 파일은 복구할 수 없습니다. 그래도 삭제하시겠습니까?")){
         		var id = $(this).attr("id");
@@ -55,9 +54,6 @@
         	$("#getCommunityByNo").click(function(){
         		location.href = "my_getCommunityByNo.do?boardNo="+$("#boardNo").val();
         	});//click
-        	
-       
-       
        });
     </script>
 <form class="form-horizontal" action="my_updateCommunity.do"   method="post" id="updateForm" enctype="multipart/form-data">
@@ -73,46 +69,33 @@
    <div class="form-group">
       <label class="col-sm-2 control-label">작성자 : </label>
       <div class="col-sm-10">
-         ${sessionScope.pnvo.momentorMemberVO.nickName }<br>
+         ${requestScope.cvo.momentorMemberVO.nickName }<br>
       </div>
    </div>
-   
    <div class="form-group">
       <label for="boardImg" class="col-sm-2 control-label"></label>
       <div class="col-sm-10">
       <c:choose>
 				<c:when test="${empty requestScope.nameList }">
-
 					<c:forEach begin="0" end="4" varStatus="cvs">
 						<input type="file" name="file[${cvs.index }]"><br>
 					</c:forEach>
-
-
 				</c:when>
 				<c:otherwise>
-
-					<span id="imgList"> <c:forEach
-							items="${requestScope.nameList }" var="fileName" varStatus="vs">
-
-							<img id="image_${vs.index }"
-								src="${initParam.root}communityimg/${fileName.BOARDNO}_${fileName.IMGNAME}"
-								title=" ${fileName.IMGNAME }"><br>
-
-						</c:forEach> <c:if test="${fn:length(requestScope.nameList)<5 }">
-							<c:forEach begin="0" end="${4-fn:length(requestScope.nameList)}"
-								varStatus="cvs">
+					<span id="imgList">
+						<c:forEach items="${requestScope.nameList }" var="fileName" varStatus="vs">
+							<img id="image_${vs.index }" src="${initParam.root}communityimg/${fileName.BOARDNO}_${fileName.IMGNAME}" title=" ${fileName.IMGNAME }"><br>
+						</c:forEach>
+						<c:if test="${fn:length(requestScope.nameList)<5 }">
+							<c:forEach begin="0" end="${4-fn:length(requestScope.nameList)}" varStatus="cvs">
 								<input type="file" name="file[${cvs.index }]"><br>
-
 							</c:forEach>
 						</c:if>
 					</span>
 				</c:otherwise>
 			</c:choose>
-      
       </div>
    </div>
-   
-   
    <div class="form-group">
       <label for="boardContent" class="col-sm-2 control-label">내용 :
       </label>

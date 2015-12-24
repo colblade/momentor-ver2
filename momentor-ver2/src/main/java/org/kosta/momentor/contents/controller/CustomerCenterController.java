@@ -87,27 +87,17 @@ public class CustomerCenterController {
 		}
 		
 		/*조회수 증가하지 않게하는경우 */
-		@RequestMapping(value="getQNAByNoNoHit.do")
+		@RequestMapping(value="my_getQNAByNoNoHit.do")
 	  	public ModelAndView getQNAByNoNoHit(int boardNo){
-		  	return new ModelAndView("member_getQNAByNo","qvo",qnaBoardService.getQNAByNoNoHit(boardNo));
+		  	return new ModelAndView("my_getQNAByNo","qvo",qnaBoardService.getQNAByNoNoHit(boardNo));
 	  	}
 		
 		/*QNA 상세목록 보기*/
-		@RequestMapping(value="member_getQNAByNo.do")
-		public ModelAndView MygetQNAByNo(int boardNo, @CookieValue(value="QNABoard",required=false) String cookieValue,HttpServletResponse response){
+		@RequestMapping(value="my_getQNAByNo.do")
+		public ModelAndView MygetQNAByNo(int boardNo){
 			QNABoardVO qvo = null;
-			if(cookieValue==null){
-				response.addCookie(new Cookie("QNABoard", ""+boardNo+""));
 				qvo = qnaBoardService.getQNAByNo(boardNo);
-			}else if(cookieValue.indexOf("|"+boardNo+"|")==-1){
-				cookieValue+="|"+boardNo+"|";
-				response.addCookie(new Cookie("QNABoard", cookieValue));
-				qvo = qnaBoardService.getQNAByNo(boardNo);
-			}else{
-				qvo = qnaBoardService.getQNAByNoNoHit(boardNo);
-			}
-			
-			return new ModelAndView("member_getQNAByNo","qvo",qvo);
+			return new ModelAndView("my_getQNAByNo","qvo",qvo);
 		}
 		
 		/*로그인한 유저가 QNA의 글작성폼*/
@@ -121,7 +111,7 @@ public class CustomerCenterController {
 		@RequestMapping(value="my_writeQNA.do")
 		public ModelAndView writeQNA(QNABoardVO qvo){
 			qnaBoardService.writeQNA(qvo);
-			return new ModelAndView("redirect:member_getQNAByNo.do?boardNo="+qvo.getBoardNo(),"qvo",qvo);
+			return new ModelAndView("redirect:my_getQNAByNo.do?boardNo="+qvo.getBoardNo(),"qvo",qvo);
 		}
 		
 		/*유저가 QNA글 수정 폼*/
@@ -135,7 +125,7 @@ public class CustomerCenterController {
 		@RequestMapping(value="my_updateQNA.do", method=RequestMethod.POST)
 		public ModelAndView updateQNA(HttpServletRequest request, QNABoardVO qvo){
 			qnaBoardService.updateQNA(qvo);
-			return new ModelAndView("redirect:member_getQNAByNo.do?boardNo="+qvo.getBoardNo(),"qvo",qvo);
+			return new ModelAndView("redirect:my_getQNAByNo.do?boardNo="+qvo.getBoardNo(),"qvo",qvo);
 		}
 		
 		/*유저가 QNA 글 삭제, 관리자가 QNA 답변 글 삭제*/
@@ -155,7 +145,7 @@ public class CustomerCenterController {
 		@RequestMapping(value="admin_qnaReply.do")
 		public ModelAndView reply(QNABoardVO qvo) throws Exception{		
 			qnaBoardService.qnaReply(qvo);	
-			return new ModelAndView("redirect:getQNAByNoNoHit.do?boardNo="+qvo.getBoardNo());
+			return new ModelAndView("redirect:my_getQNAByNoNoHit.do?boardNo="+qvo.getBoardNo());
 		}
 		
 		/* FAQ 게시판 글 전체 목록 받아오기 */

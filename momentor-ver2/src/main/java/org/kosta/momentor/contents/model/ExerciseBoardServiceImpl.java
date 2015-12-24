@@ -135,7 +135,7 @@ public class ExerciseBoardServiceImpl implements ExerciseBoardService {
 				.getExerciseInfoByExName(exerciseName);
 		result.put("exerciseInfo", ebvo);
 		result.put("nameList", exerciseBoardDAO.getExerciseImgListByExerciseName(exerciseName));
-		result.put("URLVideo", exerciseBoardDAO.getURLByExerciseName(ebvo.getExerciseVO().getExerciseName()));
+		result.put("URLVideo", exerciseBoardDAO.getURLByExerciseName(exerciseName));
 		return result;
 	}
 	//운동 게시물 url 등록

@@ -95,7 +95,7 @@ public class MomentorMemberServiceImpl implements MomentorMemberService {
         int birthYear=Integer.parseInt(date.substring(0, 4));
         int birthMonth=Integer.parseInt(date.substring(5, 7));
         int birthDay=Integer.parseInt(date.substring(8, 10));
-        int age=mT-birthYear;
+        int age=mT-birthYear+1;
         int weight=Integer.parseInt(memberWeight);
         int height=Integer.parseInt(memberHeight);
         pnvo.setMemberWeight(weight);
@@ -107,11 +107,7 @@ public class MomentorMemberServiceImpl implements MomentorMemberService {
         vo.setBirthDay(birthDay);
         vo.setMemberEmail(memberEmail+"@"+memberEmail2);
         pnvo.setMomentorMemberVO(vo);
-        if(mT<birthYear){
-           pnvo.setAge(age+1);
-        }else{
-           pnvo.setAge(age+1);
-        }
+        pnvo.setAge(age);
         pnvo.setBmi(b);
     	momentorMemberDAO.registerMember(vo);
 		momentorMemberDAO.registerPhysicalMember(pnvo);
@@ -140,7 +136,7 @@ public class MomentorMemberServiceImpl implements MomentorMemberService {
 		momentorMemberDAO.updateMember(vo);
         double bmi=(double) pnvo.getMemberWeight()/((double)pnvo.getMemberHeight()*(double)pnvo.getMemberHeight())*(double)10000;
         double b = Math.round(bmi*100d) / 100d;
-        int age=mT-birthYear;
+        int age=mT-birthYear+1;
         pnvo.setAge(age);
         pnvo.setBmi(b);
         momentorMemberDAO.updateMemberPhysical(pnvo);

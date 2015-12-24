@@ -94,51 +94,47 @@ $(document).ready(function(){
     });
   //추천
  	$("#recommendImg").on("click", "#recImg", function(){
- 	
- 	
- 	$.ajax({
- 		type:"post",
- 		url:"${initParam.root}my_updateRecommendInfo.do",
- 		data:"memberId="+$("#memberId").val()+"&boardNo="+$("#boardNo").val()+"&recommend="+$("#recommend").val(),
- 		success: function(data){
- 		var recommend = data.RECOMMEND;
- 	
- 			if(recommend =="Y"){
- 				$("#recommendImg").html("<input type = 'hidden' value = 'N' id = 'recommend'><img src='${initParam.root }image/recommend.png' width='20' height='20' id = 'recImg'>");
- 			}else{
- 				$("#recommendImg").html("<input type = 'hidden' value = 'Y' id = 'recommend'><img src='${initParam.root }image/notRecommend.png' width='20' height='20' id = 'recImg'>");
- 			}
- 			
- 			$("#recommendCount").html(data.recommendCount);
- 			
- 		}//success
- 	});//ajax
+	 	$.ajax({
+	 		type:"post",
+	 		url:"${initParam.root}my_updateRecommendInfo.do",
+	 		data:"memberId="+$("#memberId").val()+"&boardNo="+$("#boardNo").val()+"&recommend="+$("#recommend").val(),
+	 		success: function(data){
+	 		var recommend = data.RECOMMEND;
+	 	
+	 			if(recommend =="Y"){
+	 				$("#recommendImg").html("<input type = 'hidden' value = 'N' id = 'recommend'><img src='${initParam.root }image/recommend.png' width='20' height='20' id = 'recImg'>");
+	 			}else{
+	 				$("#recommendImg").html("<input type = 'hidden' value = 'Y' id = 'recommend'><img src='${initParam.root }image/notRecommend.png' width='20' height='20' id = 'recImg'>");
+	 			}
+	 			
+	 			$("#recommendCount").html(data.recommendCount);
+	 			
+	 		}//success
+	 	});//ajax
  	});//on
  	
  			
  	//비추천
  	$("#notRecommendImg").on("click", "#notRecImg", function(){
- 		
- 	
- 	$.ajax({
- 		type:"post",
- 		url:"${initParam.root}my_updateRecommendInfo.do",
- 		data:"memberId="+$("#memberId").val()+"&boardNo="+$("#boardNo").val()+"&notRecommend="+$("#notRecommend").val(),
- 		success: function(data){
- 			var notrecommend = data.NOTRECOMMEND;
- 			
- 			if(notrecommend =="Y"){
- 			
- 			$("#notRecommendImg").html("<input type = 'hidden' value = 'N' id = 'notRecommend'><img src='${initParam.root }image/recommend.png' width='20' height='20' id = 'notRecImg'>");
- 		}else{
- 			$("#notRecommendImg").html("<input type = 'hidden' value = 'Y' id = 'notRecommend'><img src='${initParam.root }image/notRecommend.png' width='20' height='20' id = 'notRecImg'>");				
- 		}
- 				$("#notRecommendCount").html(data.notRecommendCount);
- 		}//success
- 	});//ajax
+	 	$.ajax({
+	 		type:"post",
+	 		url:"${initParam.root}my_updateRecommendInfo.do",
+	 		data:"memberId="+$("#memberId").val()+"&boardNo="+$("#boardNo").val()+"&notRecommend="+$("#notRecommend").val(),
+	 		success: function(data){
+	 			var notrecommend = data.NOTRECOMMEND;
+	 			
+	 			if(notrecommend =="Y"){
+	 			
+	 			$("#notRecommendImg").html("<input type = 'hidden' value = 'N' id = 'notRecommend'><img src='${initParam.root }image/recommend.png' width='20' height='20' id = 'notRecImg'>");
+	 		}else{
+	 			$("#notRecommendImg").html("<input type = 'hidden' value = 'Y' id = 'notRecommend'><img src='${initParam.root }image/notRecommend.png' width='20' height='20' id = 'notRecImg'>");				
+	 		}
+	 				$("#notRecommendCount").html(data.notRecommendCount);
+	 		}//success
+	 	});//ajax
  	});//on
-    
  });
+ 
 /* 댓글 삭제 */
 function deleteReply(replyNo){
   	 if(confirm("삭제하시겠습니까?")){
@@ -178,7 +174,8 @@ function updateReply(replyNo){
 					mess+="<td align='right'>작성일시 : "+replyList.replyDate+"</h5>&nbsp;&nbsp;&nbsp;"
 					var pnvo="${sessionScope.pnvo.momentorMemberVO.memberId}"
 					var pnvo2=replyList.momentorMemberVO.memberId
-				if(pnvo==pnvo2){
+					var adminAuth="${sessionScope.pnvo.momentorMemberVO.auth}";
+				if(pnvo==pnvo2||adminAuth==1){
 					  mess+="<input type='button' class='btn btn-default' value='수정' onclick='updateReply("+replyList.replyNo+")'>";//수정버튼
 					  mess+="&nbsp;&nbsp;<input type='button' class='btn btn-default' value='삭제' onclick='deleteReply("+replyList.replyNo+")'></td></tr>";//삭제버튼
 					  }   //본인 댓글 비	교 if             	
@@ -230,7 +227,8 @@ function showReplyList(result){
 		  mess+="<td align='right'>작성일시 : "+replyList.replyDate+"</h5>&nbsp;&nbsp;&nbsp;";//일시
 		  var pnvo="${sessionScope.pnvo.momentorMemberVO.memberId}"
 		  var pnvo2=replyList.momentorMemberVO.memberId
-		  if(pnvo==pnvo2){//본인 유무
+		  var adminAuth="${sessionScope.pnvo.momentorMemberVO.auth}"
+		  if(pnvo==pnvo2||adminAuth==1){//본인 확인 및 관리자 권한 확인
 			  mess+="<input type='button' class='btn btn-default' value='수정' onclick='updateReply("+replyList.replyNo+")'>";//수정버튼
 			  mess+="&nbsp;&nbsp;<input type='button' class='btn btn-default' value='삭제' onclick='deleteReply("+replyList.replyNo+")'></td></tr>";//삭제버튼
 		  }       
@@ -245,11 +243,8 @@ function showReplyList(result){
 
 </script>
 <div class="container">
-
    <div class="row">
-
       <div class="col-sm-8 blog-main">
-
          <div class="blog-post">
             <br><br>
             <h2 class="blog-post-title">${info.boardTitle }</h2>
@@ -265,22 +260,16 @@ function showReplyList(result){
  		</c:choose>
             </p>
 				<c:if test="${not empty requestScope.nameList }">
-			<c:forEach items="${requestScope.nameList }" var="fileName"
-								varStatus="vs">
-			<img src="${initParam.root}communityimg/${fileName.BOARDNO}_${fileName.IMGNAME}"
-									title=" ${fileName.IMGNAME }">
-								
-						
-								</c:forEach>
-								
-								</c:if>	
+					<c:forEach items="${requestScope.nameList }" var="fileName" varStatus="vs">
+						<img src="${initParam.root}communityimg/${fileName.BOARDNO}_${fileName.IMGNAME}" title=" ${fileName.IMGNAME }">
+					</c:forEach>
+				</c:if>	
             <pre>${info.boardContent }</pre>
             <br><br><br>
             <hr>
             <p>
             <input class="btn btn-primary" type="button" value="댓글보기▼" id="replyBtn">
                <c:set value="${requestScope.recommendInfo }" var = "recInfo"/>
-           
              	조회수 : ${info.memberHits}&nbsp; | 추천수 : <span id="recommendCount">${info.recommend }</span>&nbsp;
              	<span id="recommendImg">
                <c:choose>
@@ -322,11 +311,11 @@ function showReplyList(result){
 	           </div>
 	           <nav>
 					<ul class="pager">
-						<c:if   test="${sessionScope.pnvo.momentorMemberVO.memberId==info.momentorMemberVO.memberId }"> 	
-							<li id="modifyBtn"><a href="#">수정하기</a></li>
-							<li id="deleteBtn"><a href="#">삭제하기</a></li>
-						</c:if>
-						<li id="listBtn"><a href="#">목록보기</a></li>
+					<c:if test="${sessionScope.pnvo.momentorMemberVO.memberId==info.momentorMemberVO.memberId || sessionScope.pnvo.momentorMemberVO.auth==1}">
+						<li id="modifyBtn"><a href="#">수정하기</a></li>
+						<li id="deleteBtn"><a href="#">삭제하기</a></li>
+					</c:if>
+					<li id="listBtn"><a href="#">목록보기</a></li>
 					</ul>
 				</nav>
          </div><!-- 전체 post div -->

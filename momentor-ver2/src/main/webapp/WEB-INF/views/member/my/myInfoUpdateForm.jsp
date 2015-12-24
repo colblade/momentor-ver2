@@ -185,7 +185,7 @@ $(document).ready(function(){
 	<hr>
 	<p class="blog-post-meta">이메일 : <input type="email" name="memberEmail" id="memberEmail" value="${requestScope.pnvo.momentorMemberVO.memberEmail }"></p>
 	<hr>
-	<p class="blog-post-meta">성별 : 	<select name="gender" ><option value ="M" selected="selected"> 남자</option><option value ="F" > 여자</option></select>	
+	<p class="blog-post-meta">성별 : 	<select name="gender" ><option value ="남자" selected="selected"> 남자</option><option value ="여자" > 여자</option></select>	
 	<hr>
 	<p class="blog-post-meta">주소 : <input type="text" name="memberAddress" id="memberAddress" value="${requestScope.pnvo.momentorMemberVO.memberAddress }"></p>
 	<hr>
