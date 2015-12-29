@@ -80,14 +80,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		MEMBER_REPLY WHERE MEMBER_NO=#{value}
 	</delete>
 	
-	<!-- 단일 댓글 가져오기 -->
-	<select id="getReplyByNo" parameterType="int" resultType="rvo"
-		resultMap="rvoMap">
-		SELECT
-		REPLY_NO,MEMBER_NO,MEMBERID,CONTENT,TO_CHAR(REPLY_DATE,'YYYY.MM.DD')
-		AS REPLY_DATE FROM MEMBER_REPLY WHERE REPLY_NO = #{value}
-	</select>
-	
 	<!-- 댓글 업데이트 -->
 	<update id="updateReply" parameterType="rvo">
 		UPDATE MEMBER_REPLY set

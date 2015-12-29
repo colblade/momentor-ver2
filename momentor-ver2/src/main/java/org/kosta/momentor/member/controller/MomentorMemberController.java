@@ -343,7 +343,7 @@ public class MomentorMemberController {
 		for(int i=0; i<cartList.size(); i++){
 			String exerciseName = cartList.get(i).getExerciseBoardVO().getExerciseVO().getExerciseName();
 			List<Map<String, String>> map = (ArrayList)exerciseBoardService.getExerciseImgListByExerciseName(exerciseName);
-			if(map != null){
+			if(map.size() != 0){
 				HashMap<String, Object> paramMap = new HashMap<String, Object>();
 				paramMap.put(exerciseName, map);
 				imgCartList.add(paramMap);
@@ -450,27 +450,30 @@ public class MomentorMemberController {
 		return (ArrayList<CartVO>) plannerService.getCartList(cvo.getMomentorMemberVO().getMemberId());
 	}
 	// 찜바구니에서 운동 삭제
-	@RequestMapping("my_deleteExcerciseInCart.do")
-	@ResponseBody
-	public Map<String, Object> deleteExcerciseInCart(CartVO cvo){
-		plannerService.deleteExcerciseInCart(cvo);
-		Map<String, Object> deleteMap = new HashMap<String, Object>();
-		ArrayList<CartVO> cartList = (ArrayList<CartVO>) plannerService.getCartList(cvo.getMomentorMemberVO().getMemberId());
-		ArrayList<HashMap<String, Object>> imgCartList = new ArrayList<HashMap<String, Object>>();
-		for(int i=0; i<cartList.size(); i++){
-			String exerciseName = cartList.get(i).getExerciseBoardVO().getExerciseVO().getExerciseName();
-			List<Map<String, String>> fileListMap = (ArrayList)exerciseBoardService.getExerciseImgListByExerciseName(exerciseName);
-			HashMap<String, Object> paramMap = new HashMap<String, Object>();
-			if(fileListMap != null){
-				paramMap.put(exerciseName, fileListMap);
-				imgCartList.add(paramMap);
-			}else{
-				paramMap.put(exerciseName, null);
-				imgCartList.add(paramMap);
+		@RequestMapping("my_deleteExcerciseInCart.do")
+		@ResponseBody
+		public Map<String, Object> deleteExcerciseInCart(CartVO cvo){
+			plannerService.deleteExcerciseInCart(cvo);
+			Map<String, Object> deleteMap = new HashMap<String, Object>();
+			ArrayList<CartVO> cartList = (ArrayList<CartVO>) plannerService.getCartList(cvo.getMomentorMemberVO().getMemberId());
+			ArrayList<HashMap<String, Object>> imgCartList = new ArrayList<HashMap<String, Object>>();
+			for(int i=0; i<cartList.size(); i++){
+				String exerciseName = cartList.get(i).getExerciseBoardVO().getExerciseVO().getExerciseName();
+				List<Map<String, String>> fileListMap = (ArrayList)exerciseBoardService.getExerciseImgListByExerciseName(exerciseName);
+				HashMap<String, Object> paramMap = new HashMap<String, Object>();
+				if(fileListMap.size() != 0){
+					paramMap.put(exerciseName, fileListMap);
+					imgCartList.add(paramMap);
+					System.out.println("if paramMap : " + paramMap);
+				}else{
+					paramMap.put(exerciseName, null);
+					imgCartList.add(paramMap);
+					System.out.println("else paramMap : " + paramMap);
+				}
 			}
+			System.out.println("imgCartList : " + imgCartList);
+			deleteMap.put("cartList", cartList);
+			deleteMap.put("imgCartList", imgCartList);
+			return deleteMap;
 		}
-		deleteMap.put("cartList", cartList);
-		deleteMap.put("imgCartList", imgCartList);
-		return deleteMap;
-	}
 }

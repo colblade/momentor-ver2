@@ -70,10 +70,6 @@ public class CommunityBoardDAOImpl implements CommunityBoardDAO {
 		return sqlSessionTemplate.selectList("content.getReplyListByNo", boardNo);
 	}
 	@Override
-	public ReplyVO getReplyByNo(int replyNo) {
-		return sqlSessionTemplate.selectOne("content.getReplyByNo", replyNo);
-	}
-	@Override
 	public void updateRecommend(Map<String, Integer> map) {
 			sqlSessionTemplate.update("content.updateRecommend", map);		
 	}

@@ -95,11 +95,6 @@ public class CommunityBoardServiceImpl implements CommunityBoardService {
 		communityBoardDAO.updateReply(rvo);
 	}
 	
-	/* 커뮤니티 덧글 번호로 rvo 가져오기 ( 수정하기 클릭시 ) */
-	@Override
-	public ReplyVO getReplyByNo(int replyNo) {		
-		return communityBoardDAO.getReplyByNo(replyNo);
-	}  
 	@Override
 	public ListVO findByCbNickName(String pageNo, String searchWord) {
 		if(pageNo==null||pageNo==""){

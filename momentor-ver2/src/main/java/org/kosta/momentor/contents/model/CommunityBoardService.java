@@ -21,7 +21,6 @@ public interface CommunityBoardService {
 	public ReplyVO postingReply(ReplyVO rvo);//커뮤니티 게시판 덧글 폼에서 rvo로 받아와 덧글 등록
 	public void deleteReplyByNo(int replyNo);//덧글 고유 시퀀스로 덧글 삭제
 	public void updateReply(ReplyVO rvo);//덧글 고유 시퀀스로 덧글 수정
-	public ReplyVO getReplyByNo(int replyNo);//커뮤니티 덧글 번호로 rvo 가져오기 ( 수정하기 클릭시 )
 	//해당 커뮤니티 게시물에서 맨 처음 추천/비추천을 한다면 INSERT
 	//이미 예전에 추천 비추천을 한 경우가 있다면 UPDATE
 	//#{boardNo},#{memberId},#{recommend},#{notrecommend}

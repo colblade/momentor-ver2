@@ -168,7 +168,7 @@ function updateReply(replyNo){
 					decodeText=decodeURIComponent(replyList.content.replace(Ca, " "));
 					mess+="<tr><td colspan='2'><h5>"+replyList.momentorMemberVO.nickName+"</h5></td></tr>";
 		   	   		mess+="<tr><td colspan='2'><textarea style='resize:none' rows='3' cols='40' class='form-control' name='updateReplyContent' >"+decodeText+"</textarea>";
-		   	   		mess+="&nbsp;<input class='btn btn-default' type='button' id='updateBtn' value='수정' onclick='updateReplyFinal("+replyNo+")'></td></tr>";
+		   	   		mess+="&nbsp;<input class='btn btn-default' type='button' id='updateBtn' value='완료' onclick='updateReplyFinal("+replyNo+")'></td></tr>";
 				 }else{//일반 댓글 출력
 					mess+="<tr><td><h5>"+replyList.momentorMemberVO.nickName+"</td>";
 					mess+="<td align='right'>작성일시 : "+replyList.replyDate+"</h5>&nbsp;&nbsp;&nbsp;"

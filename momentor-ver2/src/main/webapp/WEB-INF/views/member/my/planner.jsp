@@ -177,13 +177,14 @@
 												"<div class='panel-body'>" +
 												"<table class='table table-hover cartTable'>" + 
 												"<thead><tr><th>선택</th><th>번호</th><th colspan='2'>운동명</th><th>삭제</th></tr></thead>" + 
-												"<tbody id='cartListBody'>";	
-						 $.each(cartListResult.cartList, function(index1, list){
+												"<tbody id='cartListBody'>";
+						$.each(cartListResult.cartList, function(index1, list){
 							var exName = list.exerciseBoardVO.exerciseVO.exerciseName;
 							var exImg = "";
 							$.each(cartListResult.imgCartList, function(index2, imgMap){
 								$.map(imgMap, function(value, key){
-									if(key == exName){
+									// key값과 운동명이 일치하면서(and) value가 0이 아닐때(이미지가 있을때)만 이미지 출력
+									if(key == exName && value != null){
 										// 운동 이미지를 한장만 불러오기 위해 0번째 index의 이미지만 지정
 										exImg += "<img src = '${initParam.root}exerciseimg/" + value[0].EXERCISENAME + "_" + value[0].IMGNAME + "' style='width: 50px; height: 50px;'>";
 									}
@@ -524,11 +525,13 @@
 					<td>${status1.count }</td>
 					<td>
 						<c:forEach items="${requestScope.imgCartList}" var ="imgList">
-							<c:forEach items="${imgList.get(clist.exerciseBoardVO.exerciseVO.exerciseName) }" var = "map" varStatus="status2">
-								<c:if test="${status2.index < 1}">
-									<img src = "${initParam.root}exerciseimg/${map.EXERCISENAME}_${map.IMGNAME}" style="width: 50px; height: 50px;">
-								</c:if>
-							</c:forEach>
+							<c:if test="${imgList.get(clist.exerciseBoardVO.exerciseVO.exerciseName) != null}">
+								<c:forEach items="${imgList.get(clist.exerciseBoardVO.exerciseVO.exerciseName) }" var = "map" varStatus="status2">
+									<c:if test="${status2.index < 1}">
+										<img src = "${initParam.root}exerciseimg/${map.EXERCISENAME}_${map.IMGNAME}" style="width: 50px; height: 50px;">
+									</c:if>
+								</c:forEach>
+							</c:if>
 						</c:forEach>
 					</td>
 					<td>${clist.exerciseBoardVO.exerciseVO.exerciseName}</td>

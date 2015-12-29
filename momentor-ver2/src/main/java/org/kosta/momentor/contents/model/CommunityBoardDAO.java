@@ -25,7 +25,6 @@ public interface CommunityBoardDAO {
 	public void deleteAllReplyByNo(int cboardNo);//댓글 전체 삭제
 	public void deleteReplyByNo(int replyNo);//댓글 삭제
 	public void updateReply(ReplyVO rvo);//댓글 수정
-	public ReplyVO getReplyByNo(int replyNo);//댓글 시퀀스로 단일 댓글 가져오기
 	public int totalCommunity();
 	public void deleteRecommendByNo(int cboardNo); //무결성에 따른 추천 테이블 전체 삭제	
 	//게시판 추천 수 수정 int boardno, 1 or -1

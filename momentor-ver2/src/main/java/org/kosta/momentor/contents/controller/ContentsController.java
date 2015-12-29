@@ -146,18 +146,6 @@ public class ContentsController {
 		}
 		return replyList;
 	}
-	/* 덧글 번호로 덧글 반환 */
-	@RequestMapping("my_getReplyByNo.do")
-	@ResponseBody
-	public ReplyVO getReplyByNo(int replyNo){
-		ReplyVO rvo = communityBoardService.getReplyByNo(replyNo);
-		try {
-			rvo.setContent(URLEncoder.encode(rvo.getContent(),"UTF-8"));
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-		return rvo;
-	}
 	/* 덧글 수정 */
 	@RequestMapping(value="my_updateReply.do", method = RequestMethod.POST)
 	@ResponseBody
