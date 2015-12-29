@@ -554,7 +554,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="qna_No" property="boardNo" />
 		<result column="title" property="boardTitle" />
 		<result column="qna_Date" property="boardWdate" />
-		<result column="memberId" property="momentorMemberVO.memberId" />	
+		<result column="memberId" property="momentorMemberVO.memberId" />
+		<result column="nickName" property="momentorMemberVO.nickName" />	
 		<result column="content" property="boardContent" />			
 		<result column="qna_Hits" property="qnaHits" />
 		<result column="ref_memberId"  property="refMemberId"/>			
@@ -562,15 +563,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- QNA 목록 -->
 	<select id="getAllQNAList" resultType="qvo" resultMap="qvoMap"> 
-       	SELECT qna_No ,MEMBERID,title,qna_Date, CONTENT,QNA_HITS, ref, restep, relevel,ref_memberId
+       	SELECT Q.qna_No ,Q.MEMBERID, M.nickName, Q.title, Q.qna_Date, Q.CONTENT, Q.QNA_HITS, Q.ref, Q.restep, Q.relevel, Q.ref_memberId
 		FROM (SELECT qna_No ,MEMBERID,title,qna_Date, CONTENT,QNA_HITS,CEIL(ROWNUM/5) AS PAGE, ref, restep, relevel,ref_memberId
 		FROM (SELECT qna_No ,MEMBERID,title,TO_CHAR(qna_Date,'YYYY.MM.DD HH24:MI:SS') AS qna_Date, CONTENT,QNA_HITS, ref, restep, relevel,ref_memberId
 		FROM QNA_BOARD
-		ORDER BY ref desc,restep asc
-			<!-- ref desc, restep asc, qna_No desc -->
-		)
-		)
-		WHERE PAGE = #{value}
+		ORDER BY ref desc,restep asc)
+		) Q, MOMENTOR_MEMBER M
+		WHERE Q.MEMBERID = M.MEMBERID 
+		AND PAGE = #{value}
 	
 	</select>
 	

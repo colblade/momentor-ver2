@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <h2 class="sub-header">Q&A</h2>
 <div class="table-responsive">
- <table class="table table-striped, table-hover">
+ <table class="table table-striped table-hover">
  <thead>
            <tr>
              <th class="text-left">NO</th>
@@ -37,7 +37,7 @@
 			</c:choose>
 		</td>
 		<td class="text-center">${QNAList.boardWdate }</td>
-		<td class="text-center">${QNAList.momentorMemberVO.memberId }</td>
+		<td class="text-center">${QNAList.momentorMemberVO.nickName }</td>
 		<td class="text-center">${QNAList.qnaHits}</td>
 	</tr>
 </c:forEach>

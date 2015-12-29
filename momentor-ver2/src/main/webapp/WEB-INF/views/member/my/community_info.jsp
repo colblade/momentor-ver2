@@ -311,10 +311,15 @@ function showReplyList(result){
 	           </div>
 	           <nav>
 					<ul class="pager">
-					<c:if test="${sessionScope.pnvo.momentorMemberVO.memberId==info.momentorMemberVO.memberId || sessionScope.pnvo.momentorMemberVO.auth==1}">
-						<li id="modifyBtn"><a href="#">수정하기</a></li>
-						<li id="deleteBtn"><a href="#">삭제하기</a></li>
-					</c:if>
+					<c:choose>
+						<c:when test="${sessionScope.pnvo.momentorMemberVO.memberId==info.momentorMemberVO.memberId}">
+							<li id="modifyBtn"><a href="#">수정하기</a></li>
+							<li id="deleteBtn"><a href="#">삭제하기</a></li>
+						</c:when>
+						<c:when test="${sessionScope.pnvo.momentorMemberVO.auth==1}">
+							<li id="deleteBtn"><a href="#">삭제하기</a></li>
+						</c:when>
+					</c:choose>
 					<li id="listBtn"><a href="#">목록보기</a></li>
 					</ul>
 				</nav>
