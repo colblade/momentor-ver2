@@ -22,7 +22,7 @@
 			$("#updateQNAForm").submit();
 		});
 		$("#getQNAByNo").click(function(){
-    		location.href = "${initParam.root}member_getQNAByNo.do?boardNo="+$("#boardNo").val();
+    		location.href = "${initParam.root}my_getQNAByNo.do?boardNo="+$("#boardNo").val();
     	});//click
 	});
 </script>
